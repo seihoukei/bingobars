@@ -1,0 +1,376 @@
+    T1 : {
+        name : "Table 1",
+        conditions : [],
+        cells : {
+            R1C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R1C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R1C3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R1C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R1C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2C3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3C3: {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4C3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5C3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            R5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            C1 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            C2 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            C3 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            C4 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            C5 : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            DL : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+            DR : {
+                prerequisites : [
+                ],
+                conditions : [
+                    Condition.impossible(),
+                ],
+                modifiers : [
+                ],
+                //oneWay : true,
+            },
+        },
+    },
