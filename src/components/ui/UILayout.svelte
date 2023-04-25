@@ -174,12 +174,13 @@
     @media (max-aspect-ratio: 7/8) {
         div.layout {
             grid-template-areas:
-                "a b c ab ac bc"
-                "t1 t2 t3 t4 t5 abc"
-                "main main main main main code"
-                "main main main main main help"
-                "main main main main main menu";
-            font-size: min(1.86vw, 1.17vh);
+                "a b c ab ac bc abc ."
+                "main main main main main main main main"
+                "main main main main main main main main"
+                "main main main main main main main main"
+                "main main main main main main main main"
+                "t1 t2 t3 t4 t5 code help menu";
+            font-size: min(1.38vw, 0.98vh);
             grid-auto-columns: 8em;
             grid-auto-rows: 16em;
             grid-column-gap: 1em;
@@ -187,27 +188,7 @@
         }
 
         div.main {
-            font-size: 0.6em;
-        }
-    }
-
-    @media (max-aspect-ratio: 5/8) {
-        div.layout {
-            grid-template-areas:
-                "a b c code menu"
-                "ab ac bc abc help"
-                "t5 t4 t3 t2 t1"
-                "main main main main main"
-                "main main main main main";
-            font-size: min(2.25vw, 1.17vh);
-            grid-auto-columns: 8em;
-            grid-auto-rows: 16em;
-            grid-column-gap: 1em;
-            grid-row-gap: 1em;
-        }
-
-        div.main {
-            font-size: 0.6em;
+            font-size: 1em;
         }
     }
 
