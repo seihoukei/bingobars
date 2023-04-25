@@ -1,1 +1,2 @@
-# Minimalistic incremental svelte game template
+# Bingo Bars 
+Small incremental game
