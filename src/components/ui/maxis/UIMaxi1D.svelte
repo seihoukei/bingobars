@@ -80,7 +80,7 @@
                 <UIMaxiExplanation
                         description={`Every second while ${id} < M${id}`}
                         formula={`${id} += d${id}`}
-                        active={current < limit}
+                        active={current < limit && !hover.prestige && !hover.reset}
                 />
             </div>
         </div>
