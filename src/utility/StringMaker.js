@@ -1,4 +1,5 @@
 import VALUES from "data/values.js"
+import values from "data/values.js"
 
 export default class StringMaker {
     static VALUE_FORMATS = {
@@ -60,5 +61,57 @@ export default class StringMaker {
 
     static formatValueById(value, id) {
         return this.formatValue(value, VALUES[id]?.format ?? {})
+    }
+
+    static template(strings, ...values) {
+        return new StringMaker(strings, values)
+    }
+
+    #strings = []
+    #values = []
+    #base = {}
+    #baseFormat = StringMaker.DEFAULT_FORMAT
+
+    staticString = ""
+
+    constructor(strings, values, base = VALUES[values[0]] ?? {}) {
+        this.#strings = strings
+        this.#values = values
+        this.#base = base
+        this.#baseFormat =  Object.assign({}, StringMaker.DEFAULT_FORMAT, base.format)
+
+        this.updateStaticString()
+    }
+
+    updateStaticString() {
+        const result = []
+        for (let i = 0; i < this.#strings.length; i++) {
+            result.push(this.#strings[i])
+            const value = this.#values[i]
+            if (typeof value === "number")
+                result.push(StringMaker.formatValue(value, this.#baseFormat))
+            else
+                result.push(value)
+        }
+        this.staticString = result.join("")
+    }
+
+    dynamicString(values, ignoreFirst = 0) {
+        const result = []
+        for (let i = 0; i < this.#strings.length; i++) {
+            result.push(this.#strings[i])
+            const value = this.#values[i]
+            if (typeof value === "number")
+                result.push(StringMaker.formatValue(value, this.#baseFormat))
+            else if (values[value])
+                result.push(StringMaker.formatValue(values[value], this.#baseFormat))
+            else
+                result.push(value)
+        }
+        return result.join("")
+    }
+
+    getInvolved() {
+        return this.#values.filter(x => x.type !== "number")
     }
 }

@@ -6,6 +6,6 @@
 <div class="title">Modifiers:</div>
 {#each modifiers as modifier}
     <div class="item">
-        {modifier.text}
+        {modifier.text.staticString}
     </div>
 {/each}

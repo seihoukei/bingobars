@@ -7,8 +7,16 @@
     import VALUES from "data/values.js"
     import UIMaxiValueDisplay from "components/ui/elements/UIMaxiValueDisplay.svelte"
     import UIMaxiExplanation from "components/ui/elements/UIMaxiExplanation.svelte"
+    import StringMaker from "utility/StringMaker.js"
     export let game
     export let id
+
+    const seen = {}
+
+    const hover = {
+        prestige : false,
+        reset : false,
+    }
 
     $: uiSlot = id?.toLowerCase?.() ?? "none"
     $: values = game?.state?.values ?? {}
@@ -18,26 +26,24 @@
 
     $: prestigeReady = current >= limit
 
-    $: displayCodes = getDisplayCodes(id)
-
-    let hover = {
-        prestige : false,
-        reset : false,
+    $: code = {
+        X : id,
+        dX : `d${id}`,
+        MX : `M${id}`,
+        MX0 : `M${id}0`,
+        MXm : `M${id}m`,
+        XP : `${id}P`,
+        dXP : `d${id}P`,
+        XPc : `${id}Pc`,
+        Xt : `${id}t`,
+        XPt : `${id}Pt`,
     }
 
-    function getDisplayCodes(id) {
-        return Object.entries({
-            [id] : "Current value",
-            [`d${id}`] : "Growth speed",
-            [`M${id}`] : "Current limit",
-            [`M${id}m`] : "Prestige limit multiplier",
-            [`M${id}0`] : "Limit after reset",
-            [`${id}P`] : "Current prestige points",
-            [`d${id}P`] : "Prestige points per prestige",
-            [`${id}Pc`] : "Fraction of value lost on prestige",
-            [`${id}t`] : "Time since last reset",
-            [`${id}Pt`] : "Time since last prestige",
-        }).map(([id, value]) => [id, VALUES[id]?.description ?? value])
+    $: values, updateSeen()
+
+    function updateSeen() {
+        for (let [id, value] of Object.entries(code))
+            seen[id] = values[`${value}_seen`]
     }
 
     function prestige() {
@@ -48,14 +54,14 @@
         Trigger("command-reset-value", id)
     }
 
-    $: seen = {
-        d : values[`d${id}_seen`],
-    }
+
+    $: progressMaker = StringMaker.template`${code.X} / ${code.MX}`
+    $: progress = progressMaker.dynamicString(values)
 
 </script>
 
 <div class="container"
-     style="--ui-slot:{uiSlot}"
+     style="--ui-slot:{uiSlot};--value-color:{FG_COLORS[id]};"
 >
     {#if values}
     <div class="bar-line">
@@ -66,94 +72,94 @@
                     fgcolor={FG_COLORS[id]}
                     {current}
                     max={limit}
-                    caption={formatString`${current} / ${limit}`}
+                    caption={progress}
             />
         </div>
     </div>
     <div class="data">
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={id} {game} />
-                <UIMaxiValueDisplay id={`d${id}`} {game} />
+                <UIMaxiValueDisplay id={code.X} {game} />
+                <UIMaxiValueDisplay id={code.dX} {game} />
             </div>
             <div class="explanation">
                 <UIMaxiExplanation
-                        description={`Every second while ${id} < M${id}`}
-                        formula={`${id} += d${id}`}
+                        description={`Every second while ${code.X} < ${code.MX}`}
+                        formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${values[`${code.dX}_base`]}`}
                         active={current < limit && !hover.prestige && !hover.reset}
                 />
             </div>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={`${id}P`} {game} />
-                <UIMaxiValueDisplay id={`d${id}P`} {game} />
+                <UIMaxiValueDisplay id={code.XP} {game} />
+                <UIMaxiValueDisplay id={code.dXP} {game} />
             </div>
             <div class="explanation">
                 <UIMaxiExplanation
                         description="Every prestige"
-                        formula={`${id}P += d${id}P`}
+                        formula={seen.dXP ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
                         active={hover.prestige}
                 />
             </div>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={`M${id}`} {game} />
-                <UIMaxiValueDisplay id={`M${id}m`} {game} />
+                <UIMaxiValueDisplay id={code.XPc} {game} />
             </div>
             <div class="explanation prestige">
                 <UIMaxiExplanation
                         description="Every prestige"
-                        formula={`M${id} *= M${id}m`}
+                        formula={seen.XPc ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
                         active={hover.prestige}
                 />
             </div>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={`M${id}0`} {game} />
+                <UIMaxiValueDisplay id={code.MX} {game} />
+                <UIMaxiValueDisplay id={code.MXm} {game} />
+            </div>
+            <div class="explanation prestige">
+                <UIMaxiExplanation
+                        description="Every prestige"
+                        formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${values[`${code.MXm}_base`]}`}
+                        active={hover.prestige}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={code.MX0} {game} />
             </div>
             <div class="explanation reset">
                 <UIMaxiExplanation
                         description="Every reset"
-                        formula={`M${id} = M${id}0`}
+                        formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${values[`${code.MX0}_base`]}`}
                         active={hover.reset}
                 />
             </div>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={`${id}Pc`} {game} />
-            </div>
-            <div class="explanation prestige">
-                <UIMaxiExplanation
-                        description="Every prestige"
-                        formula={`${id} -= M${id} * ${id}Pc`}
-                        active={hover.prestige}
-                />
-            </div>
-        </div>
-        <div class="block">
-            <div class="values">
-                <UIMaxiValueDisplay id={`${id}t`} {game} />
+                <UIMaxiValueDisplay id={code.Xt} {game} />
             </div>
             <div class="explanation reset">
                 <UIMaxiExplanation
                         description="Every reset"
-                        formula={`${id}t = 0`}
+                        formula={`${code.Xt} = 0`}
                         active={hover.reset}
                 />
             </div>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={`${id}Pt`} {game} />
+                <UIMaxiValueDisplay id={code.XPt} {game} />
             </div>
             <div class="explanation prestige reset">
                 <UIMaxiExplanation
                         description="Every reset or prestige"
-                        formula={`${id}Pt = 0`}
+                        formula={`${code.XPt} = 0`}
                         active={hover.prestige || hover.reset}
                 />
             </div>
@@ -169,8 +175,11 @@
         >
             Prestige {id}
             <div class="button-hint">
-                You get prestige points
+                You get {id}P ({id} points)
                 and increased limit.
+            </div>
+            <div class="button-highlight">
+
             </div>
         </div>
         <div class="button"
@@ -183,6 +192,9 @@
             <div class="button-hint">
                 You lose everything
                 and get nothing.
+            </div>
+            <div class="button-highlight">
+
             </div>
         </div>
     </div>
@@ -256,14 +268,16 @@
     }
 
     div.button {
+        position: relative;
         font-size: 4em;
         padding: 0.25em 0.5em;
         border-radius: 0.5em;
-        background-color: #000077;
+        background-color: var(--value-color);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
         transition: background-color 0.2s;
     }
 
@@ -279,7 +293,23 @@
 
     div.button:not(.disabled):hover {
         cursor: pointer;
-        background-color: #222299;
+    }
+
+    div.button-highlight {
+        z-index: 3;
+        pointer-events: none;
+        position: absolute;
+        left : 0;
+        top : 0;
+        width : 100%;
+        height : 100%;
+        background-color: #FFFFFF;
+        opacity : 0;
+        transition: opacity 0.2s;
+    }
+
+    div.button:not(.disabled):hover div.button-highlight {
+        opacity: 0.2;
     }
 
 </style>

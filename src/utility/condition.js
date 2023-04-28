@@ -1,4 +1,5 @@
-import formatString from "utility/format-string.js"
+import VALUES from "data/values.js" //important
+import StringMaker from "utility/StringMaker.js"
 
 export default class Condition {
     static DEFAULT_MARGIN = 1
@@ -6,7 +7,7 @@ export default class Condition {
     static impossible() {
         return new Condition(
             () => false,
-            formatString`Unattainable`
+            StringMaker.template`Unattainable`
         )
     }
     
@@ -14,7 +15,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] > (values[value] ?? value),
-            formatString`${stat} > ${value}`
+            StringMaker.template`${stat} > ${value}`
         )
     }
     
@@ -22,7 +23,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] >= (values[value] ?? value),
-            formatString`${stat} >= ${value}`
+            StringMaker.template`${stat} >= ${value}`
         )
     }
     
@@ -30,7 +31,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] === (values[value] ?? value),
-            formatString`${stat} = ${value}`
+            StringMaker.template`${stat} = ${value}`
         )
     }
     
@@ -38,7 +39,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] !== (values[value] ?? value),
-            formatString`${stat} ≠ ${value}`
+            StringMaker.template`${stat} ≠ ${value}`
         )
     }
     
@@ -46,7 +47,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] <= (values[value] ?? value),
-            formatString`${stat} <= ${value}`
+            StringMaker.template`${stat} <= ${value}`
         )
     }
     
@@ -54,7 +55,7 @@ export default class Condition {
         return new Condition(
             values =>
                 values[stat] < (values[value] ?? value),
-            formatString`${stat} < ${value}`
+            StringMaker.template`${stat} < ${value}`
         )
     }
     
@@ -63,7 +64,7 @@ export default class Condition {
             values =>
                 values[stat] >= (values[value] ?? value) - margin &&
                 values[stat] <= (values[value] ?? value) - margin,
-            formatString`|${stat} - ${value}| <= ${margin}`
+            StringMaker.template`|${stat} - ${value}| <= ${margin}`
         )
     }
     
@@ -72,7 +73,7 @@ export default class Condition {
             values =>
                 values[stat] >= (values[min] ?? min) &&
                 values[stat] <= (values[max] ?? max),
-            formatString`${min} <= ${stat} <= ${max}`
+            StringMaker.template`${min} <= ${stat} <= ${max}`
         )
     }
     

@@ -7,7 +7,7 @@
 <div class="title">Conditions:</div>
 {#each conditions as condition}
     <div class="item">
-        {condition.text}
+        {condition.text.staticString}
     </div>
 {:else}
     <div class="item">

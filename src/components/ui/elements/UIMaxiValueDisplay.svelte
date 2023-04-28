@@ -7,22 +7,25 @@
 
     $: values = game?.state?.values ?? {}
     $: value = values[id]
+    $: seen = values[`${id}_seen`] || (values[`${id}_base`] === undefined)
     $: description = VALUES[id].description
 </script>
 
-<div class="container">
-    <div class="value">
-        <span class="name">
-            {id}
-        </span>
-        =
-        <span class="value">
-            {StringMaker.formatValueById(value, id)}
-        </span>
-    </div>
-    <div class="description">
-        {VALUES[id].description}
-    </div>
+<div class="container" class:seen>
+    {#if seen}
+        <div class="value">
+            <span class="name">
+                {id}
+            </span>
+            =
+            <span class="value">
+                {StringMaker.formatValueById(value, id)}
+            </span>
+        </div>
+        <div class="description">
+            {VALUES[id].description}
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -32,6 +35,7 @@
         align-items: center;
         justify-content: center;
         width : 10em;
+        height : 2.5em;
         background-color: #444444;
         border-radius: 0.5em;
     }

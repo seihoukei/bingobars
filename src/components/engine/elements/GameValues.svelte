@@ -12,6 +12,7 @@
     export let state
 
     export let activeModifierList = []
+    export let availableModifierList = []
 
     $: activeModifierList, updateValues()
 
@@ -21,12 +22,19 @@
 
     function resetDerivedValues(values = values) {
         for (const name of VALUE_NAMES) {
-            values[`d${name}`] = BASE_VALUES[name].baseSpeed ?? 1
-            values[`M${name}0`] = BASE_VALUES[name].baseLimit ?? 5
-            values[`M${name}m`] = BASE_VALUES[name].baseLimitMultiplier ?? 2
-            values[`d${name}P`] = 1
-            values[`${name}Pc`] = 1
+            values[`d${name}`]  = values[`d${name}_base`]  = BASE_VALUES[name].baseSpeed ?? 1
+            values[`M${name}0`] = values[`M${name}0_base`] = BASE_VALUES[name].baseLimit ?? 5
+            values[`M${name}m`] = values[`M${name}m_base`] = BASE_VALUES[name].baseLimitMultiplier ?? 2
+            values[`d${name}P`] = values[`d${name}P_base`] = 1
+            values[`${name}Pc`] = values[`${name}Pc_base`] = 1
+
+            values[`d${name}_seen`] = false
+            values[`M${name}0_seen`] = false
+            values[`M${name}m_seen`] = false
+            values[`d${name}P_seen`] = false
+            values[`${name}Pc_seen`] = false
             values[`${name}_seen`] = BASE_VALUES[name].initialSeen ?? false
+
             values[`${name}_auto`] = false
         }
 
@@ -64,6 +72,13 @@
         if (activeModifierList)
             for (const modifier of activeModifierList) {
                 modifier.apply(values)
+            }
+
+        if (availableModifierList)
+            for (const modifier of availableModifierList) {
+                for (let value of modifier.involved)
+                    if (values[`${value}_seen`] === false)
+                        values[`${value}_seen`] = true
             }
 
         for (let name of VALUE_NAMES) {
@@ -148,5 +163,5 @@
         />
     {/each}
 
-    <GameModifierList tables={state.tables} bind:activeModifierList />
+    <GameModifierList tables={state.tables} bind:activeModifierList bind:availableModifierList />
 {/if}
