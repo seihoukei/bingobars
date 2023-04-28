@@ -14,7 +14,7 @@
 
     $: current = game?.state?.values?.[id]
     $: max = game?.state?.values?.[`M${id}`]
-    $: prestiges = game?.state?.values?.[`${id}p`]
+    $: prestiges = game?.state?.values?.[`${id}P`]
 
     $: ready = current >= max
 
@@ -49,9 +49,12 @@
             <div class="current value">{formatString`${current}`}</div>
             <div class="line"></div>
             <div class="max value">{formatString`${max}`}</div>
+            <div class="bigspacer"></div>
+            <div class="id">{id}P</div>
             <div class="spacer"></div>
             <div class="prestiges value">{formatString`${prestiges}`}</div>
         </div>
+        <div class="highlight"></div>
     {/if}
 </div>
 
@@ -64,8 +67,34 @@
         transition: background-color 0.2s;
     }
     div.container.visible:not(.active):hover {
-        background-color: #777777;
         cursor: pointer;
+    }
+    div.container.ready {
+        background-color: #888866;
+    }
+    div.container.visible {
+        background-color: #666666;
+    }
+
+    div.highlight {
+        z-index: 3;
+        pointer-events: none;
+        position: absolute;
+        left : 0;
+        top : 0;
+        width : 100%;
+        height : 100%;
+        background-color: #FFFFFF;
+        opacity : 0;
+        transition: opacity 0.2s;
+        border-radius: 1em;
+    }
+    div.container.visible:not(.active):hover div.highlight {
+        opacity: 0.2;
+    }
+
+    div.container.active div.highlight {
+        opacity: 0.4;
     }
 
     div.data {
@@ -82,24 +111,12 @@
     }
 
 
-    div.container.visible {
-        background-color: #666666;
-    }
-    div.container.ready {
-        background-color: #888866;
-    }
-    div.container.visible.active {
-        background-color: #888888;
-    }
-    div.container.ready.active {
-        background-color: #AAAA66;
-    }
-
     div.id {
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 3em;
+        margin : 0 0 -0.2em;
     }
     div.value {
         display: flex;
@@ -108,7 +125,10 @@
         font-size: 1.4em;
     }
     div.spacer {
-        height: 1em;
+        height: 0.2em;
+    }
+    div.bigspacer {
+        height: 0.6em;
     }
     div.line {
         height: 1px;

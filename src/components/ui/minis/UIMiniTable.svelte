@@ -38,6 +38,7 @@
                 {/each}
             </div>
         </div>
+        <div class="highlight"></div>
     {/if}
 </div>
 
@@ -50,8 +51,34 @@
         transition: background-color 0.2s;
     }
     div.container.visible:not(.active):hover {
-        background-color: #777777;
         cursor: pointer;
+    }
+    div.container.ready {
+        background-color: #888866;
+    }
+    div.container.visible {
+        background-color: #666666;
+    }
+
+    div.highlight {
+        z-index: 3;
+        pointer-events: none;
+        position: absolute;
+        left : 0;
+        top : 0;
+        width : 100%;
+        height : 100%;
+        background-color: #FFFFFF;
+        opacity : 0;
+        transition: opacity 0.2s;
+        border-radius: 1em;
+    }
+    div.container.visible:not(.active):hover div.highlight {
+        opacity: 0.2;
+    }
+
+    div.container.active div.highlight {
+        opacity: 0.4;
     }
 
     div.data {
@@ -65,19 +92,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-    }
-
-    div.container.visible {
-        background-color: #666666;
-    }
-    div.container.ready {
-        background-color: #888866;
-    }
-    div.container.visible.active {
-        background-color: #888888;
-    }
-    div.container.ready.active {
-        background-color: #AAAA66;
     }
 
     div.id {

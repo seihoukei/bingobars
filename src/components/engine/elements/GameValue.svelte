@@ -15,6 +15,7 @@
     export let limitMultiplier = 2
     export let autoPrestige = false
     export let timeSinceReset = 0
+    export let timeSincePrestige = 0
 
     export let seen = false
 
@@ -23,6 +24,7 @@
             return
 
         timeSinceReset += step
+        timeSincePrestige += step
 
         if (limit <= 0 || value >= limit)
             return
@@ -44,6 +46,7 @@
         value -= value * prestigeCost
         limit *= limitMultiplier
         prestiges += prestigeStep
+        timeSincePrestige = 0
 
         Trigger("value-prestiged", target, prestigeStep)
     }
@@ -56,6 +59,7 @@
         prestiges = 0
         limit = baseLimit
         timeSinceReset = 0
+        timeSincePrestige = 0
 
         Trigger("value-reset", target)
     }

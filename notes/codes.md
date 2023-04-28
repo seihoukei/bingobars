@@ -12,10 +12,11 @@
 |---------|------------------------------|
 | **X**   | value                        |
 | **X**t  | time since reset             |
-| **X**p  | prestige points              |
+| **X**P  | prestige points              |
 | d**X**  | change speed                 |
-| d**X**p | prestige points per prestige |
-| p**X**c | prestige cost fraction       |
+| d**X**P | prestige points per prestige |
+| **X**Pc | prestige cost fraction       |
+| **X**Pt | time since prestige / reset  |
 | M**X**  | maximum value                |
 | M**X**0 | initial maximum value        |
 | M**X**m | maximum value multiplier     |

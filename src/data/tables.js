@@ -13,10 +13,10 @@ const TABLES = Object.freeze({
                 ],
                 conditions : [
                     Condition.moreOrEqual("A",2000),
-                    Condition.lessOrEqual("Ap",10),
+                    Condition.lessOrEqual("AP",10),
                 ],
                 modifiers : [
-                    Modifier.add("dBp", 1)
+                    Modifier.add("dBP", 1)
                 ],
                 //oneWay : true,
             },
@@ -57,7 +57,7 @@ const TABLES = Object.freeze({
                     "T1R5C1",
                 ],
                 conditions : [
-                    Condition.moreOrEqual("Ap", 10),
+                    Condition.moreOrEqual("AP", 10),
                     Condition.lessOrEqual("At", 120),
                 ],
                 modifiers : [
@@ -82,7 +82,7 @@ const TABLES = Object.freeze({
                     "T1R3",
                 ],
                 conditions : [
-                    Condition.moreOrEqual("Ap", 6),
+                    Condition.moreOrEqual("AP", 6),
                     Condition.lessOrEqual("MA", 50),
     
                 ],
@@ -129,7 +129,7 @@ const TABLES = Object.freeze({
                     "T1R4C2",
                 ],
                 conditions : [
-                    Condition.moreOrEqual("Bp", 2),
+                    Condition.moreOrEqual("BP", 2),
                 ],
                 modifiers : [
                     Modifier.autoPrestige("B"),
@@ -140,17 +140,17 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.moreOrEqual("Ap", 5),
+                    Condition.moreOrEqual("AP", 5),
                 ],
                 modifiers : [
-                    Modifier.sub("pAc", 0.1),
+                    Modifier.sub("APc", 0.1),
                 ],
                 //oneWay : true,
             },
             R3C3: {
                 prerequisites : [],
                 conditions : [
-                    Condition.moreOrEqual("Ap", 2),
+                    Condition.moreOrEqual("AP", 2),
                 ],
                 modifiers : [
                     Modifier.autoPrestige("A"),
@@ -287,7 +287,7 @@ const TABLES = Object.freeze({
                     "T1R5C1",
                 ],
                 conditions : [
-                    Condition.moreOrEqual("Ap", 6),
+                    Condition.moreOrEqual("AP", 6),
                     Condition.range("A", 10, 20),
                 ],
                 modifiers : [
@@ -322,7 +322,7 @@ const TABLES = Object.freeze({
                 conditions : [
                 ],
                 modifiers : [
-                    Modifier.add("dA", "Bp")
+                    Modifier.add("dA", "BP")
                 ],
                 //oneWay : true,
             },
@@ -372,7 +372,7 @@ const TABLES = Object.freeze({
                 conditions : [
                 ],
                 modifiers : [
-                    Modifier.add("dAp", 1),
+                    Modifier.add("dAP", 1),
                 ],
                 //oneWay : true,
             },
@@ -402,7 +402,7 @@ const TABLES = Object.freeze({
                 conditions : [
                 ],
                 modifiers : [
-                    Modifier.sub("pAc", 0.1)
+                    Modifier.sub("APc", 0.1)
                 ],
                 //oneWay : true,
             },

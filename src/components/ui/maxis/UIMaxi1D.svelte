@@ -11,7 +11,7 @@
     $: values = game?.state?.values ?? {}
     $: current = values[id]
     $: limit = values[`M${id}`]
-    $: prestiges = values[`${id}p`]
+    $: prestiges = values[`${id}P`]
 
     $: prestigeReady = current >= limit
 
@@ -24,10 +24,11 @@
             [`M${id}`] : "Current limit",
             [`M${id}m`] : "Prestige limit multiplier",
             [`M${id}0`] : "Limit after reset",
-            [`${id}p`] : "Current prestige points",
-            [`d${id}p`] : "Prestige points per prestige",
-            [`p${id}c`] : "Fraction of value lost on prestige",
+            [`${id}P`] : "Current prestige points",
+            [`d${id}P`] : "Prestige points per prestige",
+            [`${id}Pc`] : "Fraction of value lost on prestige",
             [`${id}t`] : "Time since last reset",
+            [`${id}Pt`] : "Time since last prestige",
         })
     }
 

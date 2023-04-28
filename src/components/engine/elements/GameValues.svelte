@@ -24,8 +24,8 @@
             values[`d${name}`] = VALUES[name].baseSpeed ?? 1
             values[`M${name}0`] = VALUES[name].baseLimit ?? 5
             values[`M${name}m`] = VALUES[name].baseLimitMultiplier ?? 2
-            values[`d${name}p`] = 1
-            values[`p${name}c`] = 1
+            values[`d${name}P`] = 1
+            values[`${name}Pc`] = 1
             values[`${name}seen`] = VALUES[name].initialSeen ?? false
             values[`${name}auto`] = false
         }
@@ -44,7 +44,8 @@
         for (const name of VALUE_NAMES) {
             values[name] = 0
             values[`M${name}`] = values[`M${name}0`]
-            values[`${name}p`] = 0
+            values[`${name}P`] = 0
+            values[`${name}Pt`] = 0
             values[`${name}t`] = 0
         }
 
@@ -69,7 +70,7 @@
             values[`M${name}0`] = Math.max(1, values[`M${name}0`])
             values[`M${name}m`] = Math.max(1, values[`M${name}m`])
             values[`d${name}`] = Math.max(0, values[`d${name}`])
-            values[`p${name}c`] = Math.max(0, Math.min(values[`p${name}c`], 1))
+            values[`${name}Pc`] = Math.max(0, Math.min(values[`p${name}c`], 1))
         }
 
         Trigger("derived-values-updated", values)
@@ -132,17 +133,18 @@
 
                 name={value}
                 delta={values[`d${value}`]}
-                prestigeStep={values[`d${value}p`]}
-                prestigeCost={values[`p${value}c`]}
+                prestigeStep={values[`d${value}P`]}
+                prestigeCost={values[`${value}Pc`]}
                 baseLimit={values[`M${value}0`]}
                 limitMultiplier={values[`M${value}m`]}
                 seen={values[`${value}seen`]}
                 autoPrestige={values[`${value}auto`]}
 
                 bind:value={values[value]}
-                bind:prestiges={values[`${value}p`]}
+                bind:prestiges={values[`${value}P`]}
                 bind:limit={values[`M${value}`]}
                 bind:timeSinceReset={values[`${value}t`]}
+                bind:timeSincePrestige={values[`${value}Pt`]}
         />
     {/each}
 
