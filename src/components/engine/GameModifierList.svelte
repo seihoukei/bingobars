@@ -7,13 +7,15 @@
     import Modifier from "utility/modifier.js"
 
     export let tables
-    export let modifierList = []
+    export let activeModifierList = []
+    export let availableModifierList = []
 
     updateModifiers()
 
     function updateModifiers() {
-        if (!modifierList || !tables) return
-        modifierList.length = 0
+        if (!activeModifierList || !tables) return
+        activeModifierList.length = 0
+        availableModifierList.length = 0
 
         const counters = {}
         for (const type of Object.values(SLOT_TYPES))
@@ -24,8 +26,13 @@
                 const address = `${tableName}${slotName}`
                 const slotState = tables[address]
 
-                if (slot.modifiers && (slotState & SLOT_STATES.ENABLED))
-                    modifierList.push(...slot.modifiers)
+                if (slot.modifiers) {
+                    if (slotState & SLOT_STATES.UNLOCKED)
+                       availableModifierList.push(...slot.modifiers)
+
+                    if (slotState & SLOT_STATES.ENABLED)
+                        activeModifierList.push(...slot.modifiers)
+                }
 
                 if (slotState & SLOT_STATES.UNLOCKED)
                     counters[slot.type]++
@@ -34,16 +41,23 @@
 
         const totalSlots = Object.values(counters).reduce((v,x) => v + x)
         const totalLines = totalSlots - counters[SLOT_TYPES.CELL]
-        modifierList.push(Modifier.assign("cN", counters[SLOT_TYPES.CELL]))
-        modifierList.push(Modifier.assign("RN", counters[SLOT_TYPES.ROW]))
-        modifierList.push(Modifier.assign("CN", counters[SLOT_TYPES.COLUMN]))
-        modifierList.push(Modifier.assign("DN", counters[SLOT_TYPES.DIAGONAL]))
-        modifierList.push(Modifier.assign("SN", totalSlots))
-        modifierList.push(Modifier.assign("LN", totalLines))
+        activeModifierList.push(Modifier.assign("cN", counters[SLOT_TYPES.CELL]))
+        activeModifierList.push(Modifier.assign("RN", counters[SLOT_TYPES.ROW]))
+        activeModifierList.push(Modifier.assign("CN", counters[SLOT_TYPES.COLUMN]))
+        activeModifierList.push(Modifier.assign("DN", counters[SLOT_TYPES.DIAGONAL]))
+        activeModifierList.push(Modifier.assign("SN", totalSlots))
+        activeModifierList.push(Modifier.assign("LN", totalLines))
+        availableModifierList.push(Modifier.assign("cN", counters[SLOT_TYPES.CELL]))
+        availableModifierList.push(Modifier.assign("RN", counters[SLOT_TYPES.ROW]))
+        availableModifierList.push(Modifier.assign("CN", counters[SLOT_TYPES.COLUMN]))
+        availableModifierList.push(Modifier.assign("DN", counters[SLOT_TYPES.DIAGONAL]))
+        availableModifierList.push(Modifier.assign("SN", totalSlots))
+        availableModifierList.push(Modifier.assign("LN", totalLines))
 
-        modifierList.sort((x,y) => x.priority - y.priority)
+        activeModifierList.sort((x, y) => x.priority - y.priority)
+        availableModifierList.sort((x, y) => x.priority - y.priority)
 
-        Trigger("modifiers-updated", modifierList)
+        Trigger("modifiers-updated", activeModifierList, availableModifierList)
     }
 
     const triggers = []

@@ -4,7 +4,7 @@ export default class Modifier {
     static unlock(stat) {
         return new Modifier(
             values =>
-                values[`${stat}seen`] = true,
+                values[`${stat}_seen`] = true,
             formatString`Unlock ${stat}`,
             0, stat
         )
@@ -13,7 +13,7 @@ export default class Modifier {
     static autoPrestige(stat) {
         return new Modifier(
             values =>
-                values[`${stat}auto`] = true,
+                values[`${stat}_auto`] = true,
             formatString`Automatic ${stat} prestige`,
             0, stat
         )

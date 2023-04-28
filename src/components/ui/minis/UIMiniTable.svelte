@@ -7,7 +7,7 @@
     export let active = false
 
     $: ready = false
-    $: visible = game?.state?.tables?.[`${id}seen`] ?? false
+    $: visible = game?.state?.tables?.[`${id}_seen`] ?? false
     $: uiSlot = id?.toLowerCase?.() ?? "none"
 
     $: table = TABLES[id]

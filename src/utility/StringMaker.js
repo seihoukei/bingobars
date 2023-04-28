@@ -1,0 +1,64 @@
+import VALUES from "data/values.js"
+
+export default class StringMaker {
+    static VALUE_FORMATS = {
+        SCIENTIFIC : 0,
+        SHORT_SCIENTIFIC : 1,
+        PERCENTAGE : 2,
+        TIME : 3,
+    }
+
+    static DEFAULT_FORMAT = {
+        prefix : "",
+        type : this.VALUE_FORMATS.SCIENTIFIC,
+        postfix : "",
+    }
+
+    static formatValue(value = 0, format) {
+        const usedFormat = Object.assign({}, this.DEFAULT_FORMAT, format)
+        let displayValue = ""
+
+        switch (usedFormat.type) {
+            case this.VALUE_FORMATS.SCIENTIFIC:
+                displayValue = value < 10000
+                               ? value.toFixed(2)
+                               : value.toExponential(2)
+                break
+            case this.VALUE_FORMATS.SHORT_SCIENTIFIC:
+                displayValue = value < 10000
+                               ? value.toFixed(2)
+                               : value.toExponential(2)
+                displayValue = displayValue.replace(/\.?0*$/,"")
+                break
+            case this.VALUE_FORMATS.PERCENTAGE:
+                const percent = value * 100
+                displayValue = percent < 10000
+                                   ? percent.toFixed(2)
+                                   : percent.toExponential(2)
+                displayValue = displayValue.replace(/\.?0*$/,"")
+                displayValue += `%`
+                break
+            case this.VALUE_FORMATS.TIME:
+                if (value < 60) {
+                    displayValue = value.toFixed(1) + "s"
+                } else {
+                    const seconds = value % 60 | 0
+                    const minutes = value / 60 % 60 | 0
+                    const hours = value / 3600 % 60 | 0
+                    displayValue = `${hours}:${minutes}:${seconds}`
+                        .replace(/:(\d)(?=:|$)/g, ":0$1") // add leading zeroes for parts
+                        .replace(/^(00?:)*0?/g, "") // remove leading zeroes overall
+                }
+                break
+            default:
+                displayValue = value
+                break
+        }
+
+        return `${usedFormat.prefix}${displayValue}${usedFormat.postfix}`
+    }
+
+    static formatValueById(value, id) {
+        return this.formatValue(value, VALUES[id]?.format ?? {})
+    }
+}

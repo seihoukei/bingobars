@@ -4,6 +4,9 @@
     import FG_COLORS from "data/fg-colors.js"
     import formatString from "utility/format-string.js"
     import Trigger from "utility/trigger.js"
+    import VALUES from "data/values.js"
+    import UIMaxiValueDisplay from "components/ui/elements/UIMaxiValueDisplay.svelte"
+    import UIMaxiExplanation from "components/ui/elements/UIMaxiExplanation.svelte"
     export let game
     export let id
 
@@ -17,6 +20,11 @@
 
     $: displayCodes = getDisplayCodes(id)
 
+    let hover = {
+        prestige : false,
+        reset : false,
+    }
+
     function getDisplayCodes(id) {
         return Object.entries({
             [id] : "Current value",
@@ -29,7 +37,7 @@
             [`${id}Pc`] : "Fraction of value lost on prestige",
             [`${id}t`] : "Time since last reset",
             [`${id}Pt`] : "Time since last prestige",
-        })
+        }).map(([id, value]) => [id, VALUES[id]?.description ?? value])
     }
 
     function prestige() {
@@ -40,11 +48,16 @@
         Trigger("command-reset-value", id)
     }
 
+    $: seen = {
+        d : values[`d${id}_seen`],
+    }
+
 </script>
 
 <div class="container"
      style="--ui-slot:{uiSlot}"
 >
+    {#if values}
     <div class="bar-line">
         <div class="bar-id">{id}</div>
         <div class="bar">
@@ -58,23 +71,114 @@
         </div>
     </div>
     <div class="data">
-        {#each displayCodes as [code, description]}
-            <div>
-                {formatString`${description} (${code}): ${values[code]}`}
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={id} {game} />
+                <UIMaxiValueDisplay id={`d${id}`} {game} />
             </div>
-        {/each}
+            <div class="explanation">
+                <UIMaxiExplanation
+                        description={`Every second while ${id} < M${id}`}
+                        formula={`${id} += d${id}`}
+                        active={current < limit}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`${id}P`} {game} />
+                <UIMaxiValueDisplay id={`d${id}P`} {game} />
+            </div>
+            <div class="explanation">
+                <UIMaxiExplanation
+                        description="Every prestige"
+                        formula={`${id}P += d${id}P`}
+                        active={hover.prestige}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`M${id}`} {game} />
+                <UIMaxiValueDisplay id={`M${id}m`} {game} />
+            </div>
+            <div class="explanation prestige">
+                <UIMaxiExplanation
+                        description="Every prestige"
+                        formula={`M${id} *= M${id}m`}
+                        active={hover.prestige}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`M${id}0`} {game} />
+            </div>
+            <div class="explanation reset">
+                <UIMaxiExplanation
+                        description="Every reset"
+                        formula={`M${id} = M${id}0`}
+                        active={hover.reset}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`${id}Pc`} {game} />
+            </div>
+            <div class="explanation prestige">
+                <UIMaxiExplanation
+                        description="Every prestige"
+                        formula={`${id} -= M${id} * ${id}Pc`}
+                        active={hover.prestige}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`${id}t`} {game} />
+            </div>
+            <div class="explanation reset">
+                <UIMaxiExplanation
+                        description="Every reset"
+                        formula={`${id}t = 0`}
+                        active={hover.reset}
+                />
+            </div>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={`${id}Pt`} {game} />
+            </div>
+            <div class="explanation prestige reset">
+                <UIMaxiExplanation
+                        description="Every reset or prestige"
+                        formula={`${id}Pt = 0`}
+                        active={hover.prestige || hover.reset}
+                />
+            </div>
+        </div>
     </div>
     <div class="buttons">
         <div class="button"
              class:disabled={!prestigeReady}
-             use:interactive on:basicaction={prestige}>
+             use:interactive
+             on:basicaction={prestige}
+             on:enter={() => hover.prestige = true}
+             on:leave={() => hover.prestige = false}
+        >
             Prestige {id}
             <div class="button-hint">
                 You get prestige points
                 and increased limit.
             </div>
         </div>
-        <div class="button" use:interactive on:basicaction={reset}>
+        <div class="button"
+             use:interactive
+             on:basicaction={reset}
+             on:enter={() => hover.reset = true}
+             on:leave={() => hover.reset = false}
+        >
             Reset {id}
             <div class="button-hint">
                 You lose everything
@@ -82,6 +186,7 @@
             </div>
         </div>
     </div>
+    {/if}
 </div>
 
 <style>
@@ -96,11 +201,31 @@
     div.data {
         z-index : 1;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 0.5em;
+        row-gap: 0.5em;
         align-items: start;
-        font-size: 2em;
+        font-size: 1.5em;
         justify-content: center;
         padding: 0 2em 1em;
+    }
+
+    div.block {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+        row-gap: 0.5em;
+    }
+
+    div.values {
+        display: flex;
+        flex-direction: row;
+        column-gap: 0.5em;
+    }
+
+    div.explanation {
     }
 
     div.bar-line {

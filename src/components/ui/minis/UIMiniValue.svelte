@@ -10,7 +10,7 @@
     export let active = false
 
     $: uiSlot = id?.toLowerCase?.() ?? "none"
-    $: visible = game?.state?.values?.[`${id}seen`]
+    $: visible = game?.state?.values?.[`${id}_seen`]
 
     $: current = game?.state?.values?.[id]
     $: max = game?.state?.values?.[`M${id}`]

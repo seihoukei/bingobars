@@ -53,7 +53,7 @@
                     continue
                 tables[address] = getSlotDiscoveryState(slot)
             }
-            tables[`${tableName}seen`] = checkConditions(table?.conditions)
+            tables[`${tableName}_seen`] = checkConditions(table?.conditions)
         }
 
         Trigger("tables-updated", tables)

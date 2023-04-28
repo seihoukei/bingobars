@@ -1,6 +1,18 @@
 export default function interactive(node) {
-    
-    let timeout = null
+
+    const basicAction = () => {
+        node.dispatchEvent(new CustomEvent("basicaction"))
+    }
+    const specialAction = () => {
+        node.dispatchEvent(new CustomEvent("specialaction"))
+    }
+    const enter = () => {
+        node.dispatchEvent(new CustomEvent("enter"))
+    }
+    const leave = () => {
+        node.dispatchEvent(new CustomEvent("leave"))
+    }
+
     const mouseUpHandler = (event) => {
         cancelEvent(event)
         if (event.shiftKey || event.button)
@@ -8,7 +20,8 @@ export default function interactive(node) {
         else
             basicAction()
     }
-    
+
+    let timeout = null
     const touchStartHandler = (event) => {
         //TODO: filter extra touch
         timeout = setTimeout(() => {
@@ -17,14 +30,7 @@ export default function interactive(node) {
         }, 500)
         cancelEvent(event)
     }
-    
-    const basicAction = () => {
-        node.dispatchEvent(new CustomEvent("basicaction"))
-    }
-    const specialAction = () => {
-        node.dispatchEvent(new CustomEvent("specialaction"))
-    }
-    
+
     const touchEndHandler = (event) => {
         if (timeout) {
             clearTimeout(timeout)
@@ -33,23 +39,38 @@ export default function interactive(node) {
         }
         cancelEvent(event)
     }
-    
+
+    const mouseInHandler = (event) => {
+        if (event.target === node)
+            enter()
+    }
+
+    const mouseOutHandler = (event) => {
+        if (event.target === node)
+            leave()
+    }
+
     const cancelEvent = (event) => {
         event.preventDefault()
         event.stopPropagation()
     }
-    
-    node.addEventListener("mouseup", mouseUpHandler, true)
-    node.addEventListener("touchstart", touchStartHandler,true)
-    node.addEventListener("touchend", touchEndHandler, true)
-    node.addEventListener("contextmenu", cancelEvent, true)
+
+    const handlers = {
+        mouseup: mouseUpHandler,
+        mouseenter: mouseInHandler,
+        mouseleave: mouseOutHandler,
+        touchstart: touchStartHandler,
+        touchend: touchEndHandler,
+        contextmenu: cancelEvent,
+    }
+
+    for (let [event, handler] of Object.entries(handlers))
+        node.addEventListener(event, handler, true)
 
     return {
         destroy() {
-            node.removeEventListener("mouseup", mouseUpHandler, true)
-            node.removeEventListener("touchstart", touchStartHandler, true)
-            node.removeEventListener("touchend", touchEndHandler, true)
-            node.removeEventListener("contextmenu", cancelEvent, true)
+            for (let [event, handler] of Object.entries(handlers))
+                node.removeEventListener(event, handler, true)
         }
     };
 }

@@ -2,32 +2,32 @@
     import GameValue from "components/engine/elements/GameValue.svelte"
     import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
-    import VALUES from "data/values.js"
+    import BASE_VALUES from "data/base-values.js"
     import GameModifierList from "components/engine/GameModifierList.svelte"
 
-    const VALUE_NAMES = Object.keys(VALUES)
+    const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_STEP = 10000
 
     export let values = getInitialValues()
     export let state
 
-    export let modifierList = []
+    export let activeModifierList = []
 
-    $: modifierList, updateValues()
+    $: activeModifierList, updateValues()
 
     if (import.meta.env.MODE === "development") {
-        window.modifierList = modifierList
+        window.activeModifierList = activeModifierList
     }
 
     function resetDerivedValues(values = values) {
         for (const name of VALUE_NAMES) {
-            values[`d${name}`] = VALUES[name].baseSpeed ?? 1
-            values[`M${name}0`] = VALUES[name].baseLimit ?? 5
-            values[`M${name}m`] = VALUES[name].baseLimitMultiplier ?? 2
+            values[`d${name}`] = BASE_VALUES[name].baseSpeed ?? 1
+            values[`M${name}0`] = BASE_VALUES[name].baseLimit ?? 5
+            values[`M${name}m`] = BASE_VALUES[name].baseLimitMultiplier ?? 2
             values[`d${name}P`] = 1
             values[`${name}Pc`] = 1
-            values[`${name}seen`] = VALUES[name].initialSeen ?? false
-            values[`${name}auto`] = false
+            values[`${name}_seen`] = BASE_VALUES[name].initialSeen ?? false
+            values[`${name}_auto`] = false
         }
 
         values[`slots`] = 0
@@ -56,13 +56,13 @@
         resetDerivedValues(values)
 
         for (let name of VALUE_NAMES) {
-            if (VALUES[name].speedFactors)
-                for (const factor of VALUES[name].speedFactors)
+            if (BASE_VALUES[name].speedFactors)
+                for (const factor of BASE_VALUES[name].speedFactors)
                     values[`d${name}`] *= values[factor]
         }
 
-        if (modifierList)
-            for (const modifier of modifierList) {
+        if (activeModifierList)
+            for (const modifier of activeModifierList) {
                 modifier.apply(values)
             }
 
@@ -70,7 +70,7 @@
             values[`M${name}0`] = Math.max(1, values[`M${name}0`])
             values[`M${name}m`] = Math.max(1, values[`M${name}m`])
             values[`d${name}`] = Math.max(0, values[`d${name}`])
-            values[`${name}Pc`] = Math.max(0, Math.min(values[`p${name}c`], 1))
+            values[`${name}Pc`] = Math.max(0, Math.min(values[`${name}Pc`], 1))
         }
 
         Trigger("derived-values-updated", values)
@@ -78,7 +78,7 @@
     }
 
     function getValueTime(name) {
-        const seen = values[`${name}seen`] ?? false
+        const seen = values[`${name}_seen`] ?? false
         if (!seen)
             return Infinity
 
@@ -137,8 +137,8 @@
                 prestigeCost={values[`${value}Pc`]}
                 baseLimit={values[`M${value}0`]}
                 limitMultiplier={values[`M${value}m`]}
-                seen={values[`${value}seen`]}
-                autoPrestige={values[`${value}auto`]}
+                seen={values[`${value}_seen`]}
+                autoPrestige={values[`${value}_auto`]}
 
                 bind:value={values[value]}
                 bind:prestiges={values[`${value}P`]}
@@ -148,5 +148,5 @@
         />
     {/each}
 
-    <GameModifierList tables={state.tables} bind:modifierList />
+    <GameModifierList tables={state.tables} bind:activeModifierList />
 {/if}
