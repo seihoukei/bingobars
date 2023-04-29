@@ -3,21 +3,20 @@
     import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import BASE_VALUES from "data/base-values.js"
-    import GameModifierList from "components/engine/GameModifierList.svelte"
+    import GameModifierList from "components/engine/elements/GameModifierList.svelte"
+    import GameTableValues from "components/engine/elements/GameTableValues.svelte"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_STEP = 10000
 
     let tableValues = {}
+    let activeModifierList = []
+    let availableModifierList = []
 
     export let values = getInitialValues()
     export let state
 
-    export let activeModifierList = []
-    export let availableModifierList = []
-
-
-    $: activeModifierList, updateValues()
+    $: activeModifierList, tableValues, updateValues()
 
     if (import.meta.env.MODE === "development") {
         window.activeModifierList = activeModifierList
@@ -36,9 +35,9 @@
             values[`M${name}m_seen`] = false
             values[`d${name}P_seen`] = false
             values[`${name}Pc_seen`] = false
+            values[`${name}_auto_seen`] = false
             values[`${name}_seen`] = BASE_VALUES[name].initialSeen ?? false
 
-            values[`${name}_auto`] = false
 
             Object.assign(values, tableValues)
         }
@@ -55,23 +54,14 @@
             values[`${name}P`] = 0
             values[`${name}Pt`] = 0
             values[`${name}t`] = 0
+            values[`${name}_auto`] = true
         }
 
         return values
     }
 
-    function updateTableValues(newValues) {
-        tableValues = newValues
-    }
-
     function updateValues() {
         resetDerivedValues(values)
-
-        for (let name of VALUE_NAMES) {
-            if (BASE_VALUES[name].speedFactors)
-                for (const factor of BASE_VALUES[name].speedFactors)
-                    values[`d${name}`] *= values[factor]
-        }
 
         if (activeModifierList)
             for (const modifier of activeModifierList) {
@@ -80,9 +70,15 @@
 
         if (availableModifierList)
             for (const modifier of availableModifierList) {
-                for (let value of modifier.involved)
-                    if (values[`${value}_seen`] === false)
-                        values[`${value}_seen`] = true
+                if (modifier.source) {
+                    for (let value of modifier.involved)
+                        if (values[`${value}_seen`] === false)
+                            values[`${value}_seen`] = true
+                } else if (modifier.target) {
+                    if (values[`${modifier.target}_seen`] === false)
+                        values[`${modifier.target}_seen`] = true
+
+                }
             }
 
         for (let name of VALUE_NAMES) {
@@ -137,7 +133,6 @@
     const triggers = []
     onMount(() => {
         triggers.push(Trigger.on("command-tick", advance))
-        triggers.push(Trigger.on("command-update-table-values", updateTableValues))
     })
 
     onDestroy(() => {
@@ -158,15 +153,17 @@
                 baseLimit={values[`M${value}0`]}
                 limitMultiplier={values[`M${value}m`]}
                 seen={values[`${value}_seen`]}
-                autoPrestige={values[`${value}_auto`]}
+                canAutoPrestige={values[`${value}_auto_seen`]}
 
                 bind:value={values[value]}
                 bind:prestiges={values[`${value}P`]}
                 bind:limit={values[`M${value}`]}
                 bind:timeSinceReset={values[`${value}t`]}
                 bind:timeSincePrestige={values[`${value}Pt`]}
+                bind:autoPrestige={values[`${value}_auto`]}
         />
     {/each}
 
-    <GameModifierList tables={state.tables} bind:activeModifierList bind:availableModifierList />
+    <GameModifierList tables={state?.tables} bind:availableModifierList bind:activeModifierList/>
+    <GameTableValues tables={state?.tables} bind:tableValues />
 {/if}

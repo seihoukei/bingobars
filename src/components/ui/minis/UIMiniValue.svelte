@@ -1,9 +1,9 @@
 <script>
     import interactive from "utility/interactive.js"
     import Trigger from "utility/trigger.js"
-    import formatString from "utility/format-string.js"
     import UIMiniBar from "components/ui/elements/UIMiniBar.svelte"
     import FG_COLORS from "data/fg-colors.js"
+    import StringMaker from "utility/string-maker.js"
 
     export let game
     export let id
@@ -46,13 +46,13 @@
         >
             <div class="id">{id}</div>
             <div class="spacer"></div>
-            <div class="current value">{formatString`${current}`}</div>
+            <div class="current value">{StringMaker.formatValue(current, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
             <div class="line"></div>
-            <div class="max value">{formatString`${max}`}</div>
+            <div class="max value">{StringMaker.formatValue(max, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
             <div class="bigspacer"></div>
             <div class="id">{id}P</div>
             <div class="spacer"></div>
-            <div class="prestiges value">{formatString`${prestiges}`}</div>
+            <div class="prestiges value">{StringMaker.formatValue(prestiges, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
         </div>
         <div class="highlight"></div>
     {/if}

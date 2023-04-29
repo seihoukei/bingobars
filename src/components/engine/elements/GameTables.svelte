@@ -60,8 +60,10 @@
     }
 
     function toggleSlot(name, forceState = null) {
-        if (!(tables[name] & SLOT_STATES.UNLOCKED) && (tables[name] & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE)
+        if (!(tables[name] & SLOT_STATES.UNLOCKED) && (tables[name] & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE) {
             tables[name] |= SLOT_STATES.UNLOCKED
+            Trigger("slot-unlocked", name)
+        }
 
         if (tables[name] & SLOT_STATES.UNLOCKED) {
             if (forceState === true)

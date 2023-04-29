@@ -13,6 +13,7 @@
     export let baseLimit = 5
     export let limit = baseLimit
     export let limitMultiplier = 2
+    export let canAutoPrestige = false
     export let autoPrestige = false
     export let timeSinceReset = 0
     export let timeSincePrestige = 0
@@ -34,7 +35,7 @@
         if (value >= limit) {
             value = limit
             Trigger("value-capped", name)
-            if (autoPrestige)
+            if (canAutoPrestige && autoPrestige)
                 prestige()
         }
     }
@@ -64,11 +65,22 @@
         Trigger("value-reset", target)
     }
 
+    function toggleAuto(target = name) {
+        if (!canAutoPrestige || !seen || target !== name)
+            return
+        autoPrestige = !autoPrestige
+
+        if (value >= limit && canAutoPrestige && autoPrestige) {
+                prestige()
+        }
+    }
+
     const triggers = []
     onMount(() => {
         triggers.push(Trigger.on("command-tick-step", advance))
         triggers.push(Trigger.on("command-prestige-value", prestige))
         triggers.push(Trigger.on("command-reset-value", reset))
+        triggers.push(Trigger.on("command-toggle-auto-prestige", toggleAuto))
     })
 
     onDestroy(() => {

@@ -1,4 +1,4 @@
-import StringMaker from "utility/StringMaker.js"
+import StringMaker from "utility/string-maker.js"
 import BASE_VALUES from "data/base-values.js"
 
 const VALUES_PER_BASE = {

@@ -1,6 +1,6 @@
 <script>
     import VALUES from "data/values.js"
-    import StringMaker from "utility/StringMaker.js"
+    import StringMaker from "utility/string-maker.js"
 
     export let id
     export let game

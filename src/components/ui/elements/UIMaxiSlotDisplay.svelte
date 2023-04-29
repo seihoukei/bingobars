@@ -59,6 +59,13 @@
         Trigger("command-toggle-slot", slot.address)
     }
 
+    $: decoration =
+        enabled ?
+            slot.oneWay ? "" :
+            "★" :
+        unlocked ? "✰" :
+        "🔒"
+
 </script>
 {#if visible}
     <div class="slot"
@@ -73,7 +80,7 @@
          on:basicaction={toggle}
          on:specialaction
     >
-        <div class="title">{slot.address}</div>
+        <div class="title">{decoration}{slot.address}{decoration}</div>
         <div class="content" class:debug>
             {#if debug}
                 {#if slot.prerequisites?.length}
@@ -124,10 +131,12 @@
 
     div.slot.enabled {
         background-color: #4444AA;
+        border : 0.2em solid white;
     }
 
     div.slot.enabled.oneway {
         background-color: #4444AA;
+        border : 0.2em solid #BBBBBB;
         cursor: default;
     }
 

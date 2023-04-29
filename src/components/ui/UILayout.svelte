@@ -1,9 +1,7 @@
 <script>
     import UIMiniTable from "components/ui/minis/UIMiniTable.svelte"
     import UIMiniGeneric from "components/ui/minis/UIMiniGeneric.svelte"
-    import UIMaxi1D from "components/ui/maxis/UIMaxi1D.svelte"
-    import UIMaxi3D from "components/ui/maxis/UIMaxi3D.svelte"
-    import UIMaxi2D from "components/ui/maxis/UIMaxi2D.svelte"
+    import UIMaxiValue from "components/ui/maxis/UIMaxiValue.svelte"
     import UIMaxiTable from "components/ui/maxis/UIMaxiTable.svelte"
     import UIMaxiMenu from "components/ui/maxis/UIMaxiMenu.svelte"
     import UIMaxiCode from "components/ui/maxis/UIMaxiCode.svelte"
@@ -17,31 +15,31 @@
 
     const UI_TABS = [{
         mini : UIMiniValue,
-        maxi : UIMaxi1D,
+        maxi : UIMaxiValue,
         id : "A",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi1D,
+        maxi : UIMaxiValue,
         id : "B",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi1D,
+        maxi : UIMaxiValue,
         id : "C",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi2D,
+        maxi : UIMaxiValue,
         id : "AB",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi2D,
+        maxi : UIMaxiValue,
         id : "AC",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi2D,
+        maxi : UIMaxiValue,
         id : "BC",
     },{
         mini : UIMiniValue,
-        maxi : UIMaxi3D,
+        maxi : UIMaxiValue,
         id : "ABC",
     },{
         mini : UIMiniTable,

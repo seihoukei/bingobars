@@ -21,6 +21,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        min-width: 10em;
+        height : 2.5em;
 
         transition: background-color 0.2s;
     }

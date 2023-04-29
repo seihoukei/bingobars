@@ -2,12 +2,11 @@
     import interactive from "utility/interactive.js"
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
     import FG_COLORS from "data/fg-colors.js"
-    import formatString from "utility/format-string.js"
     import Trigger from "utility/trigger.js"
-    import VALUES from "data/values.js"
     import UIMaxiValueDisplay from "components/ui/elements/UIMaxiValueDisplay.svelte"
     import UIMaxiExplanation from "components/ui/elements/UIMaxiExplanation.svelte"
-    import StringMaker from "utility/StringMaker.js"
+    import StringMaker from "utility/string-maker.js"
+    import UIMaxiAutoPrestige from "components/ui/elements/UIMaxiAutoPrestige.svelte"
     export let game
     export let id
 
@@ -37,6 +36,8 @@
         XPc : `${id}Pc`,
         Xt : `${id}t`,
         XPt : `${id}Pt`,
+        X_auto : `${id}_auto`,
+        X_auto_seen : `${id}_auto_seen`,
     }
 
     $: values, updateSeen()
@@ -57,6 +58,9 @@
 
     $: progressMaker = StringMaker.template`${code.X} / ${code.MX}`
     $: progress = progressMaker.dynamicString(values)
+
+    $: canAuto = values[code.X_auto_seen]
+    $: auto = values[code.X_auto]
 
 </script>
 
@@ -141,6 +145,21 @@
             </div>
         </div>
         <div class="block">
+            <UIMaxiAutoPrestige {id} {canAuto} {auto}/>
+        </div>
+        <div class="block">
+            <div class="values">
+                <UIMaxiValueDisplay id={code.XPt} {game} />
+            </div>
+            <div class="explanation prestige reset">
+                <UIMaxiExplanation
+                        description="Every reset or prestige"
+                        formula={`${code.XPt} = 0`}
+                        active={hover.prestige || hover.reset}
+                />
+            </div>
+        </div>
+        <div class="block">
             <div class="values">
                 <UIMaxiValueDisplay id={code.Xt} {game} />
             </div>
@@ -153,14 +172,18 @@
             </div>
         </div>
         <div class="block">
-            <div class="values">
-                <UIMaxiValueDisplay id={code.XPt} {game} />
-            </div>
-            <div class="explanation prestige reset">
+            <div class="explanation reset">
                 <UIMaxiExplanation
-                        description="Every reset or prestige"
-                        formula={`${code.XPt} = 0`}
-                        active={hover.prestige || hover.reset}
+                        description="Every reset"
+                        formula={`${code.X} = 0`}
+                        active={hover.reset}
+                />
+            </div>
+            <div class="explanation reset">
+                <UIMaxiExplanation
+                        description="Every reset"
+                        formula={`${code.XP} = 0`}
+                        active={hover.reset}
                 />
             </div>
         </div>

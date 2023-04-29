@@ -31,12 +31,12 @@ const TABLES = Object.freeze({
             },
             R1C3 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("AP > 1"),
+                    new Calculation("AP >= 1"),
                 ],
                 modifiers : [
+                    new Calculation("dA += 1")
                 ],
                 //oneWay : true,
             },
@@ -75,12 +75,12 @@ const TABLES = Object.freeze({
             },
             R2C2 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("A > 16"),
                 ],
                 modifiers : [
+                    new Calculation("dA += 1")
                 ],
                 //oneWay : true,
             },
@@ -89,7 +89,7 @@ const TABLES = Object.freeze({
                     "???"
                 ],
                 conditions : [
-                    new Calculation("AP > 1"),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -97,12 +97,12 @@ const TABLES = Object.freeze({
             },
             R2C4 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("A > 32"),
                 ],
                 modifiers : [
+                    new Calculation("MAm += 1")
                 ],
                 //oneWay : true,
             },
@@ -119,12 +119,12 @@ const TABLES = Object.freeze({
             },
             R3C1 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("AP >= 4"),
                 ],
                 modifiers : [
+                    new Calculation("dA += 2"),
                 ],
                 //oneWay : true,
             },
@@ -143,12 +143,12 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    new Calculation("AP >= 1"),
+                    new Calculation("A >= 1000"),
                 ],
                 modifiers : [
-                    new Calculation("dA += 1")
+                    new Calculation("B_seen = true")
                 ],
-                //oneWay : true,
+                oneWay : true,
             },
             R3C4 : {
                 prerequisites : [
@@ -163,12 +163,13 @@ const TABLES = Object.freeze({
             },
             R3C5 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("AP >= 3"),
+                    new Calculation("MA < 30"),
                 ],
                 modifiers : [
+                    new Calculation("dA += AP")
                 ],
                 //oneWay : true,
             },
@@ -185,14 +186,15 @@ const TABLES = Object.freeze({
             },
             R4C2 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("MA > 400"),
+                    new Calculation("100 < A < 200"),
                 ],
                 modifiers : [
+                    new Calculation("A_auto_seen = true")
                 ],
-                //oneWay : true,
+                oneWay : true,
             },
             R4C3 : {
                 prerequisites : [
@@ -207,12 +209,12 @@ const TABLES = Object.freeze({
             },
             R4C4 : {
                 prerequisites : [
-                    "???"
                 ],
                 conditions : [
-                    new Calculation("false"),
+                    new Calculation("A >= 100"),
                 ],
                 modifiers : [
+                    new Calculation("MAm -= 0.2")
                 ],
                 //oneWay : true,
             },
@@ -251,14 +253,15 @@ const TABLES = Object.freeze({
             },
             R5C3 : {
                 prerequisites : [
-                    "???"
+                    "T1R3C3"
                 ],
                 conditions : [
-                    new Calculation("AP > 1"),
+                    new Calculation("A * B > 1e8"),
                 ],
                 modifiers : [
+                    new Calculation("AB_seen = true")
                 ],
-                //oneWay : true,
+                oneWay : true,
             },
             R5C4 : {
                 prerequisites : [
@@ -414,7 +417,7 @@ for (const [tableName,table] of Object.entries(TABLES)) {
             continue
         const address = `${tableName}${slotName}`
         for (const modifier of slot.modifiers)
-            modifier.source = address
+            modifier.setSource(address)
     }
 }
 export default TABLES
