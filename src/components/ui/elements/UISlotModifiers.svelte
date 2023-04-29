@@ -1,11 +1,12 @@
 <script>
     export let modifiers = []
     export let game
+    export let debug = false
 </script>
 
-<div class="title">Modifiers:</div>
+{#if !debug}<div class="title">Modifiers:</div>{/if}
 {#each modifiers as modifier}
     <div class="item">
-        {modifier.text.staticString}
+        {debug?"M: ":""}{modifier.shortText}
     </div>
 {/each}

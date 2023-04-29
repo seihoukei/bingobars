@@ -13,6 +13,8 @@
     $: table = TABLES[id]
     $: slots = Object.entries(table?.slots ?? {})
 
+    $: complete = game?.state?.values?.[`${id}_SN`]
+
 </script>
 
 <div class="container"
@@ -37,6 +39,8 @@
                             {slot} />
                 {/each}
             </div>
+            <div class="spacer"></div>
+            <div class="progress"> {complete / 37 * 100| 0}% </div>
         </div>
         <div class="highlight"></div>
     {/if}
@@ -101,7 +105,7 @@
         font-size: 3em;
     }
     div.spacer {
-        height: 1em;
+        height: 0.3em;
     }
     div.table {
         display: grid;
@@ -110,5 +114,12 @@
         grid-row-gap: 0.1em;
         grid-column-gap: 0.1em;
         width: 7.6em;
+        height : 6.5em;
+    }
+    div.progress {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3em;
     }
 </style>

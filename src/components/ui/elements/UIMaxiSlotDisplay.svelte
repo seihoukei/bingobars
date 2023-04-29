@@ -11,6 +11,12 @@
     export let slot
     export let game
 
+    let debug = false
+
+    if (import.meta.env.MODE === "development") {
+        debug = true
+    }
+
     $: tables = game?.state?.tables
     $: value = tables?.[slot.address]
     $: cssVariables = getSlotPosition(id)
@@ -68,8 +74,18 @@
          on:specialaction
     >
         <div class="title">{slot.address}</div>
-        <div class="content">
-            {#if unlocked}
+        <div class="content" class:debug>
+            {#if debug}
+                {#if slot.prerequisites?.length}
+                    <UISlotPrerequisites {game} debug prerequisites={slot.prerequisites}/>
+                {/if}
+                {#if slot.conditions?.length}
+                    <UISlotConditions {game} debug conditions={slot.conditions}/>
+                {/if}
+                {#if slot.modifiers?.length}
+                    <UISlotModifiers {game} debug modifiers={slot.modifiers}/>
+                {/if}
+            {:else if unlocked}
                 <UISlotModifiers {game} modifiers={slot.modifiers}/>
             {:else if seen}
                 <UISlotConditions {game} conditions={slot.conditions}/>
@@ -123,4 +139,7 @@
         flex-direction: column;
     }
 
+    div.content.debug {
+        font-size: 0.7em;
+    }
 </style>

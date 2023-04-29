@@ -1,6 +1,5 @@
-import Condition from "utility/condition.js"
-import Modifier from "utility/modifier.js"
 import {getSlotType} from "data/slot-types.js"
+import Calculation from "utility/calculation.js"
 
 const TABLES = Object.freeze({
     T1 : {
@@ -9,22 +8,22 @@ const TABLES = Object.freeze({
         slots : {
             R1C1 : {
                 prerequisites : [
-                    "T1C3",
+                    "???",
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A",2000),
-                    Condition.lessOrEqual("AP",10),
+//                    new Calculation(""),
                 ],
                 modifiers : [
-                    Modifier.add("dBP", 1)
+//                    new Calculation(""),
                 ],
                 //oneWay : true,
             },
             R1C2 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -32,21 +31,21 @@ const TABLES = Object.freeze({
             },
             R1C3 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.more("MA", 40),
-                    Condition.range("A", 30, 50),
+                    new Calculation("AP > 1"),
                 ],
                 modifiers : [
-                    Modifier.add("MAm", 1)
                 ],
                 //oneWay : true,
             },
             R1C4 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -54,71 +53,65 @@ const TABLES = Object.freeze({
             },
             R1C5 : {
                 prerequisites : [
-                    "T1R5C1",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("AP", 10),
-                    Condition.lessOrEqual("At", 120),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.mul("dB", 2)
                 ],
                 //oneWay : true,
             },
             R2C1 : {
                 prerequisites : [
-                    "T1R2C3",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 50),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("dA", 1),
                 ],
                 //oneWay : true,
             },
             R2C2 : {
                 prerequisites : [
-                    "T1R3",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("AP", 6),
-                    Condition.lessOrEqual("MA", 50),
-    
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("dB", 2)
                 ],
                 //oneWay : true,
             },
             R2C3 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 15),
+                    new Calculation("AP > 1"),
                 ],
                 modifiers : [
-                    Modifier.add("dA", 1),
                 ],
                 //oneWay : true,
             },
             R2C4 : {
                 prerequisites : [
-                    "T1R4C2",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("B", 100),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.sub("MBm", 0.1)
                 ],
                 //oneWay : true,
             },
             R2C5 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -126,113 +119,109 @@ const TABLES = Object.freeze({
             },
             R3C1 : {
                 prerequisites : [
-                    "T1R4C2",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("BP", 2),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.autoPrestige("B"),
                 ],
                 //oneWay : true,
             },
             R3C2 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("AP", 5),
                 ],
                 modifiers : [
-                    Modifier.sub("APc", 0.1),
+                    new Calculation("B_seen = true")
                 ],
-                //oneWay : true,
+                oneWay : true,
             },
             R3C3: {
-                prerequisites : [],
+                prerequisites : [
+                ],
                 conditions : [
-                    Condition.moreOrEqual("AP", 2),
+                    new Calculation("AP >= 1"),
                 ],
                 modifiers : [
-                    Modifier.autoPrestige("A"),
+                    new Calculation("dA += 1")
                 ],
                 //oneWay : true,
             },
             R3C4 : {
                 prerequisites : [
-                    "T1R4C2",
+                    "???"
                 ],
                 conditions : [
-                    Condition.more("A", 10),
-                    Condition.less("B", 10),
                 ],
                 modifiers : [
-                    Modifier.sub("MAm", 0.2)
+                    new Calculation("dA *= AP + 1"),
                 ],
                 //oneWay : true,
             },
             R3C5 : {
                 prerequisites : [
-                    "T1R4C3",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 120),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("dA", 2)
                 ],
                 //oneWay : true,
             },
             R4C1 : {
                 prerequisites : [
-                    "T1R4C2",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("B", 22),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("MAm", 1),
                 ],
                 //oneWay : true,
             },
             R4C2 : {
                 prerequisites : [
-                    "T1R3C5",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 250),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.unlock("B")
                 ],
-                oneWay : true,
+                //oneWay : true,
             },
             R4C3 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 25),
+                    new Calculation("AP > 1"),
                 ],
                 modifiers : [
-                    Modifier.add("dA", 1)
                 ],
                 //oneWay : true,
             },
             R4C4 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.equal("A", 600),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.mul("dA", 2),
                 ],
                 //oneWay : true,
             },
             R4C5 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -240,21 +229,21 @@ const TABLES = Object.freeze({
             },
             R5C1 : {
                 prerequisites : [
-                    "T1R4C2",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("A", 1000),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("dB", 2)
                 ],
                 //oneWay : true,
             },
             R5C2 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -262,21 +251,21 @@ const TABLES = Object.freeze({
             },
             R5C3 : {
                 prerequisites : [
-                    "T1R3",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("LN", 2),
+                    new Calculation("AP > 1"),
                 ],
                 modifiers : [
-                    Modifier.mul("dA", "LN")
                 ],
                 //oneWay : true,
             },
             R5C4 : {
                 prerequisites : [
+                    "???"
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -284,14 +273,12 @@ const TABLES = Object.freeze({
             },
             R5C5 : {
                 prerequisites : [
-                    "T1R5C1",
+                    "???"
                 ],
                 conditions : [
-                    Condition.moreOrEqual("AP", 6),
-                    Condition.range("A", 10, 20),
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("MAm", 1),
                 ],
                 //oneWay : true,
             },
@@ -299,7 +286,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -309,7 +296,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -317,12 +304,11 @@ const TABLES = Object.freeze({
             },
             R3 : {
                 prerequisites : [
-                    "T1R4C2",
                 ],
                 conditions : [
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.add("dA", "BP")
                 ],
                 //oneWay : true,
             },
@@ -330,7 +316,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -340,7 +326,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -350,9 +336,9 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.sub("MAm", 0.1)
                 ],
                 //oneWay : true,
             },
@@ -360,7 +346,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -370,9 +356,9 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
+                    new Calculation("AP > 1"),
                 ],
                 modifiers : [
-                    Modifier.add("dAP", 1),
                 ],
                 //oneWay : true,
             },
@@ -380,7 +366,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -390,7 +376,7 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
-                    Condition.impossible(),
+                    new Calculation("false"),
                 ],
                 modifiers : [
                 ],
@@ -400,9 +386,9 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.sub("APc", 0.1)
                 ],
                 //oneWay : true,
             },
@@ -410,9 +396,9 @@ const TABLES = Object.freeze({
                 prerequisites : [
                 ],
                 conditions : [
+                    new Calculation("false"),
                 ],
                 modifiers : [
-                    Modifier.mul("dA", 2)
                 ],
                 //oneWay : true,
             },

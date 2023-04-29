@@ -8,11 +8,14 @@
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_STEP = 10000
 
+    let tableValues = {}
+
     export let values = getInitialValues()
     export let state
 
     export let activeModifierList = []
     export let availableModifierList = []
+
 
     $: activeModifierList, updateValues()
 
@@ -36,12 +39,9 @@
             values[`${name}_seen`] = BASE_VALUES[name].initialSeen ?? false
 
             values[`${name}_auto`] = false
-        }
 
-        values[`slots`] = 0
-        values[`rows`] = 0
-        values[`columns`] = 0
-        values[`diagonals`] = 0
+            Object.assign(values, tableValues)
+        }
     }
 
     function getInitialValues() {
@@ -58,6 +58,10 @@
         }
 
         return values
+    }
+
+    function updateTableValues(newValues) {
+        tableValues = newValues
     }
 
     function updateValues() {
@@ -133,6 +137,7 @@
     const triggers = []
     onMount(() => {
         triggers.push(Trigger.on("command-tick", advance))
+        triggers.push(Trigger.on("command-update-table-values", updateTableValues))
     })
 
     onDestroy(() => {

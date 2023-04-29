@@ -1,13 +1,14 @@
 <script>
     export let conditions = []
     export let game
+    export let debug = false
 </script>
 
 
-<div class="title">Conditions:</div>
+{#if !debug}<div class="title">Conditions:</div>{/if}
 {#each conditions as condition}
     <div class="item">
-        {condition.text.staticString}
+        {debug?"C: ":""}{condition.shortText}
     </div>
 {:else}
     <div class="item">
