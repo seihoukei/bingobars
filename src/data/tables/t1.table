@@ -1,0 +1,145 @@
+//--- Table header(before slots)
+//N: Table name
+//C: Table unlock condition
+
+N: Table 1
+
+//--- Slots
+//# Slot name
+//R: prerequisite (address like T1R2C3)
+//C: condition (formula)
+//C!: hidden condition (formula)
+//M: modifier (formula)
+//M!: hidden modifier (formula)
+//c: custom condition text to display
+//m: custom modifier text to display
+
+# R1C1
+R: ???
+//C:
+//M:
+
+# R1C2
+R: ???
+
+# R1C3
+C: AP >= 1
+M: dA += 1
+
+# R1C4
+R: ???
+
+# R1C5
+R: ???
+
+# R2C1
+R: ???
+
+# R2C2
+C: A > 16
+M: dA += 1
+
+# R2C3
+R: ???
+
+# R2C4
+C: A > 32
+M: MAm += 1
+
+# R2C5
+R: ???
+
+# R3C1
+C: AP >= 4
+M: dA += 2
+
+# R3C2
+R: ???
+
+# R3C3
+C: A >= 1000
+M!: B_seen = true
+LOCK
+m: Unlock B
+
+# R3C4
+R: ???
+
+# R3C5
+C: AP >= 3
+C: MA <= 30
+M: dA += AP
+
+# R4C1
+R: ???
+
+# R4C2
+C: MA > 400
+C: 100 < A < 200
+M!: A_auto_seen = true
+LOCK
+m: Unlock auto prestige A
+
+# R4C3
+R: ???
+
+# R4C4
+C: A >= 100
+M: MAm -= 0.2
+
+# R4C5
+R: ???
+
+# R5C1
+R: ???
+
+# R5C2
+R: ???
+
+# R5C3
+C: A * B > 1e8
+M!: AB_seen = true
+LOCK
+m: Unlock AB
+
+# R5C4
+R: ???
+
+# R5C5
+R: ???
+
+# R1
+R: ???
+
+# R2
+R: ???
+
+# R3
+R: ???
+
+# R4
+R: ???
+
+# R5
+R: ???
+
+# C1
+R: ???
+
+# C2
+R: ???
+
+# C3
+R: ???
+
+# C4
+R: ???
+
+# C5
+R: ???
+
+# DL
+R: ???
+
+# DR
+R: ???

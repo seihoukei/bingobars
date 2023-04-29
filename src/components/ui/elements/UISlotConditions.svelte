@@ -1,17 +1,26 @@
 <script>
     export let conditions = []
     export let game
-    export let debug = false
+    export let debug = 0
+    export let custom = null
+
+    $: visibleConditions = debug < 2 ? conditions.filter(x => !x.hidden) : conditions
 </script>
 
 
 {#if !debug}<div class="title">Conditions:</div>{/if}
-{#each conditions as condition}
+{#if custom && debug < 2}
     <div class="item">
-        {debug?"C: ":""}{condition.shortText}
+        {custom}
     </div>
 {:else}
-    <div class="item">
-        Unconditional
-    </div>
-{/each}
+    {#each visibleConditions as condition}
+        <div class="item">
+            {debug?"C: ":""}{condition.shortText}
+        </div>
+    {:else}
+        <div class="item">
+            {conditions.length ? "Hidden" : "Unconditional"}
+        </div>
+    {/each}
+{/if}

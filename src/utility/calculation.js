@@ -14,6 +14,7 @@ export default class Calculation {
         CHECK : 6,
     }
     source = null
+    hidden = false
 
     constructor(expression, priority = Calculation.PRIORITIES.AUTO) {
         this.expression = expression
@@ -83,4 +84,7 @@ export default class Calculation {
         this.source = source
     }
 
+    setHidden(hidden) {
+        this.hidden = hidden
+    }
 }

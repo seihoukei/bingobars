@@ -11,10 +11,12 @@
     export let slot
     export let game
 
-    let debug = false
+    let debug = 0
 
     if (import.meta.env.MODE === "development") {
-        debug = true
+        // 1 : see descriptions
+        // 2 : raw formulas
+        debug = 1
     }
 
     $: tables = game?.state?.tables
@@ -84,18 +86,18 @@
         <div class="content" class:debug>
             {#if debug}
                 {#if slot.prerequisites?.length}
-                    <UISlotPrerequisites {game} debug prerequisites={slot.prerequisites}/>
+                    <UISlotPrerequisites {game} {debug} prerequisites={slot.prerequisites}/>
                 {/if}
                 {#if slot.conditions?.length}
-                    <UISlotConditions {game} debug conditions={slot.conditions}/>
+                    <UISlotConditions {game} {debug} conditions={slot.conditions} custom={slot.conditionText}/>
                 {/if}
                 {#if slot.modifiers?.length}
-                    <UISlotModifiers {game} debug modifiers={slot.modifiers}/>
+                    <UISlotModifiers {game} {debug} modifiers={slot.modifiers} custom={slot.modifierText}/>
                 {/if}
             {:else if unlocked}
-                <UISlotModifiers {game} modifiers={slot.modifiers}/>
+                <UISlotModifiers {game} modifiers={slot.modifiers} custom={slot.modifierText}/>
             {:else if seen}
-                <UISlotConditions {game} conditions={slot.conditions}/>
+                <UISlotConditions {game} conditions={slot.conditions} custom={slot.conditionText}/>
             {:else}
                 <UISlotPrerequisites {game} prerequisites={slot.prerequisites}/>
             {/if}
