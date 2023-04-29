@@ -6,6 +6,7 @@
     import interactive from "utility/interactive.js"
     import UISlotPrerequisites from "components/ui/elements/UISlotPrerequisites.svelte"
     import Trigger from "utility/trigger.js"
+    import FG_COLORS from "data/fg-colors.js"
 
     export let id
     export let slot
@@ -21,17 +22,21 @@
 
     $: tables = game?.state?.tables
     $: value = tables?.[slot.address]
-    $: cssVariables = getSlotPosition(id)
+    $: involved = slot?.getInvolved() ?? []
     $: visible = value & SLOT_STATES.VISIBLE
     $: seen = value & SLOT_STATES.PREREQUISITES_MET
     $: available = (value & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE
     $: unlocked = value & SLOT_STATES.UNLOCKED
     $: enabled = value & SLOT_STATES.ENABLED
+    $: cssVariables = `${getSlotPosition(id)}${getSlotBackground(involved, seen, available, enabled, unlocked)}`
     $: cell = slot.type === SLOT_TYPES.CELL
 
+
+
     function positionVariables(x, y) {
-        return `--row:${y};--column:${x}`
+        return `--row:${y};--column:${x};`
     }
+
     function getSlotPosition(id) {
         if (slot.type === SLOT_TYPES.CELL) {
             const x = +id[3] + 1
@@ -54,6 +59,29 @@
         if (id === "DR") {
             return positionVariables(7, 7)
         }
+    }
+
+    function getSlotBackground() {
+        if (!seen)
+            return `--background: #222222;`
+
+        let mainBackground = "linear-gradient(to right, grey, grey)"
+        let stateBackground = "linear-gradient(#222222)"
+
+        if (involved.length == 1)
+            mainBackground = mainBackground = `linear-gradient(to right, ${FG_COLORS[involved[0]]}, ${FG_COLORS[involved[0]]})`
+        else
+            mainBackground = mainBackground = `linear-gradient(to right, ${involved.map(x => FG_COLORS[x]).join(",")})`
+
+
+        if (unlocked)
+            return `--background: ${mainBackground};`
+
+        stateBackground =
+            available ? "linear-gradient(#227722FF, #22772288, #227722FF)" :
+            "linear-gradient(#000000FF, #00000088, #000000FF)"
+
+        return `--background: ${stateBackground}, ${mainBackground};`
     }
 
     function toggle() {
@@ -106,7 +134,7 @@
 {/if}
 <style>
     div.slot {
-        background-color: #222222;
+        background: var(--background);
         grid-row: var(--row);
         grid-column: var(--column);
         z-index: 2;
@@ -114,30 +142,25 @@
         align-items: center;
         justify-content: stretch;
         flex-direction: column;
-        transition: background-color 0.2s;
+        transition: background 0.2s;
     }
 
     div.slot.seen {
-        background-color: #442222;
     }
 
     div.slot.available {
-        background-color: #227722;
         cursor: pointer;
     }
 
     div.slot.unlocked {
-        background-color: #222277;
         cursor: pointer;
     }
 
     div.slot.enabled {
-        background-color: #4444AA;
         border : 0.2em solid white;
     }
 
     div.slot.enabled.oneway {
-        background-color: #4444AA;
         border : 0.2em solid #BBBBBB;
         cursor: default;
     }

@@ -63,6 +63,20 @@ const VALUES_PER_BASE = {
 			type: StringMaker.VALUE_FORMATS.TIME,
 		},
     },
+    '~_seen' : {
+        description : "~ unlocked",
+        hidden : true,
+        format : {
+			type: StringMaker.VALUE_FORMATS.ONOFF,
+		},
+    },
+    '~_auto_seen' : {
+        description : "~ prestige unlocked",
+        hidden : true,
+        format : {
+			type: StringMaker.VALUE_FORMATS.ONOFF,
+		},
+    },
 }
 
 const VALUES = {

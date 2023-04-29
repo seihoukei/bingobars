@@ -1,5 +1,7 @@
 import SLOT_TYPES from "data/slot-types.js"
 import Calculation from "utility/calculation.js"
+import VALUES from "data/values.js"
+import BASE_VALUES from "data/base-values.js"
 
 export default class BingoTableSlotData {
     static SLOT_REGEXP = {
@@ -62,5 +64,11 @@ export default class BingoTableSlotData {
 
     setModifierText(data) {
         this.modifierText = data
+    }
+
+    getInvolved() {
+//        const involved = [...this.modifiers, ...this.conditions].map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
+        const involved = [...this.modifiers].map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
+        return ["A","AB","B","BC","C","AC","ABC"].filter(x => involved.includes(x))
     }
 }
