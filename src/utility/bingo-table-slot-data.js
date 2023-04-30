@@ -66,9 +66,13 @@ export default class BingoTableSlotData {
         this.modifierText = data
     }
 
-    getInvolved() {
-//        const involved = [...this.modifiers, ...this.conditions].map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
-        const involved = [...this.modifiers].map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
+    getInvolvedInModifiers() {
+        const involved = this.modifiers.map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
+        return ["A","AB","B","BC","C","AC","ABC"].filter(x => involved.includes(x))
+    }
+
+    getInvolvedInConditions() {
+        const involved = this.conditions.map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
         return ["A","AB","B","BC","C","AC","ABC"].filter(x => involved.includes(x))
     }
 }

@@ -22,11 +22,13 @@
 
     $: tables = game?.state?.tables
     $: value = tables?.[slot.address]
-    $: involved = slot?.getInvolved() ?? []
     $: visible = value & SLOT_STATES.VISIBLE
     $: seen = value & SLOT_STATES.PREREQUISITES_MET
     $: available = (value & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE
     $: unlocked = value & SLOT_STATES.UNLOCKED
+    $: involved = unlocked
+              ? slot?.getInvolvedInModifiers() ?? []
+              : slot?.getInvolvedInConditions() ?? []
     $: enabled = value & SLOT_STATES.ENABLED
     $: cssVariables = `${getSlotPosition(id)}${getSlotBackground(involved, seen, available, enabled, unlocked)}`
     $: cell = slot.type === SLOT_TYPES.CELL
@@ -79,7 +81,7 @@
 
         stateBackground =
             available ? "linear-gradient(#227722FF, #22772288, #227722FF)" :
-            "linear-gradient(#000000FF, #00000088, #000000FF)"
+            "linear-gradient(#000000FF, #00000044, #00000088)"
 
         return `--background: ${stateBackground}, ${mainBackground};`
     }
