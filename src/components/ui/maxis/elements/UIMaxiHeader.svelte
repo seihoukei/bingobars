@@ -27,7 +27,7 @@
         {bingoinsFree} Bingoins
     </div>
     <div class="super-bingo button">
-        Super Bingo
+        <span>Super</span> <span>Bingo</span>
     </div>
 </div>
 
@@ -60,10 +60,19 @@
     div.super-bingo {
         width: 7em;
         display: flex;
+        flex-direction: row;
+        column-gap: 1em;
         align-items: center;
         justify-content: center;
         border-radius: 0.5em;
-        background-color: #222277;
+        background: linear-gradient(-58deg, #998822, #998822 47%, #DDDDDD 47%, #DDDDDD 53%, #998822 53%, #998822);
+    }
+
+    div.super-bingo span:first-child {
+        margin-top: -0.2em;
+    }
+    div.super-bingo span:last-child {
+        margin-bottom: -0.2em;
     }
 
 </style>
