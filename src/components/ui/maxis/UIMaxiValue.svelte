@@ -292,9 +292,11 @@
 
     div.button {
         position: relative;
-        font-size: 4em;
+        font-size: 3em;
         padding: 0.25em 0.5em;
         border-radius: 0.5em;
+        width : 7em;
+        height : 3em;
         background-color: var(--value-color);
         display: flex;
         flex-direction: column;

@@ -5,9 +5,11 @@
     export let game
 </script>
 
+<!--
 {#if import.meta.env.MODE === "development"}
     <pre class="debug">{JSON.stringify(game, null, 1).replace(/(\d+\.\d{1,2})\d+/g,"$1")}</pre>
 {/if}
+-->
 
 {#if game?.state}
 

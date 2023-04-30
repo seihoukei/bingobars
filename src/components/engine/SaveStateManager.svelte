@@ -18,29 +18,14 @@
     }
 
     function saveGame(slot = AUTOSAVE_SLOT) {
-        const saveData = SaveProcessor.encode({
-            _meta: {
-                version : 1,
-                date : Date.now()
-            },
-            state
-        })
+        const saveData = prepareSave()
         localStorage[slotName(slot)] = saveData
         Trigger("game-saved", slot)
     }
 
     function loadGame(slot = AUTOSAVE_SLOT) {
         const saveData = localStorage[slotName(slot)]
-        resetGame()
-        const save = SaveProcessor.decode(saveData)
-        if (save?._meta) {
-            const loadedState = save.state
-            loadedState.values.targetTime ??= 0
-            loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
-            Object.assign(state, loadedState)
-        } else {
-            Object.assign(state, save)
-        }
+        loadData(saveData)
         Trigger("game-loaded", slot)
     }
 
@@ -58,6 +43,37 @@
         interval = setInterval(saveGame, time)
     }
 
+    function loadData(data) {
+        resetGame()
+        const save = SaveProcessor.decode(data)
+        if (save?._meta) {
+            const loadedState = save.state
+            loadedState.values.targetTime ??= 0
+            loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
+            Object.assign(state, loadedState)
+        } else {
+            Object.assign(state, save)
+        }
+    }
+
+    function prepareSave() {
+        const data = SaveProcessor.encode({
+            _meta: {
+                version : 1,
+                date : Date.now()
+            },
+            state
+        })
+
+        return data
+    }
+
+    function exportSave() {
+        navigator.clipboard?.writeText?.(prepareSave())
+            .then(() => alert("Copied to clipboard"))
+            .catch(() => alert("Export failed"))
+    }
+
     onMount(() => {
         loadGame()
     })
@@ -70,6 +86,8 @@
     onMount(() => {
         triggers.push(Trigger.on("command-save-game", (slot) => saveGame(slot)))
         triggers.push(Trigger.on("command-load-game", (slot) => loadGame(slot)))
+        triggers.push(Trigger.on("command-import-save", (data) => loadData(data)))
+        triggers.push(Trigger.on("command-export-save", () => exportSave()))
         triggers.push(Trigger.on("command-reset-game", resetGame))
     })
 

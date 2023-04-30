@@ -9,6 +9,7 @@
     import UIMiniValue from "components/ui/minis/UIMiniValue.svelte"
     import Trigger from "utility/trigger.js"
     import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
+    import UIMaxiHeader from "components/ui/maxis/elements/UIMaxiHeader.svelte"
 
     export let game
 
@@ -95,13 +96,18 @@
     {#key id}
         <div class="holder">
             <div class="layout">
-                <div class="main element">
-                    {#key tabId}
-                        <svelte:component {game}
-                            this={tab.maxi}
-                            id={tab.id}
-                        />
-                    {/key}
+                <div class="main">
+                    <div class="element">
+                        <UIMaxiHeader {game} />
+                    </div>
+                    <div class="element">
+                        {#key tabId}
+                            <svelte:component {game}
+                                this={tab.maxi}
+                                id={tab.id}
+                            />
+                        {/key}
+                    </div>
                     <!--70x50em-->
                 </div>
 
@@ -192,7 +198,14 @@
         }
     }
 
-    div.main {grid-area : main;}
+    div.main {
+        grid-area : main;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+        row-gap: 0.5em;
+    }
 
     div.element {
         display : flex;
@@ -200,5 +213,10 @@
         justify-content: center;
         background-color: #666666;
         overflow: hidden;
+        border-radius: 1em;
+    }
+
+    div.element:last-child {
+        flex: 1;
     }
 </style>
