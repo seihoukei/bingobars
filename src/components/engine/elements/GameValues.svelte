@@ -7,7 +7,8 @@
     import GameTableValues from "components/engine/elements/GameTableValues.svelte"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
-    const MAX_TIME_STEP = 10000
+    const MAX_TIME_TICK = 600
+    const MAX_TIME_STEP = 10
 
     let tableValues = {}
     let activeModifierList = []
@@ -88,6 +89,7 @@
             values[`${name}Pc`] = Math.max(0, Math.min(values[`${name}Pc`], 1))
         }
 
+
         Trigger("derived-values-updated", values)
         Trigger("values-updated", values)
     }
@@ -117,13 +119,19 @@
     function advance(time) {
         if (!values) return
 
-        let remainingTime = time
+        //compatibility fix
+        values.time ??= 0
+        values.targetTime ??= 0
+
+        values.targetTime += time
+        let remainingTime = Math.min(values.targetTime - values.time, MAX_TIME_TICK)
         while (remainingTime > 0) {
             const times = VALUE_NAMES.map(getValueTime)
             let step = Math.min(MAX_TIME_STEP, remainingTime, ...times)
             Trigger("command-tick-step", step)
-            updateValues()
+            values.time += step
             remainingTime -= step
+            updateValues()
         }
 
         Trigger("stored-values-updated", values)

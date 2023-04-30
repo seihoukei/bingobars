@@ -134,6 +134,6 @@ for (const baseValue of Object.keys(BASE_VALUES)) {
     }
 }
 
-console.log("VALUES", VALUES)
+//console.log("VALUES", VALUES)
 
 export default VALUES

@@ -12,10 +12,6 @@ export default class SaveProcessor {
         try {
             const json = atob(base64)
             const save = JSON.parse(json)
-            if (save.person) {
-                save.person.mood ??= 50
-                save.person.speed ??= 1
-            }
             return save
         } catch (e) {
             console.log("Failed to load:")

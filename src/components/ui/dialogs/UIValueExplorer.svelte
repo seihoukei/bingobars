@@ -14,7 +14,7 @@
 
     let modifiers = []
 
-    $: values = game?.state?.values
+    $: values = game?.state?.values ?? {}
     $: valueModifiers = modifiers.filter(x => x.target === id)
     $: baseValue = values[`${id}_base`]
     $: finalValue = values[id]

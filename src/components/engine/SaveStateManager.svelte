@@ -18,7 +18,13 @@
     }
 
     function saveGame(slot = AUTOSAVE_SLOT) {
-        const saveData = SaveProcessor.encode(state)
+        const saveData = SaveProcessor.encode({
+            _meta: {
+                version : 1,
+                date : Date.now()
+            },
+            state
+        })
         localStorage[slotName(slot)] = saveData
         Trigger("game-saved", slot)
     }
@@ -26,7 +32,15 @@
     function loadGame(slot = AUTOSAVE_SLOT) {
         const saveData = localStorage[slotName(slot)]
         resetGame()
-        Object.assign(state, SaveProcessor.decode(saveData))
+        const save = SaveProcessor.decode(saveData)
+        if (save?._meta) {
+            const loadedState = save.state
+            loadedState.values.targetTime ??= 0
+            loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
+            Object.assign(state, loadedState)
+        } else {
+            Object.assign(state, save)
+        }
         Trigger("game-loaded", slot)
     }
 
