@@ -15,7 +15,7 @@
     ">
     <div class="bg"></div>
     <div class="fg"></div>
-    <div class="caption">{caption}</div>
+    <div class="caption"><slot name="caption">{caption}</slot></div>
 </div>
 
 <style>

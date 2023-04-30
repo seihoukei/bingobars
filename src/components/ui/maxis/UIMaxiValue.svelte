@@ -56,11 +56,18 @@
     }
 
 
-    $: progressMaker = StringMaker.template`${code.X} / ${code.MX}`
-    $: progress = progressMaker.dynamicString(values)
+    $: current = values[code.X] ?? 0
+    $: limit = values[code.MX] ?? 1
+    $: speed = values[code.dX] ?? 0
+    $: ETA =
+        current === limit ? "Complete" :
+        speed === 0 ? "Never" :
+        `ETA: ${StringMaker.formatValue((limit - current) / speed, {type:StringMaker.VALUE_FORMATS.TIME})}`
+
 
     $: canAuto = values[code.X_auto_seen]
     $: auto = values[code.X_auto]
+
 
 </script>
 
@@ -75,9 +82,15 @@
                     bgcolor="#888888"
                     fgcolor={FG_COLORS[id]}
                     {current}
-                    max={limit}
-                    caption={progress}
-            />
+                    max={limit}>
+                <span slot="caption" class="caption">
+                    <span class="current">{StringMaker.formatValueById(current, code.X)}</span>
+                    /
+                    <span class="limit">{StringMaker.formatValueById(limit, code.X)}</span>
+                    <span class="eta">({ETA})</span>
+
+                </span>
+            </UIProgressBar>
         </div>
     </div>
     <div class="data">
@@ -335,6 +348,31 @@
 
     div.button:not(.disabled):hover div.button-highlight {
         opacity: 0.2;
+    }
+
+    span.caption {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        column-gap: 0.3em;
+    }
+
+    span.current {
+        display: flex;
+        width: 4em;
+        justify-content: end;
+    }
+
+    span.limit {
+        display: flex;
+        width: 4em;
+    }
+
+    span.eta {
+        display: flex;
+        width: 8em;
     }
 
 </style>
