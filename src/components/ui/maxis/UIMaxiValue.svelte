@@ -3,10 +3,10 @@
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
     import FG_COLORS from "data/fg-colors.js"
     import Trigger from "utility/trigger.js"
-    import UIMaxiValueDisplay from "components/ui/elements/UIMaxiValueDisplay.svelte"
-    import UIMaxiExplanation from "components/ui/elements/UIMaxiExplanation.svelte"
+    import UIMaxiValueDisplay from "components/ui/maxis/elements/UIMaxiValueDisplay.svelte"
+    import UIMaxiExplanation from "components/ui/maxis/elements/UIMaxiExplanation.svelte"
     import StringMaker from "utility/string-maker.js"
-    import UIMaxiAutoPrestige from "components/ui/elements/UIMaxiAutoPrestige.svelte"
+    import UIMaxiAutoPrestige from "components/ui/maxis/elements/UIMaxiAutoPrestige.svelte"
     export let game
     export let id
 

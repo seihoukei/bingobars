@@ -1,7 +1,7 @@
 <script>
     import interactive from "utility/interactive.js"
     import Trigger from "utility/trigger.js"
-    import UIMiniBar from "components/ui/elements/UIMiniBar.svelte"
+    import UIMiniBar from "components/ui/minis/elements/UIMiniBar.svelte"
     import FG_COLORS from "data/fg-colors.js"
     import StringMaker from "utility/string-maker.js"
 

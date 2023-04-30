@@ -8,6 +8,7 @@
     import UIMaxiHelp from "components/ui/maxis/UIMaxiHelp.svelte"
     import UIMiniValue from "components/ui/minis/UIMiniValue.svelte"
     import Trigger from "utility/trigger.js"
+    import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
 
     export let game
 
@@ -114,6 +115,7 @@
                 {/each}
             </div>
         </div>
+        <UIValueExplorer {game} />
     {/key}
 {/if}
 

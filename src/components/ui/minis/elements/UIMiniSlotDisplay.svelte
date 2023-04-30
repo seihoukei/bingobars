@@ -1,6 +1,6 @@
 <script>
-    import SLOT_TYPES from "data/slot-types.js"
-    import SLOT_STATES from "data/slot-states.js"
+    import SLOT_TYPES from "data/slot-types"
+    import SLOT_STATES from "data/slot-states"
 
     export let id
     export let value

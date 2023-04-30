@@ -101,6 +101,7 @@ R: ???
 R: ???
 
 # R5C3
+R: T1R3C3
 C: A * B > 1e8
 M!: AB_seen = true
 LOCK

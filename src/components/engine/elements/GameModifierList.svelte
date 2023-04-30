@@ -45,6 +45,7 @@
     const triggers = []
     onMount(() => {
         triggers.push(Trigger.on("slot-toggled", updateModifiers))
+        triggers.push(Trigger.on("command-update-modifiers", updateModifiers))
     })
 
     onDestroy(() => {

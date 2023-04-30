@@ -1,7 +1,7 @@
 <script>
-    import StringMaker from "utility/string-maker.js"
-    import interactive from "utility/interactive.js"
-    import Trigger from "utility/trigger.js"
+    import StringMaker from "utility/string-maker"
+    import interactive from "utility/interactive"
+    import Trigger from "utility/trigger"
 
     export let id
     export let canAuto

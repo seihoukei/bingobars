@@ -5,7 +5,7 @@ const GAME_RULES = Object.freeze({
         new Calculation("dAB *= A * B"),
         new Calculation("dAC *= A * C"),
         new Calculation("dBC *= B * C"),
-        new Calculation("dABC *= A * B * C"),
+        new Calculation("dABC *= AP * BP * CP"),
     ]
 })
 

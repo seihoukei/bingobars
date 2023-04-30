@@ -21,13 +21,15 @@ export default class StringMaker {
 
         switch (usedFormat.type) {
             case this.VALUE_FORMATS.SCIENTIFIC:
-                displayValue = value < 10000 ? value.toFixed(2) :
+                displayValue = value < 1e-2 ? value.toExponential(2) :
+                               value < 10000 ? value.toFixed(2) :
                                value < 100000 ? value.toFixed(1) :
                                value < 1000000 ? value.toFixed(0) :
                                value.toExponential(2)
                 break
             case this.VALUE_FORMATS.SHORT_SCIENTIFIC:
-                displayValue = value < 10000 ? value.toFixed(2) :
+                displayValue = value < 1e-2 ? value.toExponential(2) :
+                               value < 10000 ? value.toFixed(2) :
                                value < 100000 ? value.toFixed(1) :
                                value < 1000000 ? value.toFixed(0) :
                                value.toExponential(2)
