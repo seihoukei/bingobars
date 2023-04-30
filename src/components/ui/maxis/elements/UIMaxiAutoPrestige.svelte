@@ -31,7 +31,7 @@
         justify-content: center;
         min-width: 10em;
         height : 5.5em;
-        row-gap: 0.5em;
+        row-gap: 0.3em;
         overflow: hidden;
 
         transition: background-color 0.2s;
@@ -41,10 +41,10 @@
         cursor : pointer;
     }
     .description {
-        font-size : 0.8em;
+        font-size : 1em;
     }
     .value {
-        font-size: 1.2em;
+        font-size: 1.5em;
     }
     div.highlight {
         z-index: 3;

@@ -3,11 +3,14 @@
 
     export let game
 
-    $: values = game?.state?.values
+    $: values = game?.state?.values ?? {}
     $: now = values.time ?? 0
     $: target = values.targetTime ?? 0
     $: catchup = target - now > 10
 
+    $: bingoins = values.bingoins ?? 0
+    $: bingoinsSpent = values.bingoinsSpent ?? 0
+    $: bingoinsFree = bingoins - bingoinsSpent
 </script>
 
 <div class="container">
@@ -21,7 +24,7 @@
         {/if}
     </div>
     <div class="bingoins">
-        0 Bingoins
+        {bingoinsFree} Bingoins
     </div>
     <div class="super-bingo button">
         Super Bingo
