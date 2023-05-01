@@ -8,17 +8,16 @@
 
     $: values = game?.state?.values ?? {}
     $: value = values[id]
-    $: derived = (values[`${id}_base`] !== undefined)
-    $: seen = values[`${id}_seen`] || !derived
+    $: seen = values[`${id}_seen`] || (values[`${id}_base`] === undefined)
     $: description = VALUES[id].description
 
     function explore() {
-        if (seen && derived)
+        if (seen)
             Trigger("command-explore-value", id)
     }
 </script>
 
-<div class="container" class:seen class:derived on:click={explore}>
+<div class="container" class:seen on:click={explore}>
     {#if seen}
         <div class="value">
             <span class="name">
@@ -54,10 +53,10 @@
         font-size : 0.8em;
     }
 
-    div.container.seen.derived {
+    div.container.seen {
         cursor: pointer;
     }
-    div.container.seen.derived:hover {
+    div.container.seen:hover {
         background-color: #555555;
     }
 

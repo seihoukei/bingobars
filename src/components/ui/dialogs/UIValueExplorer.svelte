@@ -2,31 +2,40 @@
     import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import VALUES from "data/values"
-    import UIExplorerModifier from "components/ui/dialogs/elements/UIExplorerModifier.svelte"
-    import StringMaker from "utility/string-maker.js"
     import FG_COLORS from "data/fg-colors.js"
+    import UIExplorerModifiers from "components/ui/dialogs/elements/UIExplorerModifiers.svelte"
+    import StringMaker from "utility/string-maker.js"
+    import BASE_VALUES from "data/base-values.js"
+    import UIExplorerHistory from "components/ui/dialogs/elements/UIExplorerHistory.svelte"
+    import UIExplorerResets from "components/ui/dialogs/elements/UIExplorerResets.svelte"
 
     export let game
 
+    const PAGES = {
+        "Modifiers" : UIExplorerModifiers,
+        "History" : UIExplorerHistory,
+        "Resets" : UIExplorerResets,
+    }
 
     let id = null
     let holder
 
-    let modifiers = []
+    let pages = []
+    let currentPage = "stats"
 
     $: values = game?.state?.values ?? {}
-    $: valueModifiers = modifiers.filter(x => x.target === id)
     $: baseValue = values[`${id}_base`]
     $: finalValue = values[id]
+
     $: color = FG_COLORS[VALUES[id]?.baseValue] ?? "inherit"
     $: cssVariables = `--background: ${color};`
 
+    $: derived = baseValue !== undefined
+
+    $: setPages(id)
+
     function exploreValue(value) {
         id = value
-    }
-
-    function updateModifiers(active, available) {
-        modifiers = available
     }
 
     function clickOutside(event) {
@@ -38,11 +47,23 @@
         exploreValue(null)
     }
 
+    function setPages(id) {
+        pages = []
+        if (derived)
+            pages.push("Modifiers")
+        pages.push("History")
+        if (BASE_VALUES[id])
+        pages.push("Resets")
+        currentPage = pages[0]
+    }
+
+    function setPage(page) {
+        currentPage = page
+    }
+
     const triggers = []
     onMount(() => {
         triggers.push(Trigger.on("command-explore-value", exploreValue))
-        triggers.push(Trigger.on("modifier-lists-updated", updateModifiers))
-        Trigger("command-update-modifiers")
     })
 
     onDestroy(() => {
@@ -68,12 +89,17 @@
                     <span class="name">Final value</span> = <span class="value">{StringMaker.formatValueById(finalValue, id)}</span>
                 </div>
             </div>
-            <div class="subtitle">Modifiers:</div>
-            <div class="modifiers">
-                {#each valueModifiers as modifier}
-                    <UIExplorerModifier {game} {modifier} />
+            <div class="pages">
+                {#each pages as page}
+                    <div class="page"
+                         class:active={page === currentPage}
+                         on:click={() => setPage(page)}
+                    >
+                        {page}
+                    </div>
                 {/each}
             </div>
+            <svelte:component this={PAGES[currentPage]} {game} {id} />
         </div>
     </div>
 {/if}
@@ -96,10 +122,6 @@
         display: flex;
         align-items: center;
         column-gap: 1em;
-    }
-
-    div.subtitle {
-        margin: 0.4em 0;
     }
 
     div.id {
@@ -138,18 +160,39 @@
         justify-content: stretch;
     }
 
-    div.modifiers {
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.5em;
-        overflow : auto;
-    }
-
     div.values {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         margin: 0.4em 0 0;
+    }
+
+    div.pages {
+        margin: 0.4em 0;
+        display : flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1em;
+    }
+
+    div.page {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.2em 1em;
+        background-color: #222222;
+        border-radius: 0.5em;
+        cursor: pointer;
+    }
+
+    div.page:hover {
+        background-color: #333333;
+    }
+
+    div.page.active {
+        cursor: default;
+        border: 0.1em solid #888888;
+        padding: 0.1em 0.9em;
     }
 
 </style>

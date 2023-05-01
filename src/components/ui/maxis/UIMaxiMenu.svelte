@@ -34,7 +34,8 @@
 </script>
 
 <div class="content">
-    <div class="title">Bingo Bars</div>
+    <img src="../resources/logo.svg">
+    <div class="dev">by seihoukei</div>
 
     <div>Processed time: {StringMaker.formatValue(now, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
     <div>Total time: {StringMaker.formatValue(target, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
@@ -56,8 +57,9 @@
         justify-content: center;
     }
 
-    div.title {
-        font-size: 2em;
+    img {
+        width: 13em;
+        height: 2.6em;
     }
 
     input.savetext {
@@ -89,5 +91,14 @@
     div.button:hover {
         background-color: #772222;
 
+    }
+
+    div.dev {
+        font-size : 0.4em;
+        display: flex;
+        align-items: end;
+        justify-content: end;
+        width: 30em;
+        margin: -1em 0 1em;
     }
 </style>

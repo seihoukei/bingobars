@@ -58,7 +58,7 @@
     }
     div.source {
         background-color: #222222;
-        padding: 0.2em;
+        padding: 0.1em;
         width: 6em;
         display: flex;
         align-items: center;
@@ -70,7 +70,7 @@
         background-color: #333333;
     }
     div.active div.source {
-        border : 0.2em solid #CCCCCC;
+        border : 0.1em solid #CCCCCC;
         padding: 0;
     }
     div.expression {

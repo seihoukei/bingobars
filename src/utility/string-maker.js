@@ -49,8 +49,11 @@ export default class StringMaker {
                 } else {
                     const seconds = value % 60 | 0
                     const minutes = value / 60 % 60 | 0
-                    const hours = value / 3600 % 60 | 0
-                    displayValue = `${hours}:${minutes}:${seconds}`
+                    const hours = value / 3600 | 0
+                    displayValue = (hours > 100
+                            ? `${hours}:${minutes}`
+                            : `${hours}:${minutes}:${seconds}`
+                        )
                         .replace(/:(\d)(?=:|$)/g, ":0$1") // add leading zeroes for parts
                         .replace(/^(00?:)*0?/g, "") // remove leading zeroes overall
                 }
