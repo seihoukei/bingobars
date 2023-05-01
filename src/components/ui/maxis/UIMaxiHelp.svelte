@@ -4,17 +4,23 @@
 </script>
 
 <div class="help">
-    You can long-tap / right-click value tab to prestige capped value without visiting tab.
+    Fulfil conditions to unlock cells!
+    Unlock cells to manipulate variables!
+    Manipulate variables to fulfil conditions!
+    FUN!
+
+    Black cells are locked! Tap or click for details!
+    Green cells are ready to be unlocked with a tap or click!
+    You can long-tap / right-click value tab to prestige!
+    You have a chance to do something while catching up with offline time!
+    COMFY!
 
     Resetting value allows to fulfil some conditions, and has no other benefits.
-
-    Game by seihoukei.
+    TRICKY!
 
     Libraries/frameworks used:
-    ViteJS (MIT)
-    Svelte (MIT)
-    math.js (Apache-2.0 license)
-    lz-string (MIT)
+    ViteJS (MIT), Svelte (MIT), math.js (Apache-2.0 license), lz-string (MIT)
+    THANKY!
 </div>
 
 <style>
