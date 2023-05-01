@@ -17,6 +17,38 @@
         modifiers = available
     }
 
+    function toggleModifiers(rule = () => true) {
+        let currentSandbox = Object.assign({}, game?.state?.values)
+        currentSandbox[id] = currentSandbox[`${id}_base`] ?? 0
+        const togglableModifiers = valueModifiers.filter(x => x.source)
+        for (const modifier of togglableModifiers) {
+            let lastSandbox = Object.assign({},currentSandbox)
+            modifier.apply(currentSandbox)
+            if (rule(lastSandbox[id], currentSandbox[id])) {
+                Trigger("command-toggle-slot", modifier.source, true)
+            } else {
+                Trigger("command-toggle-slot", modifier.source, false)
+                currentSandbox = lastSandbox
+            }
+        }
+    }
+
+    function minimize() {
+        toggleModifiers((before, after) => before > after)
+    }
+
+    function maximize() {
+        toggleModifiers((before, after) => after > before)
+    }
+
+    function disableAll() {
+        toggleModifiers(() => false)
+    }
+
+    function enableAll() {
+        toggleModifiers(() => true)
+    }
+
     onMount(() => {
         Trigger("command-update-modifiers")
     })
@@ -29,6 +61,20 @@
         <UIExplorerModifier {game} {modifier} />
     {/each}
 </div>
+<div class="buttons">
+    <div class="button" on:click={disableAll}>
+        Disable all
+    </div>
+    <div class="button" on:click={minimize}>
+        Minimize
+    </div>
+    <div class="button" on:click={maximize}>
+        Maximize
+    </div>
+    <div class="button" on:click={enableAll}>
+        Enable all
+    </div>
+</div>
 
 <style>
     div.modifiers {
@@ -36,6 +82,29 @@
         flex-direction: column;
         row-gap: 0.5em;
         overflow : auto;
+    }
+
+    div.buttons {
+        margin: 0.4em 0;
+        display : flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1em;
+        font-size: 0.7em;
+    }
+
+    div.button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.2em 1em;
+        background-color: #222222;
+        border-radius: 0.5em;
+        cursor: pointer;
+    }
+
+    div.button:hover {
+        background-color: #333333;
     }
 
 </style>
