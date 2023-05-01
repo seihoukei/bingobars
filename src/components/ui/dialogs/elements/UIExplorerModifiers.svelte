@@ -21,16 +21,18 @@
         let currentSandbox = Object.assign({}, game?.state?.values)
         currentSandbox[id] = currentSandbox[`${id}_base`] ?? 0
         const togglableModifiers = valueModifiers.filter(x => x.source)
+        const toggles = []
         for (const modifier of togglableModifiers) {
             let lastSandbox = Object.assign({},currentSandbox)
             modifier.apply(currentSandbox)
             if (rule(lastSandbox[id], currentSandbox[id])) {
-                Trigger("command-toggle-slot", modifier.source, true)
+                toggles.push([modifier.source, true])
             } else {
-                Trigger("command-toggle-slot", modifier.source, false)
+                toggles.push([modifier.source, false])
                 currentSandbox = lastSandbox
             }
         }
+        Trigger("command-toggle-slots", toggles)
     }
 
     function minimize() {

@@ -11,27 +11,38 @@
     }
 
     registerTrigger("stats-value-reset", storeReset)
+    registerTrigger("stats-value-prestige", (value) => updateStats(values, true))
+    registerTrigger("stats-value-reset", (value) => updateStats(values, true))
+    registerTrigger("value-reset", (value) => delayUpdateStats(values, true))
+    registerTrigger("value-prestiged", (value) => delayUpdateStats(values, true))
     registerTrigger("stored-values-updated", updateStats)
     registerTrigger("stats-values-updated", updateStats)
 
     $: values = state?.values
 
-    function updatePeriodStats(values, stats, period, maxTime) {
-        if (stats.length && stats.at(-1).time > values.time - period)
+    function updatePeriodStats(values, stats, period, maxTime, forced = false) {
+        if (!forced && stats.length && stats.at(-1).time > values.time - period)
             return
         stats.push(values)
         while (stats.at(-1).time > stats.at(0).time + maxTime)
             stats.shift()
     }
 
-    function updateStats(values) {
+    function updateStats(newValues, forced = false) {
+        values = newValues
         const storable = Object.fromEntries(
             Object.entries(values)
                 .filter(x => !x[0].match(/_seen|_auto|_base/))
         )
-        updatePeriodStats(storable, stats.secondly, 1, 300)
-        updatePeriodStats(storable, stats.minutely, 60, 18000)
-        updatePeriodStats(storable, stats.hourly, 3600, Infinity)
+        updatePeriodStats(storable, stats.secondly, 1, 300, forced)
+        updatePeriodStats(storable, stats.minutely, 60, 18000, forced)
+        updatePeriodStats(storable, stats.hourly, 3600, Infinity, forced)
+    }
+
+    let delayTimeout = null
+    function delayUpdateStats() {
+        clearTimeout(delayTimeout)
+        delayTimeout = setTimeout(() => updateStats(values, true), 0)
     }
 
     function storeReset(id) {

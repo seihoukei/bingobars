@@ -46,8 +46,8 @@
     function updatePosition(event) {
         const rect = canvas.getBoundingClientRect()
         mouse = {
-            x : (event.clientX - rect.x) / canvas.width,
-            y : (event.clientY - rect.y) / canvas.height,
+            x : (event.clientX - rect.x) / canvas.width * RENDER_WIDTH,
+            y : (event.clientY - rect.y) / canvas.height * RENDER_HEIGHT,
         }
         updateGraph()
     }
@@ -61,9 +61,13 @@
         if (!context || !data || data.length < 2)
             return
 
-
         const width = canvas.width = canvas.clientWidth
         const height = canvas.height = canvas.clientHeight
+
+        if (mouse) {
+            mouse.closestX = 0
+            mouse.closestY = 0
+        }
 
         const start = data.at(0).time
         const end = data.at(-1).time
@@ -121,6 +125,12 @@
             for (let item of data) {
                 const x = (item.time - start) * timeScale
                 const y = RENDER_HEIGHT - (Math.log10(item[id]) - min) * valueScale
+                if (mouse && x < mouse.x) {
+                    mouse.closestX = x
+                    mouse.closestY = y
+                    mouse.time = item.time
+                    mouse.value = item[id]
+                }
                 context.lineTo(x, y)
             }
             context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
@@ -130,10 +140,6 @@
             context.fill()
             context.stroke()
 
-            if(mouse) {
-                mouse.value = 10 ** ((max - min) * (1 - mouse.y) + min)
-                mouse.time = start + (end - start) * mouse.x
-            }
         } else {
             const max = realMax + 0.1 * Math.abs(realMax)
             const valueScale = RENDER_HEIGHT / max
@@ -154,6 +160,12 @@
             for (let item of data) {
                 const x = (item.time - start) * timeScale
                 const y = RENDER_HEIGHT - item[id] * valueScale
+                if (mouse && x < mouse.x) {
+                    mouse.closestX = x
+                    mouse.closestY = y
+                    mouse.time = item.time
+                    mouse.value = item[id]
+                }
                 context.lineTo(x, y)
             }
             context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
@@ -163,18 +175,14 @@
             context.fill()
             context.stroke()
 
-            if(mouse) {
-                mouse.value = max * (1 - mouse.y)
-                mouse.time = start + (end - start) * mouse.x
-            }
         }
 
         if  (mouse) {
             context.beginPath()
-            context.moveTo(mouse.x * RENDER_WIDTH, 0)
-            context.lineTo(mouse.x * RENDER_WIDTH, RENDER_HEIGHT)
-            context.moveTo(0, mouse.y * RENDER_HEIGHT)
-            context.lineTo(RENDER_WIDTH, mouse.y * RENDER_HEIGHT)
+            context.moveTo(mouse.closestX, 0)
+            context.lineTo(mouse.closestX, RENDER_HEIGHT)
+            context.moveTo(0, mouse.closestY)
+            context.lineTo(RENDER_WIDTH, mouse.closestY)
             context.strokeStyle = "#444444"
             context.stroke()
 
@@ -182,14 +190,14 @@
             context.fillStyle = "#CCCCCC"
             if (mouse.x > 0.5) {
                 context.textAlign = "right"
-                context.fillText(StringMaker.formatValue(mouse.value), mouse.x * RENDER_WIDTH - 2, mouse.y * RENDER_HEIGHT - 2)
+                context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX - 2, mouse.closestY - 2)
                 context.textBaseline = "top"
-                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.x * RENDER_WIDTH - 2, mouse.y * RENDER_HEIGHT + 2)
+                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.closestX - 2, mouse.closestY + 2)
             } else {
                 context.textAlign = "left"
-                context.fillText(StringMaker.formatValue(mouse.value), mouse.x * RENDER_WIDTH + 2, mouse.y * RENDER_HEIGHT - 2)
+                context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX + 2, mouse.closestY - 2)
                 context.textBaseline = "top"
-                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.x * RENDER_WIDTH + 2, mouse.y * RENDER_HEIGHT + 2)
+                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.closestX + 2, mouse.closestY + 2)
             }
             context.restore()
         }

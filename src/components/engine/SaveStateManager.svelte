@@ -20,7 +20,7 @@
 
     registerTrigger("value-reset", () => saveGame())
     registerTrigger("value-prestiged", () => saveGame())
-    registerTrigger("slot-toggled", () => saveGame())
+    registerTrigger("slots-toggled", () => saveGame())
 
     $: updateInterval(autosaveInterval)
 

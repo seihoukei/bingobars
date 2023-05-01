@@ -10,14 +10,13 @@
 
     registerTrigger("stored-values-updated", updateTables)
     registerTrigger("command-toggle-slot", toggleSlot)
+    registerTrigger("command-toggle-slots", toggleSlots)
 
     function checkConditions(conditions) {
         return conditions?.every(condition => condition.check(state.values)) ?? true
     }
 
     function getSlotDiscoveryState(slot) {
-        //TODO row, column, diagonal check
-
         let slotState = SLOT_STATES.UNKNOWN
 
         let dependencies = []
@@ -62,7 +61,7 @@
         Trigger("tables-updated", tables)
     }
 
-    function toggleSlot(name, forceState = null) {
+    function toggleSlot(name, forceState = null, batch = false) {
         if (!(tables[name] & SLOT_STATES.UNLOCKED) && (tables[name] & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE) {
             tables[name] |= SLOT_STATES.UNLOCKED
             Trigger("slot-unlocked", name)
@@ -78,7 +77,16 @@
         }
 
         Trigger("slot-toggled", name, tables[name] & SLOT_STATES.ENABLED)
+
+        if (!batch)
+            Trigger("slots-toggled", name, tables[name] & SLOT_STATES.ENABLED)
     }
 
+    function toggleSlots(toggles) {
+        for (let [name, forceState] of toggles)
+            toggleSlot(name, forceState, true)
+
+        Trigger("slots-toggled", name, tables[name] & SLOT_STATES.ENABLED)
+    }
 
 </script>

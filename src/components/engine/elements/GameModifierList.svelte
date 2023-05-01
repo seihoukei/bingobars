@@ -10,7 +10,7 @@
     export let activeModifierList = []
     export let availableModifierList = []
 
-    registerTrigger("slot-toggled", updateModifiers)
+    registerTrigger("slots-toggled", updateModifiers)
     registerTrigger("command-update-modifiers", updateModifiers)
 
     updateModifiers()
