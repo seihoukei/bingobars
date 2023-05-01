@@ -1,6 +1,6 @@
 <script>
     import Trigger from "utility/trigger.js"
-    import {onDestroy, onMount} from "svelte"
+    import registerTrigger from "utility/register-trigger.js"
 
     export let state
 
@@ -19,6 +19,11 @@
     export let timeSincePrestige = 0
 
     export let seen = false
+
+    registerTrigger("command-tick-step", advance)
+    registerTrigger("command-prestige-value", prestige)
+    registerTrigger("command-reset-value", reset)
+    registerTrigger("command-toggle-auto-prestige", toggleAuto)
 
     function advance(step) {
         if (!seen)
@@ -78,18 +83,5 @@
                 prestige()
         }
     }
-
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("command-tick-step", advance))
-        triggers.push(Trigger.on("command-prestige-value", prestige))
-        triggers.push(Trigger.on("command-reset-value", reset))
-        triggers.push(Trigger.on("command-toggle-auto-prestige", toggleAuto))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
-
 
 </script>

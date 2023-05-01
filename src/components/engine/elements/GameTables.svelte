@@ -1,12 +1,15 @@
 <script>
-    import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import TABLES from "data/tables.js"
     import SLOT_STATES from "data/slot-states.js"
     import SLOT_TYPES from "data/slot-types.js"
+    import registerTrigger from "utility/register-trigger.js"
 
     export let tables = {}
     export let state
+
+    registerTrigger("stored-values-updated", updateTables)
+    registerTrigger("command-toggle-slot", toggleSlot)
 
     function checkConditions(conditions) {
         return conditions?.every(condition => condition.check(state.values)) ?? true
@@ -77,14 +80,5 @@
         Trigger("slot-toggled", name, tables[name] & SLOT_STATES.ENABLED)
     }
 
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("stored-values-updated", updateTables))
-        triggers.push(Trigger.on("command-toggle-slot", toggleSlot))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
 
 </script>

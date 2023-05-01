@@ -1,7 +1,6 @@
 <script>
     import getValuesCodes from "data/get-values-codes.js"
-    import {onDestroy, onMount} from "svelte"
-    import Trigger from "utility/trigger.js"
+    import registerTrigger from "utility/register-trigger.js"
 
     export let state
     export let stats = {
@@ -10,6 +9,10 @@
         minutely : [],
         hourly : [],
     }
+
+    registerTrigger("stats-value-reset", storeReset)
+    registerTrigger("stored-values-updated", updateStats)
+    registerTrigger("stats-values-updated", updateStats)
 
     $: values = state?.values
 
@@ -46,14 +49,4 @@
 
     $: values = state?.values ?? {}
 
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("stats-value-reset", storeReset))
-        triggers.push(Trigger.on("stored-values-updated", updateStats))
-        triggers.push(Trigger.on("stats-values-updated", updateStats))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
 </script>

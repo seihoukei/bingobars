@@ -2,14 +2,16 @@
     import SaveStateManager from "./SaveStateManager.svelte"
     import GameValues from "components/engine/elements/GameValues.svelte"
     import GameTables from "components/engine/elements/GameTables.svelte"
-    import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import GameStats from "components/engine/elements/GameStats.svelte"
-
-    export let game = {}
+    import registerTrigger from "utility/register-trigger.js"
 
     const DEFAULT_GAME_STATE = Object.freeze({
     })
+
+    export let game = {}
+
+    registerTrigger("command-set-tab", setTab)
 
     let state, gameId
 
@@ -20,16 +22,6 @@
         game.state.tab = tab
         Trigger("command-save-game")
     }
-
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("command-set-tab", setTab))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
-
 
 </script>
 

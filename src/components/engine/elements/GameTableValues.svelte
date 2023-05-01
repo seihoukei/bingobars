@@ -3,10 +3,12 @@
     import SLOT_STATES from "data/slot-states.js"
     import TABLES from "data/tables"
     import Trigger from "utility/trigger"
-    import {onDestroy, onMount} from "svelte"
+    import registerTrigger from "utility/register-trigger.js"
 
     export let tables = {}
     export let tableValues = {}
+
+    registerTrigger("slot-unlocked", updateTableValues)
 
     const counterNames = {
         [SLOT_TYPES.CELL]: "cN",
@@ -53,13 +55,5 @@
         Trigger("table-values-updated", tableValues)
     }
 
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("slot-unlocked", updateTableValues))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
 
 </script>

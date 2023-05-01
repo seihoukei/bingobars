@@ -5,18 +5,21 @@
     import BASE_VALUES from "data/base-values.js"
     import GameModifierList from "components/engine/elements/GameModifierList.svelte"
     import GameTableValues from "components/engine/elements/GameTableValues.svelte"
+    import registerTrigger from "utility/register-trigger.js"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_TICK = 600
     const MAX_TIME_STEP = 10
     const MAX_STAT_STEP = 10
 
+    export let values = getInitialValues()
+    export let state
+
+    registerTrigger("command-tick", advance)
+
     let tableValues = {}
     let activeModifierList = []
     let availableModifierList = []
-
-    export let values = getInitialValues()
-    export let state
 
     $: activeModifierList, tableValues, updateValues()
 
@@ -144,15 +147,6 @@
         Trigger("stored-values-updated", values)
         Trigger("values-updated", values)
     }
-
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("command-tick", advance))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
 
 </script>
 

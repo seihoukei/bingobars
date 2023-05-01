@@ -1,6 +1,4 @@
 <script>
-    import {onDestroy, onMount} from "svelte"
-    import Trigger from "utility/trigger.js"
     import VALUES from "data/values"
     import FG_COLORS from "data/fg-colors.js"
     import UIExplorerModifiers from "components/ui/dialogs/elements/UIExplorerModifiers.svelte"
@@ -8,14 +6,17 @@
     import BASE_VALUES from "data/base-values.js"
     import UIExplorerHistory from "components/ui/dialogs/elements/UIExplorerHistory.svelte"
     import UIExplorerResets from "components/ui/dialogs/elements/UIExplorerResets.svelte"
-
-    export let game
+    import registerTrigger from "utility/register-trigger.js"
 
     const PAGES = {
         "Modifiers" : UIExplorerModifiers,
         "History" : UIExplorerHistory,
         "Resets" : UIExplorerResets,
     }
+
+    export let game
+
+    registerTrigger("command-explore-value", exploreValue)
 
     let id = null
     let holder
@@ -60,16 +61,6 @@
     function setPage(page) {
         currentPage = page
     }
-
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("command-explore-value", exploreValue))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
-
 
 </script>
 

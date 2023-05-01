@@ -1,13 +1,17 @@
 <script>
-    import {onDestroy, onMount} from "svelte"
+    import {onMount} from "svelte"
     import Trigger from "utility/trigger"
     import TABLES from "data/tables"
     import SLOT_STATES from "data/slot-states"
     import GAME_RULES from "data/game-rules.js"
+    import registerTrigger from "utility/register-trigger.js"
 
     export let tables
     export let activeModifierList = []
     export let availableModifierList = []
+
+    registerTrigger("slot-toggled", updateModifiers)
+    registerTrigger("command-update-modifiers", updateModifiers)
 
     updateModifiers()
 
@@ -42,14 +46,6 @@
 
     onMount(() => updateModifiers())
 
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("slot-toggled", updateModifiers))
-        triggers.push(Trigger.on("command-update-modifiers", updateModifiers))
-    })
 
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
-    })
 
 </script>

@@ -2,6 +2,9 @@
     import {onDestroy, onMount} from "svelte"
     import SaveProcessor from "utility/save-processor.js"
     import Trigger from "utility/trigger.js"
+    import registerTrigger from "utility/register-trigger.js"
+
+    const AUTOSAVE_SLOT = `_Autosave`
 
     export let state = Object.create(null)
     export let id = Math.random()
@@ -9,7 +12,15 @@
     export let defaultState = {}
     export let autosaveInterval = 10000
 
-    const AUTOSAVE_SLOT = `_Autosave`
+    registerTrigger("command-save-game", (slot) => saveGame(slot))
+    registerTrigger("command-load-game", (slot) => loadGame(slot))
+    registerTrigger("command-import-save", (data) => loadData(data))
+    registerTrigger("command-export-save", () => exportSave())
+    registerTrigger("command-reset-game", resetGame)
+
+    registerTrigger("value-reset", () => saveGame())
+    registerTrigger("value-prestiged", () => saveGame())
+    registerTrigger("slot-toggled", () => saveGame())
 
     $: updateInterval(autosaveInterval)
 
@@ -48,8 +59,10 @@
         const save = SaveProcessor.decode(data)
         if (save?._meta) {
             const loadedState = save.state
-            loadedState.values.targetTime ??= 0
-            loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
+            if (loadedState.values) {
+                loadedState.values.targetTime ??= 0
+                loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
+            }
             Object.assign(state, loadedState)
         } else {
             Object.assign(state, save)
@@ -80,23 +93,6 @@
 
     onDestroy(() => {
         clearInterval(interval)
-    })
-
-    const triggers = []
-    onMount(() => {
-        triggers.push(Trigger.on("command-save-game", (slot) => saveGame(slot)))
-        triggers.push(Trigger.on("command-load-game", (slot) => loadGame(slot)))
-        triggers.push(Trigger.on("command-import-save", (data) => loadData(data)))
-        triggers.push(Trigger.on("command-export-save", () => exportSave()))
-        triggers.push(Trigger.on("command-reset-game", resetGame))
-
-        triggers.push(Trigger.on("value-reset", () => saveGame()))
-        triggers.push(Trigger.on("value-prestiged", () => saveGame()))
-        triggers.push(Trigger.on("slot-toggled", () => saveGame()))
-    })
-
-    onDestroy(() => {
-        triggers.forEach(trigger => trigger.cancel())
     })
 
 </script>
