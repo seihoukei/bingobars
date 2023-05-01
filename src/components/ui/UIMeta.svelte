@@ -1,6 +1,4 @@
 <script>
-    import Trigger from "utility/trigger.js"
-
     export let game
 
 </script>

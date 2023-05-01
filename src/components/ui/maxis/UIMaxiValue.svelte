@@ -1,13 +1,16 @@
 <script>
-    import interactive from "utility/interactive.js"
     import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
-    import FG_COLORS from "data/fg-colors.js"
-    import Trigger from "utility/trigger.js"
     import UIMaxiValueDisplay from "components/ui/maxis/elements/UIMaxiValueDisplay.svelte"
     import UIMaxiExplanation from "components/ui/maxis/elements/UIMaxiExplanation.svelte"
-    import StringMaker from "utility/string-maker.js"
     import UIMaxiAutoPrestige from "components/ui/maxis/elements/UIMaxiAutoPrestige.svelte"
+
+    import FG_COLORS from "data/fg-colors.js"
+
     import getValuesCodes from "data/get-values-codes.js"
+    import interactive from "utility/interactive.js"
+    import StringMaker from "utility/string-maker.js"
+    import Trigger from "utility/trigger.js"
+
     export let game
     export let id
 

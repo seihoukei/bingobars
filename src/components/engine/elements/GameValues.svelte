@@ -1,11 +1,12 @@
 <script>
     import GameValue from "components/engine/elements/GameValue.svelte"
-    import {onDestroy, onMount} from "svelte"
-    import Trigger from "utility/trigger.js"
-    import BASE_VALUES from "data/base-values.js"
     import GameModifierList from "components/engine/elements/GameModifierList.svelte"
     import GameTableValues from "components/engine/elements/GameTableValues.svelte"
+
+    import BASE_VALUES from "data/base-values.js"
+
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger.js"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_TICK = 600

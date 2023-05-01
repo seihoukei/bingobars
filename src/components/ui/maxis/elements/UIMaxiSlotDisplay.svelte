@@ -1,12 +1,14 @@
 <script>
-    import SLOT_TYPES from "data/slot-types"
-    import SLOT_STATES from "data/slot-states"
     import UISlotConditions from "components/ui/maxis/elements/UISlotConditions.svelte"
     import UISlotModifiers from "components/ui/maxis/elements/UISlotModifiers.svelte"
-    import interactive from "utility/interactive"
     import UISlotPrerequisites from "components/ui/maxis/elements/UISlotPrerequisites.svelte"
-    import Trigger from "utility/trigger"
+
     import FG_COLORS from "data/fg-colors"
+    import SLOT_STATES from "data/slot-states"
+    import SLOT_TYPES from "data/slot-types"
+
+    import interactive from "utility/interactive"
+    import Trigger from "utility/trigger"
 
     export let id
     export let slot

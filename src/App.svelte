@@ -2,8 +2,10 @@
     import GameEngine from "components/engine/GameEngine.svelte"
     import GameUI from "components/ui/GameUI.svelte"
     import GameTimer from "components/GameTimer.svelte"
-    import Trigger from "utility/trigger.js"
+
     import TABLES from "data/tables.js"
+
+    import Trigger from "utility/trigger.js"
 
     let game = {}
 

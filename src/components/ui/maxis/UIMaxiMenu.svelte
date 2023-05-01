@@ -1,6 +1,6 @@
 <script>
-    import Trigger from "utility/trigger.js"
     import StringMaker from "utility/string-maker.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
     export let id

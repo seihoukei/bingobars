@@ -1,8 +1,9 @@
 <script>
     import UIExplorerModifier from "components/ui/dialogs/elements/UIExplorerModifier.svelte"
+
     import {onMount} from "svelte"
-    import Trigger from "utility/trigger.js"
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
     export let id

@@ -1,12 +1,14 @@
 <script>
-    import VALUES from "data/values"
-    import FG_COLORS from "data/fg-colors.js"
     import UIExplorerModifiers from "components/ui/dialogs/elements/UIExplorerModifiers.svelte"
-    import StringMaker from "utility/string-maker.js"
     import UIExplorerHistory from "components/ui/dialogs/elements/UIExplorerHistory.svelte"
     import UIExplorerResets from "components/ui/dialogs/elements/UIExplorerResets.svelte"
-    import registerTrigger from "utility/register-trigger.js"
+
+    import StringMaker from "utility/string-maker.js"
+    import VALUES from "data/values"
+    import FG_COLORS from "data/fg-colors.js"
+
     import getValuesCodes from "data/get-values-codes.js"
+    import registerTrigger from "utility/register-trigger.js"
 
     const PAGES = {
         "Modifiers" : UIExplorerModifiers,
@@ -20,6 +22,7 @@
 
     let id = null
     let holder
+    let openHistory = false
 
     let pages = []
     let currentPage = "stats"
@@ -44,7 +47,8 @@
         return [codes.X, codes.XP, codes.MX, codes.Xt].includes(id)
     }
 
-    function exploreValue(value) {
+    function exploreValue(value, forceHistory = false) {
+        openHistory = forceHistory
         id = value
     }
 
@@ -64,7 +68,9 @@
         pages.push("History")
         if (resettable)
             pages.push("Resets")
-        currentPage = pages[0]
+        currentPage = openHistory
+            ? "History"
+            : pages[0]
     }
 
     function setPage(page) {

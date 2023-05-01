@@ -1,5 +1,6 @@
 <script>
     import VALUES from "data/values.js"
+
     import StringMaker from "utility/string-maker.js"
     import getValuesCodes from "data/get-values-codes.js"
 

@@ -1,5 +1,6 @@
 <script>
     import interactive from "utility/interactive.js"
+
     export let game
     export let id
     export let active = false

@@ -1,7 +1,6 @@
 import SLOT_TYPES from "data/slot-types.js"
 import Calculation from "utility/calculation.js"
 import VALUES from "data/values.js"
-import BASE_VALUES from "data/base-values.js"
 
 export default class BingoTableSlotData {
     static SLOT_REGEXP = {

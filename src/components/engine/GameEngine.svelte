@@ -2,9 +2,10 @@
     import SaveStateManager from "./SaveStateManager.svelte"
     import GameValues from "components/engine/elements/GameValues.svelte"
     import GameTables from "components/engine/elements/GameTables.svelte"
-    import Trigger from "utility/trigger.js"
     import GameStats from "components/engine/elements/GameStats.svelte"
+
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger.js"
 
     const DEFAULT_GAME_STATE = Object.freeze({
     })

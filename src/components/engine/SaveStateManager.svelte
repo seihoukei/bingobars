@@ -1,8 +1,8 @@
 <script>
     import {onDestroy, onMount} from "svelte"
     import SaveProcessor from "utility/save-processor.js"
-    import Trigger from "utility/trigger.js"
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger.js"
 
     const AUTOSAVE_SLOT = `_Autosave`
 

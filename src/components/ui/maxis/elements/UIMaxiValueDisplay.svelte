@@ -1,5 +1,6 @@
 <script>
     import VALUES from "data/values"
+
     import StringMaker from "utility/string-maker"
     import Trigger from "utility/trigger"
 

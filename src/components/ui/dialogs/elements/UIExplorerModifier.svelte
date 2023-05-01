@@ -1,6 +1,7 @@
 <script>
     import TABLES from "data/tables.js"
     import SLOT_STATES from "data/slot-states.js"
+
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
 

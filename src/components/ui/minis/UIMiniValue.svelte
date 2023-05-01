@@ -1,9 +1,11 @@
 <script>
-    import interactive from "utility/interactive.js"
-    import Trigger from "utility/trigger.js"
     import UIMiniBar from "components/ui/minis/elements/UIMiniBar.svelte"
+
     import FG_COLORS from "data/fg-colors.js"
+
+    import interactive from "utility/interactive.js"
     import StringMaker from "utility/string-maker.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
     export let id

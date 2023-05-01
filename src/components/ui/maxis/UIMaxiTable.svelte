@@ -1,6 +1,8 @@
 <script>
     import UIMaxiSlotDisplay from "components/ui/maxis/elements/UIMaxiSlotDisplay.svelte"
+
     import TABLES from "data/tables.js"
+
     export let game
     export let id
 

@@ -1,10 +1,13 @@
 <script>
-    import {onMount} from "svelte"
-    import Trigger from "utility/trigger"
     import TABLES from "data/tables"
     import SLOT_STATES from "data/slot-states"
     import GAME_RULES from "data/game-rules.js"
+
+    import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger"
+
+
 
     export let tables
     export let activeModifierList = []

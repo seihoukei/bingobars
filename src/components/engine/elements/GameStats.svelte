@@ -8,6 +8,7 @@
         secondly : [],
         minutely : [],
         hourly : [],
+        unlocks : {},
     }
 
     registerTrigger("stats-value-reset", storeReset)
@@ -19,6 +20,7 @@
     registerTrigger("slots-toggled", (value) => delayUpdateStats(values, true))
     registerTrigger("stored-values-updated", updateStats)
     registerTrigger("stats-values-updated", updateStats)
+    registerTrigger("slot-unlocked", storeUnlock)
 
     $: values = state?.values
 
@@ -58,6 +60,10 @@
         }
         stats.reset[id] ??= []
         stats.reset[id].push(record)
+    }
+
+    function storeUnlock(slot) {
+        stats.unlocks[slot] = values.time ?? 0
     }
 
     $: values = state?.values ?? {}

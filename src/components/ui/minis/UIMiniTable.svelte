@@ -1,7 +1,10 @@
 <script>
-    import interactive from "utility/interactive.js"
     import UIMiniSlotDisplay from "components/ui/minis/elements/UIMiniSlotDisplay.svelte"
+
     import TABLES from "data/tables.js"
+
+    import interactive from "utility/interactive.js"
+
     export let game
     export let id
     export let active = false

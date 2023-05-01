@@ -7,9 +7,10 @@
     import UIMaxiCode from "components/ui/maxis/UIMaxiCode.svelte"
     import UIMaxiHelp from "components/ui/maxis/UIMaxiHelp.svelte"
     import UIMiniValue from "components/ui/minis/UIMiniValue.svelte"
-    import Trigger from "utility/trigger.js"
     import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
     import UIMaxiHeader from "components/ui/maxis/elements/UIMaxiHeader.svelte"
+
+    import Trigger from "utility/trigger.js"
 
     export let game
 

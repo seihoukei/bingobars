@@ -1,43 +1,42 @@
 <script>
+    import UICodeValueList from "components/ui/maxis/elements/UICodeValueList.svelte"
+
     export let game
     export let id
 </script>
 
-<pre>
-| Code | Meaning                      |
-|------|------------------------------|
-| X    | value                        |
-| Xt   | time since reset             |
-| Xp   | prestige points              |
-| dX   | change speed                 |
-| dXp  | prestige points per prestige |
-| pXc  | prestige cost fraction       |
-| MX   | maximum value                |
-| MX0  | initial maximum value        |
-| MXm  | maximum value multiplier     |
+<div class="container">
+    <div class="values block">
+        <UICodeValueList {game} id="A" />
+        <UICodeValueList {game} id="B" />
+        <UICodeValueList {game} id="C" />
+        <UICodeValueList {game} id="AB" />
+        <UICodeValueList {game} id="AC" />
+        <UICodeValueList {game} id="BC" />
+        <UICodeValueList {game} id="ABC" />
+    </div>
+    <div class="tables block">
+        <UICodeValueList {game} table id="T" />
+        <UICodeValueList {game} table id="T1" />
+        <UICodeValueList {game} table id="T2" />
+        <UICodeValueList {game} table id="T3" />
+        <UICodeValueList {game} table id="T4" />
+        <UICodeValueList {game} table id="T5" />
+    </div>
+</div>
 
-## Special
+<style>
+    div.container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        row-gap: 0.5em;
+        font-size: 1.9em;
+    }
 
-| Code | Meaning                      |
-|------|------------------------------|
-| SN   | Unlocked slot count          |
-| cN   | Unlocked cell slot count     |
-| RN   | Unlocked row slot count      |
-| CN   | Unlocked column slot count   |
-| DN   | Unlocked diagonal slot count |
-| LN   | Unlocked line slot count     |
-
-# Tables
-
-Table, row and column numbers start from 1
-
-| Code   | Meaning                         |
-|--------|---------------------------------|
-| T#     | Table # / Whole table #         |
-| T#R#   | Table # row #                   |
-| T#C#   | Table # column #                |
-| T#R#C# | Table # cell at row #, column # |
-| T#DR   | Table # down-right diagonal     |
-| T#DL   | Table # down-left diagonal      |
-
-</pre>
+    div.block {
+        display: flex;
+        column-gap: 0.5em;
+    }
+</style>

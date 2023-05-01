@@ -39,6 +39,8 @@
     $: data = stats[viewData.stats] ?? []
     $: updateGraph(data)
 
+    $: enoughData = (data.at(-1).time ?? 0) - (data.at(0).time ?? 0) >= viewData.weakGrid / 6
+
     $: context = canvas?.getContext("2d")
 
     $: mouse = null
@@ -58,7 +60,7 @@
     }
 
     function render() {
-        if (!context || !data || data.length < 2)
+        if (!canvas || !context || !data)
             return
 
         const width = canvas.width = canvas.clientWidth
@@ -75,142 +77,155 @@
 
         context.clearRect(0, 0, width, height)
         context.save()
-        context.font = "10px Rajdhani"
-        context.fillStyle = "#CCCCCC"
         context.scale(width / RENDER_WIDTH, height / RENDER_HEIGHT)
-        context.beginPath()
-        for (let moment = viewData.weakGrid * Math.floor(start / viewData.weakGrid); moment < end; moment += viewData.weakGrid) {
-            const x = (moment - start) * timeScale
-            context.moveTo(x, 0)
-            context.lineTo(x, RENDER_HEIGHT)
-        }
-        context.strokeStyle = "#888888"
-        context.lineWidth = 0.25
-        context.stroke()
-        context.beginPath()
-        for (let moment = viewData.strongGrid * Math.floor(start / viewData.strongGrid); moment < end; moment += viewData.strongGrid) {
-            const x = (moment - start) * timeScale
-            context.moveTo(x, RENDER_HEIGHT)
-            context.lineTo(x, 0)
-            context.fillText(StringMaker.formatValue(moment, {type: StringMaker.VALUE_FORMATS.TIME}), x, RENDER_HEIGHT - 2)
-        }
-        context.strokeStyle = "#AAAAAA"
-        context.stroke()
 
-        const realMax = Math.max(...data.map(x => x[id]))
-        const realMin = Math.min(...data.map(x => x[id]).filter(x => x))
-        if (logarithmic) {
-            const logMin = Math.log10(Math.max(realMin))
-            const logMax = Math.log10(realMax)
-            const pad = Math.max(0, 2 - (logMax - logMin))
-            const min = logMin - 0.1 * Math.abs(logMin) - pad
-            const max = logMax + 0.1 * Math.abs(logMax) + pad
-            const valueScale = RENDER_HEIGHT / (max - min)
-
-            //render bars
-            context.beginPath()
-            const step = 10 ** Math.floor(Math.log10(max - min))
-            for (let i = 0; i < 11; i++) {
-                context.moveTo(0, RENDER_HEIGHT - (i * step - min) * valueScale)
-                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - (i * step - min) * valueScale)
-                context.fillText(StringMaker.formatValue(10 ** (i * step)), 2, RENDER_HEIGHT - (i * step - min) * valueScale)
-            }
-            context.lineWidth = 0.25
-            context.strokeStyle = "#888888"
-            context.stroke()
-
-            context.beginPath()
-            context.lineWidth = 1
-            context.moveTo(0, RENDER_HEIGHT)
-            for (let item of data) {
-                const x = (item.time - start) * timeScale
-                const y = RENDER_HEIGHT - (Math.log10(item[id]) - min) * valueScale
-                if (mouse && x < mouse.x) {
-                    mouse.closestX = x
-                    mouse.closestY = y
-                    mouse.time = item.time
-                    mouse.value = item[id]
-                }
-                context.lineTo(x, y)
-            }
-            context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-            context.lineTo(0, RENDER_HEIGHT)
-            context.fillStyle = "#CCCCCC88"
-            context.strokeStyle = "#CCCCCC"
-            context.fill()
-            context.stroke()
-
-        } else {
-            const max = realMax + 0.1 * Math.abs(realMax)
-            const valueScale = RENDER_HEIGHT / max
-
-            const step = 10 ** Math.floor(Math.log10(max))
-            for (let i = 1; i < 11; i++) {
-                context.moveTo(0, RENDER_HEIGHT - i * step * valueScale)
-                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - i * step * valueScale)
-                context.fillText(StringMaker.formatValue(i * step), 2, RENDER_HEIGHT - i * step * valueScale)
-            }
-            context.lineWidth = 0.25
-            context.strokeStyle = "#888888"
-            context.stroke()
-
-            context.beginPath()
-            context.lineWidth = 1
-            context.moveTo(0, RENDER_HEIGHT)
-            for (let item of data) {
-                const x = (item.time - start) * timeScale
-                const y = RENDER_HEIGHT - item[id] * valueScale
-                if (mouse && x < mouse.x) {
-                    mouse.closestX = x
-                    mouse.closestY = y
-                    mouse.time = item.time
-                    mouse.value = item[id]
-                }
-                context.lineTo(x, y)
-            }
-            context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-            context.lineTo(0, RENDER_HEIGHT)
-            context.fillStyle = "#CCCCCC88"
-            context.strokeStyle = "#CCCCCC"
-            context.fill()
-            context.stroke()
-
-        }
-
-        if  (mouse) {
-            context.beginPath()
-            context.moveTo(mouse.closestX, 0)
-            context.lineTo(mouse.closestX, RENDER_HEIGHT)
-            context.moveTo(0, mouse.closestY)
-            context.lineTo(RENDER_WIDTH, mouse.closestY)
-            context.strokeStyle = "#444444"
-            context.stroke()
-
-            context.save()
+        if (enoughData) {
+            context.font = "10px Rajdhani"
             context.fillStyle = "#CCCCCC"
-            if (mouse.x > 0.5) {
-                context.textAlign = "right"
-                context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX - 2, mouse.closestY - 2)
-                context.textBaseline = "top"
-                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.closestX - 2, mouse.closestY + 2)
-            } else {
-                context.textAlign = "left"
-                context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX + 2, mouse.closestY - 2)
-                context.textBaseline = "top"
-                context.fillText(StringMaker.formatValue(mouse.time, {type:StringMaker.VALUE_FORMATS.TIME}), mouse.closestX + 2, mouse.closestY + 2)
+            context.beginPath()
+            for (let moment = viewData.weakGrid * Math.floor(start / viewData.weakGrid);
+                 moment < end;
+                 moment += viewData.weakGrid) {
+                const x = (moment - start) * timeScale
+                context.moveTo(x, 0)
+                context.lineTo(x, RENDER_HEIGHT)
             }
-            context.restore()
-        }
+            context.strokeStyle = "#888888"
+            context.lineWidth = 0.25
+            context.stroke()
+            context.beginPath()
+            for (let moment = viewData.strongGrid * Math.floor(start / viewData.strongGrid);
+                 moment < end;
+                 moment += viewData.strongGrid) {
+                const x = (moment - start) * timeScale
+                context.moveTo(x, RENDER_HEIGHT)
+                context.lineTo(x, 0)
+                context.fillText(StringMaker.formatValue(moment, {type: StringMaker.VALUE_FORMATS.TIME}), x, RENDER_HEIGHT - 2)
+            }
+            context.strokeStyle = "#AAAAAA"
+            context.stroke()
 
-        context.beginPath()
-        context.moveTo(0, 0)
-        context.lineTo(0, RENDER_HEIGHT)
-        context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-        context.lineTo(RENDER_WIDTH, 0)
-        context.lineTo(0, 0)
-        context.strokeStyle = "#222222"
-        context.lineWidth = 2
-        context.stroke()
+            const realMax = Math.max(...data.map(x => x[id]))
+            const realMin = Math.min(...data.map(x => x[id]).filter(x => x))
+            if (logarithmic) {
+                const logMin = Math.log10(Math.max(realMin))
+                const logMax = Math.log10(realMax)
+                const pad = Math.max(0, 2 - (logMax - logMin))
+                const min = logMin - 0.1 * Math.abs(logMin) - pad
+                const max = logMax + 0.1 * Math.abs(logMax) + pad
+                const valueScale = RENDER_HEIGHT / (max - min)
+
+                //render bars
+                context.beginPath()
+                const step = 10 ** Math.floor(Math.log10(max - min))
+                for (let i = 0; i < 11; i++) {
+                    context.moveTo(0, RENDER_HEIGHT - (i * step - min) * valueScale)
+                    context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - (i * step - min) * valueScale)
+                    context.fillText(StringMaker.formatValue(10 ** (i * step)), 2, RENDER_HEIGHT - (i * step - min) * valueScale)
+                }
+                context.lineWidth = 0.25
+                context.strokeStyle = "#888888"
+                context.stroke()
+
+                context.beginPath()
+                context.lineWidth = 1
+                context.moveTo(0, RENDER_HEIGHT)
+                for (let item of data) {
+                    const x = (item.time - start) * timeScale
+                    const y = RENDER_HEIGHT - (Math.log10(item[id]) - min) * valueScale
+                    if (mouse && x < mouse.x) {
+                        mouse.closestX = x
+                        mouse.closestY = y
+                        mouse.time = item.time
+                        mouse.value = item[id]
+                    }
+                    context.lineTo(x, y)
+                }
+                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
+                context.lineTo(0, RENDER_HEIGHT)
+                context.fillStyle = "#CCCCCC88"
+                context.strokeStyle = "#CCCCCC"
+                context.fill()
+                context.stroke()
+
+            } else {
+                const max = realMax + 0.1 * Math.abs(realMax)
+                const valueScale = RENDER_HEIGHT / max
+
+                const step = 10 ** Math.floor(Math.log10(max))
+                for (let i = 1; i < 11; i++) {
+                    context.moveTo(0, RENDER_HEIGHT - i * step * valueScale)
+                    context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - i * step * valueScale)
+                    context.fillText(StringMaker.formatValue(i * step), 2, RENDER_HEIGHT - i * step * valueScale)
+                }
+                context.lineWidth = 0.25
+                context.strokeStyle = "#888888"
+                context.stroke()
+
+                context.beginPath()
+                context.lineWidth = 1
+                context.moveTo(0, RENDER_HEIGHT)
+                for (let item of data) {
+                    const x = (item.time - start) * timeScale
+                    const y = RENDER_HEIGHT - item[id] * valueScale
+                    if (mouse && x < mouse.x) {
+                        mouse.closestX = x
+                        mouse.closestY = y
+                        mouse.time = item.time
+                        mouse.value = item[id]
+                    }
+                    context.lineTo(x, y)
+                }
+                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
+                context.lineTo(0, RENDER_HEIGHT)
+                context.fillStyle = "#CCCCCC88"
+                context.strokeStyle = "#CCCCCC"
+                context.fill()
+                context.stroke()
+
+            }
+
+            if (mouse) {
+                context.beginPath()
+                context.moveTo(mouse.closestX, 0)
+                context.lineTo(mouse.closestX, RENDER_HEIGHT)
+                context.moveTo(0, mouse.closestY)
+                context.lineTo(RENDER_WIDTH, mouse.closestY)
+                context.strokeStyle = "#444444"
+                context.stroke()
+
+                context.save()
+                context.fillStyle = "#CCCCCC"
+                if (mouse.x > 0.5) {
+                    context.textAlign = "right"
+                    context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX - 2, mouse.closestY - 2)
+                    context.textBaseline = "top"
+                    context.fillText(StringMaker.formatValue(mouse.time, {type: StringMaker.VALUE_FORMATS.TIME}), mouse.closestX - 2, mouse.closestY + 2)
+                } else {
+                    context.textAlign = "left"
+                    context.fillText(StringMaker.formatValueById(mouse.value, id), mouse.closestX + 2, mouse.closestY - 2)
+                    context.textBaseline = "top"
+                    context.fillText(StringMaker.formatValue(mouse.time, {type: StringMaker.VALUE_FORMATS.TIME}), mouse.closestX + 2, mouse.closestY + 2)
+                }
+                context.restore()
+            }
+
+            context.beginPath()
+            context.moveTo(0, 0)
+            context.lineTo(0, RENDER_HEIGHT)
+            context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
+            context.lineTo(RENDER_WIDTH, 0)
+            context.lineTo(0, 0)
+            context.strokeStyle = "#222222"
+            context.lineWidth = 2
+            context.stroke()
+        } else {
+            context.font = "32px Rajdhani"
+            context.fillStyle = "#CCCCCC"
+            context.textBaseline = "middle"
+            context.textAlign = "center"
+            context.fillText("Not enough data", RENDER_WIDTH / 2, RENDER_HEIGHT / 2)
+        }
 
         context.restore()
     }

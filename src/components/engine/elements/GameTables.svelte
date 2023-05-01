@@ -1,9 +1,10 @@
 <script>
-    import Trigger from "utility/trigger.js"
     import TABLES from "data/tables.js"
     import SLOT_STATES from "data/slot-states.js"
     import SLOT_TYPES from "data/slot-types.js"
+
     import registerTrigger from "utility/register-trigger.js"
+    import Trigger from "utility/trigger.js"
 
     export let tables = {}
     export let state
