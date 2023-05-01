@@ -89,6 +89,10 @@
         triggers.push(Trigger.on("command-import-save", (data) => loadData(data)))
         triggers.push(Trigger.on("command-export-save", () => exportSave()))
         triggers.push(Trigger.on("command-reset-game", resetGame))
+
+        triggers.push(Trigger.on("value-reset", () => saveGame()))
+        triggers.push(Trigger.on("value-prestiged", () => saveGame()))
+        triggers.push(Trigger.on("slot-toggled", () => saveGame()))
     })
 
     onDestroy(() => {

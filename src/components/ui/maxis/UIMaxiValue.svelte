@@ -7,6 +7,7 @@
     import UIMaxiExplanation from "components/ui/maxis/elements/UIMaxiExplanation.svelte"
     import StringMaker from "utility/string-maker.js"
     import UIMaxiAutoPrestige from "components/ui/maxis/elements/UIMaxiAutoPrestige.svelte"
+    import getValuesCodes from "data/get-values-codes.js"
     export let game
     export let id
 
@@ -25,20 +26,7 @@
 
     $: prestigeReady = current >= limit
 
-    $: code = {
-        X : id,
-        dX : `d${id}`,
-        MX : `M${id}`,
-        MX0 : `M${id}0`,
-        MXm : `M${id}m`,
-        XP : `${id}P`,
-        dXP : `d${id}P`,
-        XPc : `${id}Pc`,
-        Xt : `${id}t`,
-        XPt : `${id}Pt`,
-        X_auto : `${id}_auto`,
-        X_auto_seen : `${id}_auto_seen`,
-    }
+    $: code = getValuesCodes(id)
 
     $: values, updateSeen()
 

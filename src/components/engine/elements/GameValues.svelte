@@ -9,6 +9,7 @@
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_TICK = 600
     const MAX_TIME_STEP = 10
+    const MAX_STAT_STEP = 10
 
     let tableValues = {}
     let activeModifierList = []
@@ -125,6 +126,7 @@
 
         values.targetTime += time
         let remainingTime = Math.min(values.targetTime - values.time, MAX_TIME_TICK)
+        let statStep = MAX_STAT_STEP
         while (remainingTime > 0) {
             const times = VALUE_NAMES.map(getValueTime)
             let step = Math.min(MAX_TIME_STEP, remainingTime, ...times)
@@ -132,6 +134,11 @@
             values.time += step
             remainingTime -= step
             updateValues()
+            statStep -= step
+            if (statStep < 0) {
+                statStep = MAX_STAT_STEP
+                Trigger("stats-values-updated", values)
+            }
         }
 
         Trigger("stored-values-updated", values)

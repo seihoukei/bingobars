@@ -44,6 +44,8 @@
         if (!seen || target !== name || value < limit)
             return
 
+        Trigger("stats-value-prestige", target)
+
         value -= value * prestigeCost
         limit *= limitMultiplier
         prestiges += prestigeStep
@@ -55,6 +57,8 @@
     function reset(target = name) {
         if (!seen || target !== name)
             return
+
+        Trigger("stats-value-reset", target)
 
         value = 0
         prestiges = 0

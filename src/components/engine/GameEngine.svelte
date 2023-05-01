@@ -4,6 +4,7 @@
     import GameTables from "components/engine/elements/GameTables.svelte"
     import {onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
+    import GameStats from "components/engine/elements/GameStats.svelte"
 
     export let game = {}
 
@@ -17,6 +18,7 @@
 
     function setTab(tab) {
         game.state.tab = tab
+        Trigger("command-save-game")
     }
 
     const triggers = []
@@ -37,5 +39,6 @@
     {#if state}
         <GameValues {state} bind:values={state.values}/>
         <GameTables {state} bind:tables={state.tables}/>
+        <GameStats {state} bind:stats={state.stats}/>
     {/if}
 {/key}

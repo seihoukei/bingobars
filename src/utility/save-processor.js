@@ -1,16 +1,18 @@
+import {compressToBase64, decompressFromBase64} from "@amoutonbrady/lz-string"
+
 export default class SaveProcessor {
     static encode(save) {
         const json = JSON.stringify(save)
-        const base64 = btoa(json)
-        return base64
+        const compressed = compressToBase64(json)
+        return compressed
     }
     
-    static decode(base64) {
-        if (!base64) {
+    static decode(compressed) {
+        if (!compressed) {
             return null
         }
         try {
-            const json = atob(base64)
+            const json = decompressFromBase64(compressed)
             const save = JSON.parse(json)
             return save
         } catch (e) {
