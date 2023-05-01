@@ -12,14 +12,14 @@
     const MAX_TIME_STEP = 10
     const MAX_STAT_STEP = 10
 
-    export let values = getInitialValues()
-    export let state
-
     registerTrigger("command-tick", advance)
 
     let tableValues = {}
     let activeModifierList = []
     let availableModifierList = []
+
+    export let values = getInitialValues()
+    export let state
 
     $: activeModifierList, tableValues, updateValues()
 

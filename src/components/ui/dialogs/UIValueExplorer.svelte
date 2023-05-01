@@ -3,10 +3,10 @@
     import FG_COLORS from "data/fg-colors.js"
     import UIExplorerModifiers from "components/ui/dialogs/elements/UIExplorerModifiers.svelte"
     import StringMaker from "utility/string-maker.js"
-    import BASE_VALUES from "data/base-values.js"
     import UIExplorerHistory from "components/ui/dialogs/elements/UIExplorerHistory.svelte"
     import UIExplorerResets from "components/ui/dialogs/elements/UIExplorerResets.svelte"
     import registerTrigger from "utility/register-trigger.js"
+    import getValuesCodes from "data/get-values-codes.js"
 
     const PAGES = {
         "Modifiers" : UIExplorerModifiers,
@@ -25,15 +25,24 @@
     let currentPage = "stats"
 
     $: values = game?.state?.values ?? {}
-    $: baseValue = values[`${id}_base`]
+    $: initialValue = values[`${id}_base`]
     $: finalValue = values[id]
 
     $: color = FG_COLORS[VALUES[id]?.baseValue] ?? "inherit"
     $: cssVariables = `--background: ${color};`
 
-    $: derived = baseValue !== undefined
+    $: baseValue = VALUES[id]?.baseValue
+    $: derived = initialValue !== undefined
+    $: resettable = getResettable(id)
 
     $: setPages(id)
+
+    function getResettable(id) {
+        if (!baseValue)
+            return false
+        const codes = getValuesCodes(baseValue)
+        return [codes.X, codes.XP, codes.MX, codes.Xt].includes(id)
+    }
 
     function exploreValue(value) {
         id = value
@@ -53,8 +62,8 @@
         if (derived)
             pages.push("Modifiers")
         pages.push("History")
-        if (BASE_VALUES[id])
-        pages.push("Resets")
+        if (resettable)
+            pages.push("Resets")
         currentPage = pages[0]
     }
 
@@ -74,7 +83,7 @@
             </div>
             <div class="values">
                 <div class="value">
-                    <span class="name">Base value</span> = <span class="value">{StringMaker.formatValueById(baseValue, id)}</span>
+                    <span class="name">Base value</span> = <span class="value">{StringMaker.formatValueById(initialValue, id)}</span>
                 </div>
                 <div class="value">
                     <span class="name">Final value</span> = <span class="value">{StringMaker.formatValueById(finalValue, id)}</span>
