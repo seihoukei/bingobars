@@ -44,3 +44,4 @@ Table, row and column numbers start from 1
 | T#R#C# | Table # cell at row #, column # |
 | T#DR   | Table # down-right diagonal     |
 | T#DL   | Table # down-left diagonal      |                                 
+

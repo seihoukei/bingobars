@@ -12,6 +12,7 @@ export default defineConfig({
       'utility': path.resolve('./src/utility'),
       'stores': path.resolve('./src/stores'),
       'data': path.resolve('./src/data'),
+      'workers': path.resolve('./src/workers'),
     }
   }
 })

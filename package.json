@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@amoutonbrady/lz-string": "^0.1.0",
-    "mathjs": "^11.8.0"
+    "mathjs": "^11.8.0",
+    "toposort": "^2.0.2"
   }
 }

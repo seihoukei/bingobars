@@ -1,4 +1,5 @@
 import {create, all, re} from 'mathjs'
+import toposort from "toposort"
 
 const config = { }
 const math = create(all, config)
@@ -11,8 +12,30 @@ export default class Calculation {
         MUL : 3,
         BONUS : 4,
         FIX : 5,
-        CHECK : 6,
+        SUPER : 6,
+        CHECK : 7,
+        STEP : 10,
     }
+
+    static sortList(list) {
+        const edges = []
+        for (let entry of list) {
+            for (let source of entry.involved) {
+                if (source !== entry.target)
+                    edges.push([source,entry.target])
+            }
+        }
+
+        const sortedTargets = toposort(edges)
+        const targetPriorities = {}
+        sortedTargets.forEach((item, index) => targetPriorities[item] = index * this.PRIORITIES.STEP)
+
+        const priorities = new Map(
+            list.map(entry => [entry, (targetPriorities[entry.target] ?? 0) + (entry.priority ?? 0)])
+        )
+        list.sort((x,y) => priorities.get(x) - priorities.get(y))
+    }
+
     source = null
     hidden = false
 
@@ -88,3 +111,10 @@ export default class Calculation {
         this.hidden = hidden
     }
 }
+
+Calculation.sortList([
+    new Calculation("A += 1"),
+    new Calculation("A *= C"),
+    new Calculation("B += 1"),
+    new Calculation("C *= B")
+])

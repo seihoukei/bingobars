@@ -22,7 +22,7 @@
     SHINY!
 
     Libraries/frameworks used:
-    ViteJS (MIT), Svelte (MIT), math.js (Apache-2.0 license), lz-string (MIT)
+    ViteJS (MIT), Svelte (MIT), math.js (Apache-2.0 license), lz-string (MIT), toposort (MIT)
     THANKY!
 </div>
 

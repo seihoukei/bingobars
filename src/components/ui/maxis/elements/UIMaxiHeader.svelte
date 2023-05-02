@@ -6,13 +6,14 @@
     const BINGO_TAB = 15
 
     $: values = game?.state?.values ?? {}
+    $: bingo = game?.state?.bingo ?? {}
     $: now = values.time ?? 0
     $: target = values.targetTime ?? 0
     $: catchup = target - now > 10
     $: bingoActive = game?.state?.tab === BINGO_TAB
 
     $: bingoins = values.bingoins ?? 0
-    $: bingoinsSpent = values.bingoinsSpent ?? 0
+    $: bingoinsSpent = bingo.cost ?? 0
     $: bingoinsFree = bingoins - bingoinsSpent
 </script>
 

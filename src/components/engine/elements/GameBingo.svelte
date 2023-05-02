@@ -23,7 +23,7 @@
                 [0, 0, 0, 0, 0,],
             ],
             cost : 0,
-            levels : {},
+            levels : Object.fromEntries(Object.keys(SUPER_BINGO.lines).map(x => [x, 0])),
             active : Object.fromEntries(Object.keys(SUPER_BINGO.lines).map(x => [x, true])),
         }
         return bingo

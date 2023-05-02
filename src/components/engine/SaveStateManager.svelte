@@ -29,8 +29,8 @@
         return `${prefix}_Save_${slot}`
     }
 
-    function saveGame(slot = AUTOSAVE_SLOT) {
-        const saveData = prepareSave()
+    async function saveGame(slot = AUTOSAVE_SLOT) {
+        const saveData = await prepareSave()
         localStorage[slotName(slot)] = saveData
         Trigger("game-saved", slot)
     }
@@ -70,8 +70,8 @@
         }
     }
 
-    function prepareSave() {
-        const data = SaveProcessor.encode({
+    async function prepareSave() {
+        const data = await SaveProcessor.encodeAsync({
             _meta: {
                 version : 1,
                 date : Date.now()
@@ -82,8 +82,8 @@
         return data
     }
 
-    function exportSave() {
-        navigator.clipboard?.writeText?.(prepareSave())
+    async function exportSave() {
+        navigator.clipboard?.writeText?.(await prepareSave())
             .then(() => alert("Copied to clipboard"))
             .catch(() => alert("Export failed"))
     }

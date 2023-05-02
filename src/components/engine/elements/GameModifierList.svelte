@@ -7,6 +7,7 @@
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
     import SUPER_BINGO from "data/super-bingo.js"
+    import Calculation from "utility/calculation.js"
 
     export let tables
     export let bingo
@@ -56,6 +57,9 @@
 
         activeModifierList.sort((x, y) => x.priority - y.priority)
         availableModifierList.sort((x, y) => x.priority - y.priority)
+
+        Calculation.sortList(activeModifierList)
+        Calculation.sortList(availableModifierList)
 
         Trigger("modifier-lists-updated", activeModifierList, availableModifierList)
     }

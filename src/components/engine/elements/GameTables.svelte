@@ -68,14 +68,15 @@
             Trigger("slot-unlocked", name)
         }
 
-        if (tables[name] & SLOT_STATES.UNLOCKED) {
-            if (forceState === true)
-                tables[name] |= SLOT_STATES.ENABLED
-            else if (forceState === false)
-                tables[name] &= ~SLOT_STATES.ENABLED
-            else
-                tables[name] ^= SLOT_STATES.ENABLED
-        }
+        if (!(tables[name] & SLOT_STATES.UNLOCKED))
+            return
+
+        if (forceState === true)
+            tables[name] |= SLOT_STATES.ENABLED
+        else if (forceState === false)
+            tables[name] &= ~SLOT_STATES.ENABLED
+        else
+            tables[name] ^= SLOT_STATES.ENABLED
 
         Trigger("slot-toggled", name, tables[name] & SLOT_STATES.ENABLED)
 

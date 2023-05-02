@@ -1,5 +1,0 @@
-- Amount : X Value >= V
-- Prestige : X Prestige points >= V
-- Vicinity : |X Value - V| <= W
-- Area : X * Y >= V
-- Volume : X * Y * Z >= V

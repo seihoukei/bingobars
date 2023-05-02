@@ -40,7 +40,7 @@ const SUPER_BINGO = {
         C3 : {
 			cells: [[2,0], [2,1], [2,2], [2,3], [2,4]],
 			position : [3,5],
-			modifier : new Calculation("dA *= 1.1 ^ SBC3", 1000)
+			effect : "dA *= 1.1 ^ SBC3",
 		},
         C4 : {
 			cells: [[3,0], [3,1], [3,2], [3,3], [3,4]],
@@ -62,7 +62,10 @@ const SUPER_BINGO = {
 }
 
 for (const [id, data] of Object.entries(SUPER_BINGO.lines)) {
-	data.modifier?.setSource?.(`SB${id}`)
+	if (data.effect) {
+		data.modifier = new Calculation(data.effect, Calculation.PRIORITIES.SUPER)
+		data.modifier.setSource(`SB${id}`)
+	}
 }
 
 export default SUPER_BINGO

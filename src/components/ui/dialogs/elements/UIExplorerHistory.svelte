@@ -105,8 +105,8 @@
             context.strokeStyle = "#AAAAAA"
             context.stroke()
 
-            const realMax = Math.max(...data.map(x => x[id]))
-            const realMin = Math.min(...data.map(x => x[id]).filter(x => x))
+            const realMax = Math.max(...data.filter(x => x[id] !== undefined).map(x => x[id]))
+            const realMin = Math.min(...data.filter(x => x[id] !== undefined).map(x => x[id]).filter(x => x))
             if (logarithmic) {
                 const logMin = Math.log10(Math.max(realMin))
                 const logMax = Math.log10(realMax)
@@ -130,14 +130,18 @@
                 context.beginPath()
                 context.lineWidth = 1
                 context.moveTo(0, RENDER_HEIGHT)
+                let value = 0
+                let time = 0
                 for (let item of data) {
-                    const x = (item.time - start) * timeScale
-                    const y = RENDER_HEIGHT - (Math.log10(item[id]) - min) * valueScale
+                    value = item[id] ?? value
+                    time = item.time ?? time
+                    const x = (time - start) * timeScale
+                    const y = RENDER_HEIGHT - (Math.log10(value) - min) * valueScale
                     if (mouse && x < mouse.x) {
                         mouse.closestX = x
                         mouse.closestY = y
-                        mouse.time = item.time
-                        mouse.value = item[id]
+                        mouse.time = time
+                        mouse.value = value
                     }
                     context.lineTo(x, y)
                 }
@@ -165,14 +169,18 @@
                 context.beginPath()
                 context.lineWidth = 1
                 context.moveTo(0, RENDER_HEIGHT)
+                let value = 0
+                let time = 0
                 for (let item of data) {
-                    const x = (item.time - start) * timeScale
-                    const y = RENDER_HEIGHT - item[id] * valueScale
+                    value = item[id] ?? value
+                    time = item.time ?? time
+                    const x = (time - start) * timeScale
+                    const y = RENDER_HEIGHT - value * valueScale
                     if (mouse && x < mouse.x) {
                         mouse.closestX = x
                         mouse.closestY = y
-                        mouse.time = item.time
-                        mouse.value = item[id]
+                        mouse.time = time
+                        mouse.value = value
                     }
                     context.lineTo(x, y)
                 }

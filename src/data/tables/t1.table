@@ -115,9 +115,10 @@ R: ???
 R: ???
 
 # R5C2
-R: ???
-M: dA = dA
-m: TODO
+R: T1R3C3
+C: BP > AP
+C: A > MB
+M: dA *= MAm
 
 # R5C3
 C: AP > A+3
