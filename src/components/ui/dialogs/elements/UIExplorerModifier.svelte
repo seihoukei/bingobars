@@ -4,16 +4,19 @@
 
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import VALUES from "data/values.js"
 
     export let modifier = {}
     export let game = {}
 
     $: values = game?.state?.values ?? {}
     $: tables = game?.state?.tables ?? {}
+    $: bingo = game?.state?.bingo ?? {}
     $: source = modifier.source
     $: slot = getSlot(source)
-    $: interactive = slot !== null
-    $: active = !slot || (tables[source] & SLOT_STATES.ENABLED)
+    $: bingoLine = slot ? null : source?.match(/^SB..$/)
+    $: interactive = slot !== null || bingoLine
+    $: active = (slot && (tables[source] & SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)])
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
     $: variables = [...new Set(modifier.involved.filter(x => x !== modifier.target))]
@@ -27,15 +30,34 @@
     }
 
     function toggle() {
-        if (slot)
-            Trigger("command-toggle-slot", slot.address)
+        if (VALUES[modifier.source]?.isBingoLine) {
+            Trigger("command-toggle-bingo-line", modifier.source.slice(2))
+            return
+        }
+
+        if (!slot)
+            return
+
+        Trigger("command-toggle-slot", slot.address)
     }
 </script>
 
 <div class="modifier" class:active>
     <div class="main">
-        <div class="source" class:interactive on:click={toggle}> {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}</div>
-        <div class="expression" class:interactive on:click={toggle}>{modifier.expression}</div>
+        <div class="source"
+             class:interactive
+             class:super={bingoLine}
+             on:click={toggle}
+        >
+            {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}
+        </div>
+
+        <div class="expression"
+             class:interactive
+             on:click={toggle}
+        >
+            {modifier.expression}
+        </div>
     </div>
     {#if variables.length}
         <div class="variables">
@@ -70,6 +92,15 @@
         cursor: pointer;
         background-color: #333333;
     }
+
+    div.source.super {
+        background-color: #777722;
+    }
+
+    div.source.super:hover {
+        background-color: #999944;
+    }
+
     div.active div.source {
         border : 0.1em solid #CCCCCC;
         padding: 0;

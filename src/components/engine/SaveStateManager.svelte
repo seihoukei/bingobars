@@ -21,6 +21,7 @@
     registerTrigger("value-reset", () => saveGame())
     registerTrigger("value-prestiged", () => saveGame())
     registerTrigger("slots-toggled", () => saveGame())
+    registerTrigger("bingo-updated", () => saveGame())
 
     $: updateInterval(autosaveInterval)
 

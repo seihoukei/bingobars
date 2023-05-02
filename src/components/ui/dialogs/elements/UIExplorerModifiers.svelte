@@ -4,6 +4,7 @@
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
+    import VALUES from "data/values.js"
 
     export let game
     export let id
@@ -33,7 +34,16 @@
                 currentSandbox = lastSandbox
             }
         }
-        Trigger("command-toggle-slots", toggles)
+        const toggleSlots = toggles
+            .filter(([id, value]) => !VALUES[id]?.isBingoLine)
+        if (toggleSlots.length)
+            Trigger("command-toggle-slots", toggleSlots)
+
+        const toggleBingo = toggles
+            .filter(([id, value]) => VALUES[id]?.isBingoLine)
+            .map(([id, value]) => [id.slice(2), value])
+        if (toggleBingo.length)
+            Trigger("command-toggle-bingo-lines", toggleBingo)
     }
 
     function minimize() {

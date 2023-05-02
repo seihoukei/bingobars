@@ -11,6 +11,7 @@
     import UIMaxiHeader from "components/ui/maxis/elements/UIMaxiHeader.svelte"
 
     import Trigger from "utility/trigger.js"
+    import UIMaxiBingo from "components/ui/maxis/UIMaxiBingo.svelte"
 
     export let game
 
@@ -76,6 +77,10 @@
         mini : UIMiniGeneric,
         maxi : UIMaxiMenu,
         id : "MENU",
+    },{
+        mini : null,
+        maxi : UIMaxiBingo,
+        id : "BINGO",
     },]
 
     $: id = game.id
@@ -113,12 +118,14 @@
                 </div>
 
                 {#each UI_TABS as tabInfo, i}
-                    <svelte:component {game}
-                        this={tabInfo.mini}
-                        id={tabInfo.id}
-                        active={tabId === i}
-                        on:basicaction={() => setTab(i)}
-                    />
+                    {#if tabInfo.mini}
+                        <svelte:component {game}
+                            this={tabInfo.mini}
+                            id={tabInfo.id}
+                            active={tabId === i}
+                            on:basicaction={() => setTab(i)}
+                        />
+                    {/if}
                 {/each}
             </div>
         </div>

@@ -6,14 +6,15 @@
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
-
-
+    import SUPER_BINGO from "data/super-bingo.js"
 
     export let tables
+    export let bingo
     export let activeModifierList = []
     export let availableModifierList = []
 
     registerTrigger("slots-toggled", updateModifiers)
+    registerTrigger("bingo-updated", updateModifiers)
     registerTrigger("command-update-modifiers", updateModifiers)
 
     updateModifiers()
@@ -41,6 +42,18 @@
             }
         }
 
+        for (const [id, data] of Object.entries(SUPER_BINGO.lines)) {
+            const level = bingo?.levels?.[id]
+            const modifier = data?.modifier
+            if (!level)
+                continue
+            availableModifierList.push(modifier)
+            const active = bingo?.active?.[id]
+            if (!active)
+                continue
+            activeModifierList.push(modifier)
+        }
+
         activeModifierList.sort((x, y) => x.priority - y.priority)
         availableModifierList.sort((x, y) => x.priority - y.priority)
 
@@ -48,7 +61,5 @@
     }
 
     onMount(() => updateModifiers())
-
-
 
 </script>

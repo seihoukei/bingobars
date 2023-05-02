@@ -6,6 +6,7 @@
 
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
+    import GameBingo from "components/engine/elements/GameBingo.svelte"
 
     const DEFAULT_GAME_STATE = Object.freeze({
     })
@@ -32,6 +33,7 @@
     {#if state}
         <GameValues {state} bind:values={state.values}/>
         <GameTables {state} bind:tables={state.tables}/>
+        <GameBingo {state} bind:bingo={state.bingo}/>
         <GameStats {state} bind:stats={state.stats}/>
     {/if}
 {/key}

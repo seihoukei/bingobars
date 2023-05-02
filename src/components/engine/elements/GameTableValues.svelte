@@ -5,11 +5,14 @@
 
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
+    import SUPER_BINGO from "data/super-bingo.js"
 
     export let tables = {}
+    export let bingo = {}
     export let tableValues = {}
 
     registerTrigger("slot-unlocked", updateTableValues)
+    registerTrigger("bingo-updated", updateTableValues)
 
     const counterNames = {
         [SLOT_TYPES.CELL]: "cN",
@@ -28,6 +31,7 @@
             T_CN: 0,
             T_DN: 0,
             T_LN: 0,
+            bingoins : 0,
         }
 
         for (const [tableName,table] of Object.entries(TABLES)) {
@@ -50,9 +54,15 @@
                     }
                     tableValues[`${tableName}_SN`]++
                     tableValues[`T_SN`]++
+                    tableValues.bingoins += slot.bingoins ?? 0
                 }
             }
         }
+
+        for (const id of Object.keys(SUPER_BINGO.lines)) {
+            tableValues[`SB${id}`] = bingo?.levels?.[id] ?? 0
+        }
+
         Trigger("table-values-updated", tableValues)
     }
 

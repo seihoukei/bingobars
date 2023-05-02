@@ -174,6 +174,6 @@
         />
     {/each}
 
-    <GameModifierList tables={state?.tables} bind:availableModifierList bind:activeModifierList/>
-    <GameTableValues tables={state?.tables} bind:tableValues />
+    <GameModifierList tables={state?.tables} bingo={state?.bingo} bind:availableModifierList bind:activeModifierList/>
+    <GameTableValues tables={state?.tables} bingo={state?.bingo} bind:tableValues />
 {/if}

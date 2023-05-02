@@ -1,6 +1,8 @@
 import BASE_VALUES from "data/base-values.js"
 import VALUES_PER_BASE from "data/values-per-base.js"
 import VALUES_PER_TABLE from "data/values-per-table.js"
+import SUPER_BINGO from "data/super-bingo.js"
+import StringMaker from "utility/string-maker.js"
 
 const VALUES = {}
 
@@ -36,6 +38,14 @@ for (const baseValue of Object.keys(BASE_VALUES)) {
         }
         VALUES[valueName] = valueData
     }
+}
+
+for (const id of Object.keys(SUPER_BINGO.lines)) {
+    const valueData = {
+        isBingoLine : true
+    }
+    valueData.format = {type : StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC}
+    VALUES[`SB${id}`] = valueData
 }
 
 export default VALUES

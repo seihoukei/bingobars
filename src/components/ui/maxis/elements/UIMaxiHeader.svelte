@@ -3,10 +3,13 @@
 
     export let game
 
+    const BINGO_TAB = 15
+
     $: values = game?.state?.values ?? {}
     $: now = values.time ?? 0
     $: target = values.targetTime ?? 0
     $: catchup = target - now > 10
+    $: bingoActive = game?.state?.tab === BINGO_TAB
 
     $: bingoins = values.bingoins ?? 0
     $: bingoinsSpent = values.bingoinsSpent ?? 0
@@ -26,12 +29,23 @@
     <div class="bingoins">
         {bingoinsFree} Bingoins
     </div>
-    <div class="super-bingo button">
+    <div class="super-bingo button"
+         class:active={bingoActive}
+         on:click={() => Trigger("command-set-tab", BINGO_TAB)}>
         <span>Super</span> <span>Bingo</span>
     </div>
 </div>
 
 <style>
+    @keyframes shine {
+        0% {
+            background-position-x: 0;
+        }
+        100% {
+            background-position-x: 7em;
+        }
+    }
+
     div.container {
         font-size: 2em;
         height: 1.2em;
@@ -68,11 +82,22 @@
         background: linear-gradient(-58deg, #998822, #998822 47%, #DDDDDD 47%, #DDDDDD 53%, #998822 53%, #998822);
     }
 
+    div.super-bingo.active {
+        animation: shine 2s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+
     div.super-bingo span:first-child {
         margin-top: -0.2em;
     }
     div.super-bingo span:last-child {
         margin-bottom: -0.2em;
+    }
+
+    div.super-bingo:not(.active):hover {
+        cursor: pointer;
+        animation: shine 1s;
     }
 
 </style>

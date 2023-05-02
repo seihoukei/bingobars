@@ -75,6 +75,9 @@ export default class BingoTableData {
                 case "c":
                     context.setConditionText(data)
                     break
+                case "$":
+                    context.setBingoins(data)
+                    break
                 case "LOCK":
                     context.setOneWay()
                     break

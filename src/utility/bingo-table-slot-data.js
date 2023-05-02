@@ -25,6 +25,7 @@ export default class BingoTableSlotData {
     conditionText = null
     modifierText = null
     oneWay = false
+    bingoins = 1
 
     constructor(table, name) {
         this.address = `${table}${name}`
@@ -63,6 +64,10 @@ export default class BingoTableSlotData {
 
     setModifierText(data) {
         this.modifierText = data
+    }
+
+    setBingoins(data) {
+        this.bingoins = data
     }
 
     getInvolvedInModifiers() {

@@ -18,6 +18,9 @@
     Resetting value allows to fulfil some conditions, and has no other benefits.
     TRICKY!
 
+    Use Bingoins from unlocked cells in SUPER BINGO for more boosts!
+    SHINY!
+
     Libraries/frameworks used:
     ViteJS (MIT), Svelte (MIT), math.js (Apache-2.0 license), lz-string (MIT)
     THANKY!

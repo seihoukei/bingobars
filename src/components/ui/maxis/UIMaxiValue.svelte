@@ -63,7 +63,7 @@
 </script>
 
 <div class="container"
-     style="--ui-slot:{uiSlot};--value-color:{FG_COLORS[id]};"
+     style="--value-color:{FG_COLORS[id]};"
 >
     {#if values}
     <div class="bar-line">
@@ -230,7 +230,6 @@
 
 <style>
     div.container {
-        grid-area: var(--ui-slot);
         border-radius: 1em;
         position: relative;
         width : 70em;

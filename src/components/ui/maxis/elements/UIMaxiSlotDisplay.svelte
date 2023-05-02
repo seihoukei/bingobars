@@ -134,10 +134,16 @@
                 <UISlotPrerequisites {game} prerequisites={slot.prerequisites}/>
             {/if}
         </div>
+        {#if slot.bingoins}
+            <div class="bingoins">
+                <span class="bingoin-icon"></span> {slot.bingoins}
+            </div>
+        {/if}
     </div>
 {/if}
 <style>
     div.slot {
+        position: relative;
         background: var(--background);
         grid-row: var(--row);
         grid-column: var(--column);
@@ -179,5 +185,19 @@
 
     div.content.debug {
         font-size: 0.7em;
+    }
+
+    div.bingoins {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.2em;
+        right : 0;
+        bottom : 0;
+    }
+
+    div.unlocked div.bingoins {
+        opacity: 0.5;
     }
 </style>
