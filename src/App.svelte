@@ -6,6 +6,9 @@
     import TABLES from "data/tables.js"
 
     import Trigger from "utility/trigger.js"
+    import Wakelock from "utility/wakelock.js"
+
+    Wakelock.enable()
 
     let game = {}
 

@@ -1,4 +1,4 @@
-import {create, all, re} from 'mathjs'
+import {create, all} from 'mathjs/number'
 import toposort from "toposort"
 
 const config = { }
