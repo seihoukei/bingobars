@@ -1,10 +1,10 @@
 <script>
     import TABLES from "data/tables.js"
+    import VALUES from "data/values.js"
     import SLOT_STATES from "data/slot-states.js"
 
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
-    import VALUES from "data/values.js"
 
     export let modifier = {}
     export let game = {}
@@ -15,8 +15,9 @@
     $: source = modifier.source
     $: slot = getSlot(source)
     $: bingoLine = slot ? null : source?.match(/^SB..$/)
+    $: gameRules = !source
     $: interactive = slot !== null || bingoLine
-    $: active = (slot && (tables[source] & SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)])
+    $: active = (slot && (tables[source] & SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)]) || gameRules
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
     $: variables = [...new Set(modifier.involved.filter(x => x !== modifier.target))]
@@ -47,6 +48,7 @@
         <div class="source"
              class:interactive
              class:super={bingoLine}
+             class:rules={gameRules}
              on:click={toggle}
         >
             {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}
@@ -91,6 +93,10 @@
     div.source.interactive:hover {
         cursor: pointer;
         background-color: #333333;
+    }
+
+    div.source.rules {
+        background-color: #444444;
     }
 
     div.source.super {

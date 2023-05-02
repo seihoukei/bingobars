@@ -19,12 +19,12 @@
     registerTrigger("stats-value-reset", storeReset)
     registerTrigger("stats-value-prestige", (value) => updateStats(values, 3))
     registerTrigger("stats-value-reset", (value) => updateStats(values, 3))
-    registerTrigger("value-reset", (value) => delayUpdateStats(values, 3))
-    registerTrigger("value-prestiged", (value) => delayUpdateStats(values, 3))
+    registerTrigger("value-reset", (value) => delayUpdateStats(3))
+    registerTrigger("value-prestiged", (value) => delayUpdateStats(3))
     registerTrigger("slots-toggled", (value) => updateStats(values, 2))
-    registerTrigger("slots-toggled", (value) => updateStats(values, 2))
-    registerTrigger("bingo-updated", (value) => delayUpdateStats(values, 2))
-    registerTrigger("bingo-updated", (value) => delayUpdateStats(values, 2))
+    registerTrigger("slots-toggled", (value) => delayUpdateStats(2))
+    registerTrigger("bingo-updated", (value) => updateStats(values, 2))
+    registerTrigger("bingo-updated", (value) => delayUpdateStats(2))
     registerTrigger("stored-values-updated", updateStats)
     registerTrigger("stats-values-updated", updateStats)
     registerTrigger("slot-unlocked", storeUnlock)
@@ -76,9 +76,9 @@
     }
 
     let delayTimeout = null
-    function delayUpdateStats() {
+    function delayUpdateStats(forced) {
         clearTimeout(delayTimeout)
-        delayTimeout = setTimeout(() => updateStats(values, true), 0)
+        delayTimeout = setTimeout(() => updateStats(values, forced), 0)
     }
 
     function storeReset(id) {

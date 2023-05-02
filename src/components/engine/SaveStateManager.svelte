@@ -10,18 +10,22 @@
     export let id = Math.random()
 	export let prefix = "Little_Bars"
     export let defaultState = {}
-    export let autosaveInterval = 10000
+    export let autosaveInterval = 60000
+    export let actionsaveInterval = 5000
+
+    let lastSaved = performance.now()
+    let saveTimeout = null
 
     registerTrigger("command-save-game", (slot) => saveGame(slot))
     registerTrigger("command-load-game", (slot) => loadGame(slot))
     registerTrigger("command-import-save", (data, offlineTime = true) => loadData(data, offlineTime))
-    registerTrigger("command-export-save", () => exportSave())
+    registerTrigger("command-export-save", exportSave)
     registerTrigger("command-reset-game", resetGame)
 
-    registerTrigger("value-reset", () => saveGame())
-    registerTrigger("value-prestiged", () => saveGame())
-    registerTrigger("slots-toggled", () => saveGame())
-    registerTrigger("bingo-updated", () => saveGame())
+    registerTrigger("value-reset", planSave)
+    registerTrigger("value-prestiged", planSave)
+    registerTrigger("slots-toggled", planSave)
+    registerTrigger("bingo-updated", planSave)
 
     $: updateInterval(autosaveInterval)
 
@@ -30,9 +34,26 @@
     }
 
     async function saveGame(slot = AUTOSAVE_SLOT) {
+        clearTimeout(saveTimeout)
+        saveTimeout = null
+        lastSaved = performance.now()   //in case save compression gets stuck somehow
+
         const saveData = await prepareSave()
+        lastSaved = performance.now()
         localStorage[slotName(slot)] = saveData
         Trigger("game-saved", slot)
+//        console.log(`Saved ${saveData.length} bytes`)
+    }
+
+    function planSave() {
+        if (saveTimeout)
+            return
+        const sinceLastSave = performance.now() - lastSaved
+        if (sinceLastSave > actionsaveInterval) {
+            saveGame()
+            return
+        }
+        saveTimeout = setTimeout(saveGame, actionsaveInterval - sinceLastSave)
     }
 
     function loadGame(slot = AUTOSAVE_SLOT) {
