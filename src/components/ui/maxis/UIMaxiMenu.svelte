@@ -16,11 +16,11 @@
         Trigger("command-export-save")
     }
 
-    function importSave() {
+    function importSave(event) {
         if (saveText === "")
             return
 
-        Trigger("command-import-save", saveText)
+        Trigger("command-import-save", saveText, !event.shiftKey)
     }
 
     function resetState() {

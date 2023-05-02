@@ -14,7 +14,7 @@
 
     registerTrigger("command-save-game", (slot) => saveGame(slot))
     registerTrigger("command-load-game", (slot) => loadGame(slot))
-    registerTrigger("command-import-save", (data) => loadData(data))
+    registerTrigger("command-import-save", (data, offlineTime = true) => loadData(data, offlineTime))
     registerTrigger("command-export-save", () => exportSave())
     registerTrigger("command-reset-game", resetGame)
 
@@ -55,13 +55,14 @@
         interval = setInterval(saveGame, time)
     }
 
-    function loadData(data) {
+    function loadData(data, offlineTime = false) {
         resetGame()
         const save = SaveProcessor.decode(data)
         if (save?._meta) {
             const loadedState = save.state
             if (loadedState.values) {
                 loadedState.values.targetTime ??= 0
+                if (offlineTime)
                 loadedState.values.targetTime += (Date.now() - save._meta.date) / 1000
             }
             Object.assign(state, loadedState)

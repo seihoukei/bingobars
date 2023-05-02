@@ -46,7 +46,7 @@
         for (const [id, data] of Object.entries(SUPER_BINGO.lines)) {
             const level = bingo?.levels?.[id]
             const modifier = data?.modifier
-            if (!level)
+            if (!level || !modifier)
                 continue
             availableModifierList.push(modifier)
             const active = bingo?.active?.[id]
