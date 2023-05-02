@@ -1,5 +1,6 @@
 <script>
     import StringMaker from "utility/string-maker.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
 

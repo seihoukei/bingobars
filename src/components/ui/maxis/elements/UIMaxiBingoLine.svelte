@@ -1,6 +1,7 @@
 <script>
     import SUPER_BINGO from "data/super-bingo.js"
     import {afterUpdate, onMount} from "svelte"
+    import Trigger from "utility/trigger.js"
 
     const BLINK_ANIMATION = [{
         opacity : 0,

@@ -1,5 +1,6 @@
 <script>
     import FG_COLORS from "data/fg-colors.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
     export let id

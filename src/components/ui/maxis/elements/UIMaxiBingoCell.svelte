@@ -1,5 +1,6 @@
 <script>
     import SUPER_BINGO from "data/super-bingo.js"
+    import Trigger from "utility/trigger.js"
 
     export let game
     export let x

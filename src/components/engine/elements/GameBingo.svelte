@@ -1,6 +1,7 @@
 <script>
     import registerTrigger from "utility/register-trigger.js"
     import SUPER_BINGO from "data/super-bingo.js"
+    import Trigger from "utility/trigger.js"
 
     export let state
     export let bingo = getCleanBingo()
@@ -9,7 +10,7 @@
     registerTrigger("command-toggle-bingo-line", toggleLine)
     registerTrigger("command-toggle-bingo-lines", toggleLines)
 
-    $: values = game?.state?.values ?? {}
+    $: values = state?.values ?? {}
     $: bingoins = values.bingoins ?? 0
     $: availableBingoins = bingoins - bingo.cost
 

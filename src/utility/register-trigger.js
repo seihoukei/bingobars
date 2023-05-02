@@ -1,4 +1,5 @@
 import {onDestroy, onMount} from "svelte"
+import Trigger from "utility/trigger.js"
 
 export default function registerTrigger(...args) {
     let trigger = null

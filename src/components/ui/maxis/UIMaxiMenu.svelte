@@ -34,7 +34,7 @@
 </script>
 
 <div class="content">
-    <img src="../resources/logo.svg">
+    <img src="./resources/logo.svg">
     <div class="dev">by seihoukei</div>
 
     <div>Processed time: {StringMaker.formatValue(now, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
