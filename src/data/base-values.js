@@ -18,7 +18,7 @@ const BASE_VALUES = Object.freeze({
     
     AB: {
         baseLimit: 25,
-        baseSpeed: 1e-8,
+        baseSpeed: 1e-9,
         baseLimitMultiplier: 2,
     },
     AC: {

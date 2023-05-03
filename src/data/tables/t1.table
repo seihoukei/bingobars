@@ -15,6 +15,7 @@ N: Table 1
 //m: custom modifier text to display
 
 # R1C1
+R: T1R3C3
 C: APt > 30
 C: A < dA
 M: APc -= 0.2
@@ -35,6 +36,7 @@ C: BP > AP
 M: BPc -= 0.1
 
 # R1C5
+R: T1R3C3
 C: AP >= 6
 C: MA <= 50
 M: MAm += 0.1
@@ -58,7 +60,9 @@ C: A > 32
 M: MAm += 1
 
 # R2C5
-R: ???
+R: T1R3C3
+C: AP * BP >= 100
+M: dB += AP / 10
 
 # R3C1
 C: AP >= 4
@@ -109,10 +113,14 @@ C: A >= 100
 M: MAm -= 0.2
 
 # R4C5
-R: ???
+R: T1R3C3
+C: A >= 10000
+M: APc *= 0.99 ^ BP
 
 # R5C1
-R: ???
+R: T1R3C3
+C: A >= 100000
+M: dA += T1_cN / 5
 
 # R5C2
 R: T1R3C3
@@ -125,9 +133,12 @@ C: AP > A+3
 M: MAm += 0.5
 
 # R5C4
-R: ???
+R: T1R3C3
+C: A > 500000
+M: dB += 2
 
 # R5C5
+R: T1R3C3
 C: At < 120
 C: A > 1000
 M : dA *= 1.1
@@ -154,7 +165,7 @@ R: ???
 R: ???
 
 # C3
-C: A * B > 1e8
+C: A * B > 1e9
 M!: AB_seen = true
 LOCK
 m: Unlock AB
