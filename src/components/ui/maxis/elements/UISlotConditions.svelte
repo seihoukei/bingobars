@@ -7,8 +7,6 @@
     $: visibleConditions = debug < 2 ? conditions.filter(x => !x.hidden) : conditions
 </script>
 
-
-{#if !debug}<div class="title">Conditions:</div>{/if}
 {#if custom && debug < 2}
     <div class="item">
         {custom}
@@ -24,3 +22,9 @@
         </div>
     {/each}
 {/if}
+
+<style>
+    div.item {
+        text-align: center;
+    }
+</style>

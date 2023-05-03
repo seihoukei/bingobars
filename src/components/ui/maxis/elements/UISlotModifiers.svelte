@@ -7,7 +7,6 @@
     $: visibleModifiers = debug < 2 ? modifiers.filter(x => !x.hidden) : modifiers
 </script>
 
-{#if !debug}<div class="title">Modifiers:</div>{/if}
 {#if custom && debug < 2}
     <div class="item">
         {custom}
@@ -19,3 +18,9 @@
         </div>
     {/each}
 {/if}
+
+<style>
+    div.item {
+        text-align: center;
+    }
+</style>

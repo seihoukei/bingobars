@@ -9,6 +9,7 @@
 
     import interactive from "utility/interactive"
     import Trigger from "utility/trigger"
+    import StringMaker from "utility/string-maker.js"
 
     export let id
     export let slot
@@ -35,6 +36,8 @@
     $: cssVariables = `${getSlotPosition(id)}${getSlotBackground(involved, seen, available, enabled, unlocked)}`
     $: cell = slot.type === SLOT_TYPES.CELL
 
+    $: unlockTimes = game?.state?.stats?.unlocks
+    $: unlockTime = unlockTimes[slot.address] ?? 0
 
 
     function positionVariables(x, y) {
@@ -139,6 +142,7 @@
                 <span class="bingoin-icon"></span> {slot.bingoins}
             </div>
         {/if}
+        <div class="time">{StringMaker.formatValue(unlockTime, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
     </div>
 {/if}
 <style>
@@ -192,12 +196,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0.2em;
+        padding: 0 0.2em;
         right : 0;
         bottom : 0;
     }
 
     div.unlocked div.bingoins {
         opacity: 0.5;
+    }
+
+    div.time {
     }
 </style>

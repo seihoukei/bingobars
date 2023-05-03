@@ -10,3 +10,9 @@
         {debug?"R: ":""}{prerequisite}
     </div>
 {/each}
+
+<style>
+    div.item {
+        text-align: center;
+    }
+</style>

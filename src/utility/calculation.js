@@ -61,7 +61,7 @@ export default class Calculation {
             this.shortText = this.shortText.replace("==", "=")
         }
         this.parsed.traverse(node => {
-            if (math.isSymbolNode(node) && !this.involved.includes(node.name))
+            if (math.isSymbolNode(node) && !math[node.name] && !this.involved.includes(node.name))
                 this.involved.push(node.name)
         })
         if (this.priority === Calculation.PRIORITIES.AUTO){
