@@ -26,6 +26,7 @@
     $: blinkTargets = [...(data.cells ?? []), [x-1, y]]
     $: blinkCells = []
     $: active = bingo?.active?.[id]
+    $: effect = data.effect ?? `SB${id}`
 
     onMount(() => {
         lastValue = value
@@ -64,7 +65,7 @@
      on:click={toggle}
 >
     <div class="level">{value}</div>
-    <div class="name">SB{id}</div>
+    <div class="name">{effect}</div>
 </div>
 
 {#each blinkTargets as [x, y], i}

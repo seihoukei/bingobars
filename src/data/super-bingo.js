@@ -12,11 +12,11 @@ const SUPER_BINGO = {
         R1 : {
 			cells: [[0,0], [1,0], [2,0], [3,0], [4,0]],
 			position : [6,0],
-		}, 
+		},
         R2 : {
 			cells: [[0,1], [1,1], [2,1], [3,1], [4,1]],
 			position : [6,1],
-			effect : "APc *= 0.9 ^ SBR2"
+			effect : "APc *= 0.9 ^ ~"
 		},
         R3 : {
 			cells: [[0,2], [1,2], [2,2], [3,2], [4,2]],
@@ -25,7 +25,7 @@ const SUPER_BINGO = {
         R4 : {
 			cells: [[0,3], [1,3], [2,3], [3,3], [4,3]],
 			position : [6,3],
-			effect : "dB *= 1.1 ^ SBR4"
+			effect : "dB *= 1.1 ^ ~"
 		},
         R5 : {
 			cells: [[0,4], [1,4], [2,4], [3,4], [4,4]],
@@ -42,12 +42,12 @@ const SUPER_BINGO = {
         C3 : {
 			cells: [[2,0], [2,1], [2,2], [2,3], [2,4]],
 			position : [3,5],
-			effect : "dA *= 1.1 ^ SBC3",
+			effect : "dA *= 1.1 ^ ~",
 		},
         C4 : {
 			cells: [[3,0], [3,1], [3,2], [3,3], [3,4]],
 			position : [4,5],
-			effect : "BPc *= 0.9 ^ SBC4"
+			effect : "BPc *= 0.9 ^ ~"
 		},
         C5 : {
 			cells: [[4,0], [4,1], [4,2], [4,3], [4,4]],
@@ -66,6 +66,7 @@ const SUPER_BINGO = {
 
 for (const [id, data] of Object.entries(SUPER_BINGO.lines)) {
 	if (data.effect) {
+		data.effect = data.effect.replace(/~/g, `SB${id}`)
 		data.modifier = new Calculation(data.effect, Calculation.PRIORITIES.SUPER)
 		data.modifier.setSource(`SB${id}`)
 	}
