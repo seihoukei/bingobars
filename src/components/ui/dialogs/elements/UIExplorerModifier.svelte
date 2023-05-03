@@ -5,9 +5,11 @@
 
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import Calculation from "utility/calculation.js"
 
     export let modifier = {}
     export let game = {}
+    export let overridden = false
 
     $: values = game?.state?.values ?? {}
     $: tables = game?.state?.tables ?? {}
@@ -60,6 +62,10 @@
         >
             {modifier.expression}
         </div>
+
+        {#if overridden}
+            <div class="overridden"></div>
+        {/if}
     </div>
     {#if variables.length}
         <div class="variables">
@@ -130,8 +136,16 @@
 
     div.main {
         display: flex;
+        position: relative;
         flex-direction: row;
         column-gap: 0.5em;
+    }
+    div.overridden {
+        position: absolute;
+        width: 100%;
+        height : 0.1em;
+        background-color: #CCCCCC;
+        top: calc(50% - 0.05em);
     }
     div.variables {
         display: flex;
@@ -150,4 +164,5 @@
         align-items: center;
         justify-content: center;
     }
+
 </style>

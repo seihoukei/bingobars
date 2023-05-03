@@ -5,18 +5,23 @@
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
     import VALUES from "data/values.js"
+    import Calculation from "utility/calculation.js"
 
     export let game
     export let id
 
     registerTrigger("modifier-lists-updated", updateModifiers)
 
-    let modifiers = []
+    let availableModifiers = []
+    let activeModifiers = []
 
-    $: valueModifiers = modifiers.filter(x => x.target === id)
+    $: valueModifiers = availableModifiers.filter(x => x.target === id)
+    $: lastOverride = activeModifiers.findLast(x => x.target === id && x.priority === Calculation.PRIORITIES.FIX)
+    $: override = valueModifiers.indexOf(lastOverride)
 
     function updateModifiers(active, available) {
-        modifiers = available
+        activeModifiers = active
+        availableModifiers = available
     }
 
     function toggleModifiers(rule = () => true) {
@@ -70,8 +75,8 @@
 </script>
 
 <div class="modifiers">
-    {#each valueModifiers as modifier}
-        <UIExplorerModifier {game} {modifier} />
+    {#each valueModifiers as modifier, index}
+        <UIExplorerModifier {game} {modifier} overridden={index < override} />
     {/each}
 </div>
 <div class="buttons">

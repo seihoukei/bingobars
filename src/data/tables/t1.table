@@ -22,7 +22,7 @@ M: APc -= 0.2
 # R1C2
 R: T1R3C3
 C: B >= 1000
-M: dB += BP
+M: dB = BP + 1
 
 # R1C3
 C: AP >= 1
@@ -174,4 +174,3 @@ C: A == B
 M!: B_auto_seen = true
 LOCK
 m: Unlock auto prestige B
-

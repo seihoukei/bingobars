@@ -11,9 +11,10 @@ export default class Calculation {
         ADD : 2,
         MUL : 3,
         BONUS : 4,
-        FIX : 5,
-        SUPER : 6,
-        CHECK : 7,
+        EXP : 5,
+        FIX : 6,
+        SUPER : 7,
+        CHECK : 8,
         STEP : 10,
     }
 
@@ -42,7 +43,8 @@ export default class Calculation {
     constructor(expression, priority = Calculation.PRIORITIES.AUTO) {
         this.expression = expression
         this.processedExpression = this.expression
-            .replace(/^(\S*?) ([+\-/*])= (.*)/, "$1 = $1 $2 ($3)")
+            .replace(/^(\S*?) ([\^+\-/*])= (.*)/, "$1 = $1 $2 ($3)")
+            .replace(/\*\*/g, "^")
         this.parsed = math.parse(this.processedExpression)
         this.priority = priority
         this.compiled = this.parsed.compile()
@@ -71,18 +73,19 @@ export default class Calculation {
         if (!this.assignment) {
             return Calculation.PRIORITIES.CHECK
         }
-        if (math.isOperatorNode(this.parsed.value)) {
+        if (math.isOperatorNode(this.parsed.value)
+            && math.isSymbolNode(this.parsed.value.args[0])
+            && this.parsed.value.args[0].name === this.target) {
             const operator = this.parsed.value.op
             return {
+                "^" : Calculation.PRIORITIES.EXP,
                 "*" : Calculation.PRIORITIES.MUL,
                 "/" : Calculation.PRIORITIES.MUL,
                 "+" : Calculation.PRIORITIES.ADD,
                 "-" : Calculation.PRIORITIES.ADD,
             }[operator]
         }
-        if (math.isSymbolNode(this.parsed.value) || math.isConstantNode(this.parsed.value)) {
-            return Calculation.PRIORITIES.FIX
-        }
+        return Calculation.PRIORITIES.FIX
         //console.log(this.parsed)
 //        if (math.isFunctionNode(this.parsed.value)
     }
