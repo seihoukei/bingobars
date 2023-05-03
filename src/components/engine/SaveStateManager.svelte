@@ -16,9 +16,9 @@
     let lastSaved = performance.now()
     let saveTimeout = null
 
-    registerTrigger("command-save-game", (slot) => saveGame(slot))
-    registerTrigger("command-load-game", (slot) => loadGame(slot))
-    registerTrigger("command-import-save", (data, offlineTime = true) => loadData(data, offlineTime))
+    registerTrigger("command-save-game", saveGame)
+    registerTrigger("command-load-game", loadGame)
+    registerTrigger("command-import-save", loadData)
     registerTrigger("command-export-save", exportSave)
     registerTrigger("command-reset-game", resetGame)
 
@@ -56,9 +56,9 @@
         saveTimeout = setTimeout(saveGame, actionsaveInterval - sinceLastSave)
     }
 
-    function loadGame(slot = AUTOSAVE_SLOT) {
+    function loadGame(slot = AUTOSAVE_SLOT, offlineTime = true) {
         const saveData = localStorage[slotName(slot)]
-        loadData(saveData)
+        loadData(saveData, offlineTime)
         Trigger("game-loaded", slot)
     }
 
@@ -76,7 +76,7 @@
         interval = setInterval(saveGame, time)
     }
 
-    function loadData(data, offlineTime = false) {
+    function loadData(data, offlineTime = true) {
         resetGame()
         const save = SaveProcessor.decode(data)
         if (save?._meta) {
