@@ -41,21 +41,12 @@ export default class SuperBingoTableData extends  BingoTableData {
     }
     
     setCosts(data) {
-        const costs = [
-            ...data
-                .match(/\d+/g)
-                .map(Number),
-            ...Array(25)
-                .fill(0),
-        ]
+        const costs = data
+            .match(/\d+/g)
+            .map(Number)
         
-        this.costs = [
-            costs.slice(0, 5),
-            costs.slice(5, 10),
-            costs.slice(10, 15),
-            costs.slice(15, 20),
-            costs.slice(20, 25),
-        ]
+        this.costs = SuperBingoTableData.DEFAULT_COSTS
+            .map((x, i) => Object.assign([], x, costs.slice(i * 5, i * 5 + 5)))
         
         return this
     }
