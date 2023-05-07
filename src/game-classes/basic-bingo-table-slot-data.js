@@ -1,8 +1,8 @@
 import SLOT_TYPES from "data/slot-types.js"
-import Calculation from "utility/calculation.js"
+import Calculation from "game-classes/calculation.js"
 import VALUES from "data/values.js"
 
-export default class BingoTableSlotData {
+export default class BasicBingoTableSlotData {
     static SLOT_REGEXP = {
         [SLOT_TYPES.CELL] : /^R\dC\d$/,
         [SLOT_TYPES.ROW] : /^R\d$/,
@@ -11,7 +11,7 @@ export default class BingoTableSlotData {
     }
 
     static getTypeForName(name) {
-        for (const [type, regex] of Object.entries(BingoTableSlotData.SLOT_REGEXP)) {
+        for (const [type, regex] of Object.entries(BasicBingoTableSlotData.SLOT_REGEXP)) {
             if (name.match(regex))
                 return +type
         }
@@ -29,11 +29,13 @@ export default class BingoTableSlotData {
 
     constructor(table, name) {
         this.address = `${table}${name}`
-        this.type = BingoTableSlotData.getTypeForName(name)
+        this.type = BasicBingoTableSlotData.getTypeForName(name)
     }
 
     addPrerequisite(data) {
         this.prerequisites.push(data)
+        
+        return this
     }
 
     addModifier(data, hidden = false) {
@@ -43,6 +45,14 @@ export default class BingoTableSlotData {
         modifier.setSource(this.address)
         modifier.setHidden(hidden)
         this.modifiers.push(modifier)
+
+        return this
+    }
+    
+    addHiddenModifier(data) {
+        this.addModifier(data, true)
+    
+        return this
     }
 
     addCondition(data, hidden = false) {
@@ -52,22 +62,39 @@ export default class BingoTableSlotData {
         condition.setSource(this.address)
         condition.setHidden(hidden)
         this.conditions.push(condition)
+    
+        return this
     }
-
+    
+    addHiddenCondition(data) {
+        this.addCondition(data, true)
+    
+        return this
+    }
+    
+    
     setOneWay() {
         this.oneWay = true
+    
+        return this
     }
 
     setConditionText(data) {
         this.conditionText = data
+    
+        return this
     }
 
     setModifierText(data) {
         this.modifierText = data
+    
+        return this
     }
 
     setBingoins(data) {
         this.bingoins = data
+    
+        return this
     }
 
     getInvolvedInModifiers() {

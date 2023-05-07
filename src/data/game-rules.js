@@ -1,4 +1,4 @@
-import Calculation from "utility/calculation.js"
+import Calculation from "game-classes/calculation.js"
 
 const GAME_RULES = Object.freeze({
     baseModifiers : [

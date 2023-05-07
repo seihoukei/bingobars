@@ -5,7 +5,7 @@
 
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
-    import Calculation from "utility/calculation.js"
+    import Calculation from "game-classes/calculation.js"
 
     export let modifier = {}
     export let game = {}

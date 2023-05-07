@@ -1,87 +1,13 @@
 <script>
-    import UIMiniTable from "components/ui/minis/UIMiniTable.svelte"
-    import UIMiniGeneric from "components/ui/minis/UIMiniGeneric.svelte"
-    import UIMaxiValue from "components/ui/maxis/UIMaxiValue.svelte"
-    import UIMaxiTable from "components/ui/maxis/UIMaxiTable.svelte"
-    import UIMaxiMenu from "components/ui/maxis/UIMaxiMenu.svelte"
-    import UIMaxiCode from "components/ui/maxis/UIMaxiCode.svelte"
-    import UIMaxiHelp from "components/ui/maxis/UIMaxiHelp.svelte"
-    import UIMiniValue from "components/ui/minis/UIMiniValue.svelte"
     import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
     import UIMaxiHeader from "components/ui/maxis/elements/UIMaxiHeader.svelte"
 
     import Trigger from "utility/trigger.js"
-    import UIMaxiBingo from "components/ui/maxis/UIMaxiBingo.svelte"
+    import UI_TABS from "data/ui-tabs.js"
 
     export let game
 
     let id
-
-    const UI_TABS = [{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "A",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "B",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "C",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "AB",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "AC",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "BC",
-    },{
-        mini : UIMiniValue,
-        maxi : UIMaxiValue,
-        id : "ABC",
-    },{
-        mini : UIMiniTable,
-        maxi : UIMaxiTable,
-        id : "T1",
-    },{
-        mini : UIMiniTable,
-        maxi : UIMaxiTable,
-        id : "T2",
-    },{
-        mini : UIMiniTable,
-        maxi : UIMaxiTable,
-        id : "T3",
-    },{
-        mini : UIMiniTable,
-        maxi : UIMaxiTable,
-        id : "T4",
-    },{
-        mini : UIMiniTable,
-        maxi : UIMaxiTable,
-        id : "T5",
-    },{
-        mini : UIMiniGeneric,
-        maxi : UIMaxiCode,
-        id : "CODE",
-    },{
-        mini : UIMiniGeneric,
-        maxi : UIMaxiHelp,
-        id : "HELP",
-    },{
-        mini : UIMiniGeneric,
-        maxi : UIMaxiMenu,
-        id : "MENU",
-    },{
-        mini : null,
-        maxi : UIMaxiBingo,
-        id : "BINGO",
-    },]
 
     $: id = game.id
     $: tabId = game?.state?.tab ?? 0
@@ -188,11 +114,11 @@
     @media (max-aspect-ratio: 7/8) {
         div.layout {
             grid-template-areas:
-                "a b c ab ac bc abc ."
                 "main main main main main main main main"
                 "main main main main main main main main"
                 "main main main main main main main main"
                 "main main main main main main main main"
+                "a b c ab ac bc abc menu"
                 "t1 t2 t3 t4 t5 code help menu";
             font-size: min(1.38vw, 0.98vh);
             grid-auto-columns: 8em;

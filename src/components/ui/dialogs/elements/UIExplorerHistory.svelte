@@ -10,8 +10,8 @@
         {
             name: "Short term",
             stats : "secondly",
-            weakGrid : 10,
-            strongGrid : 60,
+            weakGrid : 60,
+            strongGrid : 300,
         },
         {
             name: "Medium term",

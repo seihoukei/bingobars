@@ -1,8 +1,8 @@
 import BASE_VALUES from "data/base-values.js"
 import VALUES_PER_BASE from "data/values-per-base.js"
 import VALUES_PER_TABLE from "data/values-per-table.js"
-import SUPER_BINGO from "data/super-bingo.js"
 import StringMaker from "utility/string-maker.js"
+import SuperBingoTableData from "game-classes/super-bingo-table-data.js"
 
 const VALUES = {}
 
@@ -40,7 +40,7 @@ for (const baseValue of Object.keys(BASE_VALUES)) {
     }
 }
 
-for (const id of Object.keys(SUPER_BINGO.lines)) {
+for (const id of Object.keys(SuperBingoTableData.LINES)) {
     const valueData = {
         isBingoLine : true
     }

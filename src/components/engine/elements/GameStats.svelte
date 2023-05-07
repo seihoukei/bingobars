@@ -26,7 +26,7 @@
     registerTrigger("bingo-updated", (value) => updateStats(values, 2))
     registerTrigger("bingo-updated", (value) => delayUpdateStats(2))
     registerTrigger("stored-values-updated", updateStats)
-    registerTrigger("stats-values-updated", updateStats)
+    registerTrigger("command-update-stats", updateStats)
     registerTrigger("slot-unlocked", storeUnlock)
 
     $: values = state?.values
@@ -57,7 +57,7 @@
 
         const startTime = data.at(-1).time - maxTime
         let cut = 0
-        while (data[cut] && data[cut].time < startTime)
+        while (data[cut] && (!data[cut].time || data[cut].time < startTime))
             cut++
         if (cut > 0)
             compressFirst(data, cut)

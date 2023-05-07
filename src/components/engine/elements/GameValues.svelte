@@ -9,11 +9,12 @@
     import Trigger from "utility/trigger.js"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
-    const MAX_TIME_TICK = 600
-    const MAX_TIME_STEP = 10
-    const MAX_STAT_STEP = 10
+    const MAX_TIME_PER_TICK = 600
+    const MAX_TIME_PER_STEP = 10
+    const MAX_TIME_PER_STATS = 10
 
     registerTrigger("command-tick", advance)
+    registerTrigger("command-tick-step", updateValues)
 
     let tableValues = {}
     let activeModifierList = []
@@ -50,7 +51,10 @@
     }
 
     function getInitialValues() {
-        const values = {}
+        const values = {
+            time : 0,
+            targetTime : 0,
+        }
 
         resetDerivedValues(values)
 
@@ -99,7 +103,7 @@
         Trigger("values-updated", values)
     }
 
-    function getValueTime(name) {
+    function getValueCapTime(name) {
         const seen = values[`${name}_seen`] ?? false
         if (!seen)
             return Infinity
@@ -124,24 +128,28 @@
     function advance(time) {
         if (!values) return
 
-        //compatibility fix
-        values.time ??= 0
-        values.targetTime ??= 0
-
         values.targetTime += time
-        let remainingTime = Math.min(values.targetTime - values.time, MAX_TIME_TICK)
-        let statStep = MAX_STAT_STEP
-        while (remainingTime > 0) {
-            const times = VALUE_NAMES.map(getValueTime)
-            let step = Math.min(MAX_TIME_STEP, remainingTime, ...times)
-            Trigger("command-tick-step", step)
+
+        let timeToProcess = Math.min(values.targetTime - values.time, MAX_TIME_PER_TICK)
+        let timeTillStatsUpdate = MAX_TIME_PER_STATS
+
+        while (timeToProcess > 0) {
+            const valueCapTimes = VALUE_NAMES.map(getValueCapTime)
+            let step = Math.min(
+                MAX_TIME_PER_STEP,
+                timeToProcess,
+                ...valueCapTimes,
+            )
+
             values.time += step
-            remainingTime -= step
-            updateValues()
-            statStep -= step
-            if (statStep < 0) {
-                statStep = MAX_STAT_STEP
-                Trigger("stats-values-updated", values)
+            timeToProcess -= step
+
+            Trigger("command-tick-step", step)
+
+            timeTillStatsUpdate -= step
+            if (timeTillStatsUpdate < 0) {
+                timeTillStatsUpdate = MAX_TIME_PER_STATS
+                Trigger("command-update-stats", values)
             }
         }
 

@@ -1,7 +1,7 @@
 <script>
-    import SUPER_BINGO from "data/super-bingo.js"
     import {afterUpdate, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
+    import TABLES from "data/tables.js"
 
     const BLINK_ANIMATION = [{
         opacity : 0,
@@ -21,7 +21,7 @@
 
     $: bingo = game?.state?.bingo ?? {}
     $: value = bingo.levels?.[id] ?? {}
-    $: data = SUPER_BINGO.lines[id] ?? {}
+    $: data = TABLES.SB.lines[id] ?? {}
     $: [x,y] = data.position
     $: blinkTargets = [...(data.cells ?? []), [x-1, y]]
     $: blinkCells = []

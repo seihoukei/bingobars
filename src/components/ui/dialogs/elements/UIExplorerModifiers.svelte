@@ -5,7 +5,7 @@
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
     import VALUES from "data/values.js"
-    import Calculation from "utility/calculation.js"
+    import Calculation from "game-classes/calculation.js"
 
     export let game
     export let id

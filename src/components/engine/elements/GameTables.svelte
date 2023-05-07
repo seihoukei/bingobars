@@ -5,6 +5,7 @@
 
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
+    import BingoTableData from "game-classes/bingo-table-data.js"
 
     export let tables = {}
     export let state
@@ -49,6 +50,9 @@
         if (!tables || !state?.values) return
 
         for (const [tableName,table] of Object.entries(TABLES)) {
+            if (table.type !== BingoTableData.TABLE_TYPES.BINGO)
+                continue
+
             for (const [slotName,slot] of Object.entries(table.slots)) {
                 const address = `${tableName}${slotName}`
                 const state = tables[address]

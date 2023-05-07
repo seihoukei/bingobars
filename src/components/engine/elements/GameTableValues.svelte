@@ -5,7 +5,7 @@
 
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
-    import SUPER_BINGO from "data/super-bingo.js"
+    import BingoTableData from "game-classes/bingo-table-data.js"
 
     export let tables = {}
     export let bingo = {}
@@ -35,6 +35,9 @@
         }
 
         for (const [tableName,table] of Object.entries(TABLES)) {
+            if (table.type !== BingoTableData.TABLE_TYPES.BINGO)
+                continue
+
             tableValues[`${tableName}_SN`] = 0
             tableValues[`${tableName}_cN`] = 0
             tableValues[`${tableName}_RN`] = 0
@@ -59,7 +62,7 @@
             }
         }
 
-        for (const id of Object.keys(SUPER_BINGO.lines)) {
+        for (const id of Object.keys(TABLES.SB.lines)) {
             tableValues[`SB${id}`] = bingo?.levels?.[id] ?? 0
         }
 

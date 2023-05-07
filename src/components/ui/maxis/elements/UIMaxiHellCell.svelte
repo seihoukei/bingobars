@@ -8,8 +8,10 @@
     export let change = 1
     export let availableBingoins = 0
 
+    export let line = false
+
     $: bingo = game?.state?.bingo ?? {}
-    $: cost = TABLES.SB.costs[y][x]
+    $: cost = TABLES.SB.costs[y]?.[x] ?? 0
     $: value = bingo?.field?.[y]?.[x] ?? 0
     $: cssVariables = `--row:${y + 1};--column:${x + 2};`
 
@@ -29,7 +31,7 @@
     }
 </script>
 
-<div class="cell" style={cssVariables}>
+<div class="cell" class:line style={cssVariables}>
     {#if x === 2 && y === 2}
         <div class="free">FREE</div>
     {:else}
@@ -44,7 +46,7 @@
 
 <style>
     div.cell {
-        background: #444477;
+        background: #772222;
         grid-row: var(--row);
         grid-column: var(--column);
         z-index: 2;
@@ -53,6 +55,10 @@
         justify-content: center;
         flex-direction: column;
         border-radius: 0.5em;
+    }
+
+    div.cell.line {
+        background-color: #442222;
     }
 
     div.change {
@@ -103,4 +109,5 @@
         justify-content: center;
         font-size: 3em;
     }
+
 </style>

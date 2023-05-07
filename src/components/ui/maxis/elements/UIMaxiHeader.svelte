@@ -33,7 +33,7 @@
     </div>
     <div class="super-bingo button"
          class:active={bingoActive}
-         on:click={() => Trigger("command-set-tab", BINGO_TAB)}>
+         on:click={() => bingoActive || Trigger("command-set-tab", BINGO_TAB)}>
         <span>Super</span> <span>Bingo</span>
     </div>
 </div>

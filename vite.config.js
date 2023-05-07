@@ -13,6 +13,7 @@ export default defineConfig({
       'stores': path.resolve('./src/stores'),
       'data': path.resolve('./src/data'),
       'workers': path.resolve('./src/workers'),
+      'game-classes': path.resolve('./src/game-classes'),
     }
   }
 })

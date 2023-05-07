@@ -6,8 +6,8 @@
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
-    import SUPER_BINGO from "data/super-bingo.js"
-    import Calculation from "utility/calculation.js"
+    import Calculation from "game-classes/calculation.js"
+    import BingoTableData from "game-classes/bingo-table-data.js"
 
     export let tables
     export let bingo
@@ -29,6 +29,9 @@
         availableModifierList.push(...GAME_RULES.baseModifiers)
 
         for (const [tableName,table] of Object.entries(TABLES)) {
+            if (table.type !== BingoTableData.TABLE_TYPES.BINGO)
+                continue
+
             for (const [slotName,slot] of Object.entries(table.slots)) {
                 const address = `${tableName}${slotName}`
                 const slotState = tables[address]
@@ -43,7 +46,7 @@
             }
         }
 
-        for (const [id, data] of Object.entries(SUPER_BINGO.lines)) {
+        for (const [id, data] of Object.entries(TABLES.SB.lines)) {
             const level = bingo?.levels?.[id]
             const modifier = data?.modifier
             if (!level || !modifier)

@@ -1,7 +1,7 @@
 <script>
     import registerTrigger from "utility/register-trigger.js"
-    import SUPER_BINGO from "data/super-bingo.js"
     import Trigger from "utility/trigger.js"
+    import TABLES from "data/tables.js"
 
     export let state
     export let bingo = getCleanBingo()
@@ -24,8 +24,8 @@
                 [0, 0, 0, 0, 0,],
             ],
             cost : 0,
-            levels : Object.fromEntries(Object.keys(SUPER_BINGO.lines).map(x => [x, 0])),
-            active : Object.fromEntries(Object.keys(SUPER_BINGO.lines).map(x => [x, true])),
+            levels : Object.fromEntries(Object.keys(TABLES.SB.lines).map(x => [x, 0])),
+            active : Object.fromEntries(Object.keys(TABLES.SB.lines).map(x => [x, true])),
         }
         return bingo
     }
@@ -33,23 +33,23 @@
     function updateCost() {
         let cost = bingo.field.reduce(
             (cost, line, y) => cost + line.reduce(
-                (cost, value, x) => cost + value * SUPER_BINGO.costs[y][x]
+                (cost, value, x) => cost + value * TABLES.SB.costs[y][x]
             , 0)
         , 0)
         bingo.cost = cost
     }
 
     function updateLevels() {
-        for (let [id, data] of Object.entries(SUPER_BINGO.lines)) {
+        for (let [id, data] of Object.entries(TABLES.SB.lines)) {
             bingo.levels[id] = Math.min(...data.cells.map(([x,y]) => bingo.field[y][x]))
         }
     }
 
     function allocatePoints(x, y, change) {
-        if (SUPER_BINGO.costs[y]?.[x] === undefined || x === 2 && y === 2)
+        if (TABLES.SB.costs[y]?.[x] === undefined || x === 2 && y === 2)
             return
 
-        const cost = SUPER_BINGO.costs[y][x]
+        const cost = TABLES.SB.costs[y][x]
 
         if (change < 0) {
             change = Math.max(change, -bingo.field[y][x])
