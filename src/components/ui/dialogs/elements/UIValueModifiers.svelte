@@ -1,5 +1,5 @@
 <script>
-    import UIExplorerModifier from "components/ui/dialogs/elements/UIExplorerModifier.svelte"
+    import UIValueModifier from "components/ui/dialogs/elements/UIValueModifier.svelte"
 
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
@@ -76,7 +76,7 @@
 
 <div class="modifiers">
     {#each valueModifiers as modifier, index}
-        <UIExplorerModifier {game} {modifier} overridden={index < override} />
+        <UIValueModifier {game} {modifier} overridden={index < override} />
     {/each}
 </div>
 <div class="buttons">

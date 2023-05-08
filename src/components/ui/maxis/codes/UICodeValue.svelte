@@ -40,7 +40,7 @@
 >
     {#if unlocked}
         <div class="value">{id}</div>
-        <div class="highlight"></div>
+        <div class="main-section"></div>
     {/if}
 </div>
 
@@ -62,7 +62,7 @@
 
     }
 
-    div.highlight {
+    div.main-section {
         z-index: 3;
         pointer-events: none;
         position: absolute;
@@ -75,7 +75,7 @@
         transition: opacity 0.2s;
     }
 
-    div.container.unlocked:hover div.highlight {
+    div.container.unlocked:hover div.main-section {
         opacity: 0.2;
     }
 </style>

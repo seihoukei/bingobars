@@ -1,14 +1,16 @@
 <script>
-
-    import FG_COLORS from "data/fg-colors"
-
-    import interactive from "utility/interactive"
-    import Trigger from "utility/trigger"
-    import StringMaker from "utility/string-maker.js"
-    import BingoTable from "game-classes/bingo-table.js"
     import UISlotPrerequisites from "components/ui/maxis/table/UISlotPrerequisites.svelte"
     import UISlotConditions from "components/ui/maxis/table/UISlotConditions.svelte"
     import UISlotModifiers from "components/ui/maxis/table/UISlotModifiers.svelte"
+
+    import StringMaker from "utility/string-maker.js"
+    import BingoTable from "game-classes/bingo-table.js"
+
+    import FG_COLORS from "data/fg-colors"
+
+    import {slide} from "svelte/transition"
+    import interactive from "utility/interactive"
+    import Trigger from "utility/trigger"
 
     export let id
     export let slot
@@ -19,73 +21,44 @@
     if (import.meta.env.MODE === "development") {
         // 1 : see descriptions
         // 2 : raw formulas
-        debug = 1
+        //debug = 1
     }
 
     $: tables = game?.state?.tables
     $: value = tables?.[slot.address]
+
     $: visible = value & BingoTable.SLOT_STATES.VISIBLE
-    $: seen = value & BingoTable.SLOT_STATES.PREREQUISITES_MET
-    $: available = (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
+    $: seen = visible &&  value & BingoTable.SLOT_STATES.PREREQUISITES_MET
+    $: available = seen && (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
     $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
+    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
+
     $: involved = unlocked
               ? slot?.getInvolvedInModifiers() ?? []
               : slot?.getInvolvedInConditions() ?? []
-    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
+
     $: cssVariables = `${getSlotPosition(id)}${getSlotBackground(involved, seen, available, enabled, unlocked)}`
+
     $: cell = slot.type === BingoTable.SLOT_TYPES.CELL
 
-    $: unlockTimes = game?.state?.stats?.unlocks
-    $: unlockTime = unlockTimes[slot.address] ?? 0
-
-
-    function positionVariables(x, y) {
-        return `--row:${y};--column:${x};`
-    }
+    $: unlockTime = game?.state?.stats?.unlocks?.[slot.address] ?? 0
 
     function getSlotPosition(id) {
-        if (slot.type === BingoTable.SLOT_TYPES.CELL) {
-            const x = +id[3] + 1
-            const y = +id[1] + 1
-            return positionVariables(x, y)
-        }
-        if (slot.type === BingoTable.SLOT_TYPES.ROW) {
-            const x = 7
-            const y = +id[1] + 1
-            return positionVariables(x, y)
-        }
-        if (slot.type === BingoTable.SLOT_TYPES.COLUMN) {
-            const x = +id[1] + 1
-            const y = 7
-            return positionVariables(x, y)
-        }
-        if (id === "DL") {
-            return positionVariables(1, 7)
-        }
-        if (id === "DR") {
-            return positionVariables(7, 7)
-        }
+        const [x, y] = BingoTable.SLOTS[id]?.position ?? [0, 0]
+        return `--row:${y+2};--column:${x+1};`
     }
 
     function getSlotBackground() {
-        if (!seen)
-            return `--background: #222222;`
+        let mainBackground =
+            involved.length === 0 ? "linear-gradient(#000000, #000000)" :
+            involved.length === 1 ? `linear-gradient(to right, ${FG_COLORS[involved[0]]}, ${FG_COLORS[involved[0]]})`
+            : `linear-gradient(to right, ${involved.map(x => FG_COLORS[x]).join(",")})`
 
-        let mainBackground = "linear-gradient(to right, grey, grey)"
-        let stateBackground = "linear-gradient(#222222)"
-
-        if (involved.length == 1)
-            mainBackground = mainBackground = `linear-gradient(to right, ${FG_COLORS[involved[0]]}, ${FG_COLORS[involved[0]]})`
-        else
-            mainBackground = mainBackground = `linear-gradient(to right, ${involved.map(x => FG_COLORS[x]).join(",")})`
-
-
-        if (unlocked)
-            return `--background: ${mainBackground};`
-
-        stateBackground =
-            available ? "linear-gradient(#227722FF, #22772288, #227722FF)" :
-            "linear-gradient(#000000FF, #00000044, #00000088)"
+        let stateBackground =
+            unlocked ? "linear-gradient(#00000000, #00000000)" :
+            available ? "linear-gradient(#227722FF, #22772288, #22772288, #227722FF)" :
+            seen ? "linear-gradient(#000000FF, #00000044, #00000044, #000000FF)" :
+            "linear-gradient(#444444, #444444)"
 
         return `--background: ${stateBackground}, ${mainBackground};`
     }
@@ -96,14 +69,17 @@
     }
 
     $: decoration =
-        enabled ?
-            slot.oneWay ? "" :
-            "★" :
-        unlocked ? "✰" :
-        "🔒"
+        enabled
+            ? slot.oneWay
+                ? ""
+                : "★"
+            : unlocked
+                ? "✰"
+                : available
+                    ? "🔓"
+                    : "🔒"
 
 </script>
-{#if visible}
     <div class="slot"
          class:seen
          class:available
@@ -116,7 +92,9 @@
          on:basicaction={toggle}
          on:specialaction
     >
-        <div class="title">{decoration}{slot.address}{decoration}</div>
+    {#if seen || debug}
+        <div class="top float">{decoration}{slot.address}{decoration}</div>
+    {/if}
         <div class="content" class:debug>
             {#if debug}
                 {#if slot.prerequisites?.length}
@@ -129,33 +107,55 @@
                     <UISlotModifiers {game} {debug} modifiers={slot.modifiers} custom={slot.modifierText}/>
                 {/if}
             {:else if unlocked}
-                <UISlotModifiers {game} modifiers={slot.modifiers} custom={slot.modifierText}/>
+                <div transition:slide|local>
+                    <UISlotModifiers {game} modifiers={slot.modifiers} custom={slot.modifierText}/>
+                </div>
             {:else if seen}
-                <UISlotConditions {game} conditions={slot.conditions} custom={slot.conditionText}/>
-            {:else}
-                <UISlotPrerequisites {game} prerequisites={slot.prerequisites}/>
+                <div transition:slide|local>
+                    <UISlotConditions {game} conditions={slot.conditions} custom={slot.conditionText}/>
+                </div>
+            {:else if visible}
+                <div transition:slide|local>
+                    <UISlotPrerequisites {game} prerequisites={slot.prerequisites}/>
+                </div>
             {/if}
         </div>
-        {#if slot.bingoins}
-            <div class="bingoins">
-                <span class="bingoin-icon"></span> {slot.bingoins}
-            </div>
+
+        {#if seen || debug}
+            {#if slot.bingoins}
+                <div class="bingoins">
+                    <span class="bingoin-icon"></span> {slot.bingoins}
+                </div>
+            {/if}
+            {#if unlocked}
+                <div class="bottom float">{StringMaker.formatValue(unlockTime, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
+            {:else if available}
+                <div class="bottom float">READY!</div>
+            {:else}
+                <div class="bottom float">Locked</div>
+            {/if}
         {/if}
-        <div class="time">{StringMaker.formatValue(unlockTime, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
-    </div>
-{/if}
+</div>
+
 <style>
     div.slot {
         position: relative;
-        background: var(--background);
         grid-row: var(--row);
         grid-column: var(--column);
+
         z-index: 2;
+
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: stretch;
-        flex-direction: column;
+        overflow: hidden;
+
+        background: var(--background);
         transition: background 0.2s;
+    }
+
+    div.slot:not(.seen) {
     }
 
     div.slot.seen {
@@ -167,14 +167,18 @@
 
     div.slot.unlocked {
         cursor: pointer;
+        color: #FFFFFFAA;
     }
 
     div.slot.enabled {
-        border : 0.2em solid white;
+        border : 0.4em solid white;
+        margin : -0.2em;
+        color: #FFFFFF;
     }
 
     div.slot.enabled.oneway {
-        border : 0.2em solid #BBBBBB;
+        border : none;
+        margin : 0;
         cursor: default;
     }
 
@@ -188,6 +192,13 @@
 
     div.content.debug {
         font-size: 0.7em;
+    }
+
+    div.content div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     div.bingoins {
@@ -204,6 +215,20 @@
         opacity: 0.5;
     }
 
-    div.time {
+    div.float {
+        position: absolute;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+    div.float.top {
+        top : 0;
+    }
+
+    div.float.bottom {
+        bottom : 0;
     }
 </style>

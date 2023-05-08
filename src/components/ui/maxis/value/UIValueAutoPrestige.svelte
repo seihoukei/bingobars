@@ -16,7 +16,7 @@
     {#if canAuto}
         <div class="description">Auto prestige {id}</div>
         <div class="value">{StringMaker.formatValue(auto, {type: StringMaker.VALUE_FORMATS.ONOFF})}</div>
-        <div class="highlight"></div>
+        <div class="main-section"></div>
     {/if}
 </div>
 
@@ -46,7 +46,7 @@
     .value {
         font-size: 1.5em;
     }
-    div.highlight {
+    div.main-section {
         z-index: 3;
         pointer-events: none;
         position: absolute;
@@ -59,7 +59,7 @@
         transition: opacity 0.2s;
     }
 
-    div.button.active:hover div.highlight {
+    div.button.active:hover div.main-section {
         opacity: 0.2;
     }
 </style>

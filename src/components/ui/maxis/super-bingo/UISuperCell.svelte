@@ -102,9 +102,11 @@
 
     div.cost {
         position : absolute;
-        bottom : 0.1em;
+        bottom : 0;
         left : 0;
         right: 0;
+
+        font-size: 1.5em;
 
         display: flex;
         align-items: center;

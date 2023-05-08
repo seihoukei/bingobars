@@ -10,7 +10,7 @@ html, body {
   color: #CCCCCC;
   margin : 0;
   padding : 0;
-  font: 16px Rajdhani, sans serif, condensed;
+  font: 1vmin Rajdhani, sans serif, condensed;
   width : 100vw;
   height : 100vh;
   overflow: hidden;

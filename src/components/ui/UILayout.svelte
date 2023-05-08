@@ -61,16 +61,19 @@
 <style>
     div.holder {
         position: absolute;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
+        left: 1rem;
+        top: 1rem;
+        right : 1rem;
+        bottom : 1rem;
+
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     div.layout {
+        height : 100%;
+        width: 100%;
         display : grid;
         grid-template-areas:
             "a b c ab ac bc t5 t4 t3 t2 t1"
@@ -79,32 +82,42 @@
             "help main main main main main main main main main main"
             "menu main main main main main main main main main main";
         font-size : min(0.98vw, 1.13vh);
-        grid-auto-columns: 8em;
-        grid-auto-rows: 16em;
-        grid-column-gap: 1em;
-        grid-row-gap: 1em;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+        grid-column-gap: 1rem;
+        grid-row-gap: 1rem;
     }
 
     div.main {
+        grid-area : main;
+
         font-size: 1.2em;
         border-radius : 1em;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+
+        row-gap: 1rem;
     }
 
 
     @media (min-aspect-ratio: 17/14) {
         div.layout {
             grid-template-areas:
-                "a ab t1 main main main main main main main main main main main main"
-                "b ac t2 main main main main main main main main main main main main"
-                "c bc t3 main main main main main main main main main main main main"
-                "code abc t4 main main main main main main main main main main main main"
-                "menu help t5 main main main main main main main main main main main main";
+                "a ab t1 main"
+                "b ac t2 main"
+                "c bc t3 main"
+                "code abc t4 main"
+                "menu help t5 main";
             font-size: min(0.72vw, 1.15vh);
-            grid-auto-columns: 8em;
-            grid-auto-rows: 16em;
-            grid-column-gap: 1em;
-            grid-row-gap: 1em;
+            grid-template-columns: 10rem 10rem 10rem 1fr;
+            grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+            grid-column-gap: 1rem;
+            grid-row-gap: 1rem;
         }
+
         div.main {
             font-size: 1.5em;
         }
@@ -114,16 +127,13 @@
         div.layout {
             grid-template-areas:
                 "main main main main main main main main"
-                "main main main main main main main main"
-                "main main main main main main main main"
-                "main main main main main main main main"
                 "a b c ab ac bc abc menu"
                 "t1 t2 t3 t4 t5 code help menu";
             font-size: min(1.38vw, 0.98vh);
-            grid-auto-columns: 8em;
-            grid-auto-rows: 16em;
-            grid-column-gap: 1em;
-            grid-row-gap: 1em;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 20rem 20rem;
+            grid-column-gap: 1rem;
+            grid-row-gap: 1rem;
         }
 
         div.main {
@@ -132,12 +142,6 @@
     }
 
     div.main {
-        grid-area : main;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: stretch;
-        row-gap: 0.5em;
     }
 
     div.element {
@@ -147,7 +151,7 @@
         justify-content: center;
         background-color: #666666;
         overflow: hidden;
-        border-radius: 1em;
+        border-radius: 1rem;
     }
 
     div.element:last-child {

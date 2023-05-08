@@ -57,7 +57,7 @@
         border-radius: 0.5em;
     }
 
-    div.cell.line {
+    div.cell.bingo-section {
         background-color: #442222;
     }
 

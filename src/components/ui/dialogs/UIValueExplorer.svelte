@@ -1,7 +1,7 @@
 <script>
-    import UIExplorerModifiers from "components/ui/dialogs/elements/UIExplorerModifiers.svelte"
-    import UIExplorerHistory from "components/ui/dialogs/elements/UIExplorerHistory.svelte"
-    import UIExplorerResets from "components/ui/dialogs/elements/UIExplorerResets.svelte"
+    import UIValueModifiers from "components/ui/dialogs/elements/UIValueModifiers.svelte"
+    import UIValueHistory from "components/ui/dialogs/elements/UiValueHistory.svelte"
+    import UIValueResets from "components/ui/dialogs/elements/UIValueResets.svelte"
 
     import StringMaker from "utility/string-maker.js"
     import VALUES from "data/values"
@@ -11,9 +11,9 @@
     import registerTrigger from "utility/register-trigger.js"
 
     const PAGES = {
-        "Modifiers" : UIExplorerModifiers,
-        "History" : UIExplorerHistory,
-        "Resets" : UIExplorerResets,
+        "Modifiers" : UIValueModifiers,
+        "History" : UIValueHistory,
+        "Resets" : UIValueResets,
     }
 
     export let game

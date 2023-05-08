@@ -15,7 +15,7 @@
 {#if baseValue}
     <div class="resets">
         {#each resets as reset, index}
-            <div class="line">
+            <div class="bingo-section">
                 <div class="item index">{index + 1}</div>
                 <div class="item time">{StringMaker.formatValue(reset.time, {type: StringMaker.VALUE_FORMATS.TIME})}</div>
                 <div class="item">{codes.X} = {StringMaker.formatValueById(reset[codes.X], codes.X)}</div>
@@ -34,7 +34,7 @@
         overflow : auto;
     }
 
-    div.line {
+    div.bingo-section {
         display: flex;
         align-items: center;
         justify-items: center;
@@ -64,8 +64,7 @@
         background-color: #444444;
     }
 
-    div.line:hover div.item {
+    div.bingo-section:hover div.item {
         background-color: #777777;
     }
 </style>
-

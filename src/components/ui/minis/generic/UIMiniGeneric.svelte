@@ -21,7 +21,7 @@
     <div class="data">
         <div class="id"> {title} </div>
     </div>
-    <div class="highlight"></div>
+    <div class="main-section"></div>
 </div>
 
 <style>
@@ -42,7 +42,7 @@
         background-color: #666666;
     }
 
-    div.highlight {
+    div.main-section {
         z-index: 3;
         pointer-events: none;
         position: absolute;
@@ -55,11 +55,11 @@
         transition: opacity 0.2s;
         border-radius: 1em;
     }
-    div.container.visible:not(.active):hover div.highlight {
+    div.container.visible:not(.active):hover div.main-section {
         opacity: 0.2;
     }
 
-    div.container.active div.highlight {
+    div.container.active div.main-section {
         opacity: 0.4;
     }
 
@@ -92,7 +92,7 @@
     div.spacer {
         height: 1em;
     }
-    div.line {
+    div.bingo-section {
         height: 1px;
         background-color: #CCCCCC;
         margin : 0 1em;

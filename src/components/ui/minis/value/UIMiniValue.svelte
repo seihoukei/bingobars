@@ -49,14 +49,14 @@
             <div class="id">{id}</div>
             <div class="spacer"></div>
             <div class="current value">{StringMaker.formatValue(current, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
-            <div class="line"></div>
+            <div class="bingo-section"></div>
             <div class="max value">{StringMaker.formatValue(max, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
             <div class="bigspacer"></div>
             <div class="id">{id}P</div>
             <div class="spacer"></div>
             <div class="prestiges value">{StringMaker.formatValue(prestiges, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
         </div>
-        <div class="highlight"></div>
+        <div class="main-section"></div>
     {/if}
 </div>
 
@@ -78,7 +78,7 @@
         background-color: #666666;
     }
 
-    div.highlight {
+    div.main-section {
         z-index: 3;
         pointer-events: none;
         position: absolute;
@@ -91,11 +91,11 @@
         transition: opacity 0.2s;
         border-radius: 1em;
     }
-    div.container.visible:not(.active):hover div.highlight {
+    div.container.visible:not(.active):hover div.main-section {
         opacity: 0.2;
     }
 
-    div.container.active div.highlight {
+    div.container.active div.main-section {
         opacity: 0.4;
     }
 
@@ -132,7 +132,7 @@
     div.bigspacer {
         height: 0.6em;
     }
-    div.line {
+    div.bingo-section {
         height: 1px;
         background-color: #CCCCCC;
         margin : 0 1em;
