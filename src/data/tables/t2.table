@@ -2,7 +2,7 @@
 //N: Table name
 //C: Table unlock condition
 
-N: Table 2
+N: 2
 C: AB_seen
 
 //--- Slots

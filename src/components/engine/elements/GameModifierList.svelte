@@ -1,13 +1,12 @@
 <script>
     import TABLES from "data/tables"
-    import SLOT_STATES from "data/slot-states"
     import GAME_RULES from "data/game-rules.js"
 
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
     import Calculation from "game-classes/calculation.js"
-    import BingoTableData from "game-classes/bingo-table-data.js"
+    import BingoTable from "game-classes/bingo-table.js"
 
     export let tables
     export let bingo
@@ -29,7 +28,7 @@
         availableModifierList.push(...GAME_RULES.baseModifiers)
 
         for (const [tableName,table] of Object.entries(TABLES)) {
-            if (table.type !== BingoTableData.TABLE_TYPES.BINGO)
+            if (table.type !== BingoTable.TABLE_TYPES.BINGO)
                 continue
 
             for (const [slotName,slot] of Object.entries(table.slots)) {
@@ -37,10 +36,10 @@
                 const slotState = tables[address]
 
                 if (slot.modifiers) {
-                    if (slotState & SLOT_STATES.UNLOCKED)
+                    if (slotState & BingoTable.SLOT_STATES.UNLOCKED)
                        availableModifierList.push(...slot.modifiers)
 
-                    if (slotState & SLOT_STATES.ENABLED)
+                    if (slotState & BingoTable.SLOT_STATES.ENABLED)
                         activeModifierList.push(...slot.modifiers)
                 }
             }
@@ -51,6 +50,10 @@
             const modifier = data?.modifier
             if (!level || !modifier)
                 continue
+
+            // TODO: check if target was ever modified
+            // const target = modifier.target
+
             availableModifierList.push(modifier)
             const active = bingo?.active?.[id]
             if (!active)

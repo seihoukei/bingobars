@@ -18,7 +18,7 @@
 
 <!--
     <div class="content">
-        <UIBar bar={game.state.bar} />
+        <UIBar value={game.state.value} />
     </div>
 -->
 {/if}

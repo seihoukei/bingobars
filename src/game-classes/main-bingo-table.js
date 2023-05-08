@@ -1,18 +1,17 @@
-import BasicBingoTableSlotData from "game-classes/basic-bingo-table-slot-data.js"
+import MainBingoSlot from "game-classes/main-bingo-slot.js"
 import Calculation from "game-classes/calculation.js"
 import TableParser from "utility/table-parser.js"
-import BingoTableData from "game-classes/bingo-table-data.js"
+import BingoTable from "game-classes/bingo-table.js"
 
-export default class BasicBingoTableData extends BingoTableData{
-    type = BingoTableData.TABLE_TYPES.BINGO
+export default class MainBingoTable extends BingoTable{
+    type = BingoTable.TABLE_TYPES.BINGO
 
     conditions = []
     slots = {}
     
-    
     init(data) {
-        for (let name of BasicBingoTableData.SLOT_LIST)
-            this.slots[name] = new BasicBingoTableSlotData(this.id, name)
+        for (let id of MainBingoTable.SLOT_LIST)
+            this.slots[id] = new MainBingoSlot(this.id, id)
         
         this.parse(data)
         

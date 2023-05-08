@@ -1,8 +1,8 @@
 import TableParser from "utility/table-parser.js"
-import SuperBingoTableLineData from "game-classes/super-bingo-table-line-data.js"
-import BingoTableData from "game-classes/bingo-table-data.js"
+import SuperBingoSlot from "game-classes/super-bingo-slot.js"
+import BingoTable from "game-classes/bingo-table.js"
 
-export default class SuperBingoTableData extends  BingoTableData {
+export default class SuperBingoTable extends  BingoTable {
     static DEFAULT_COSTS = [
         [1, 1, 1, 1, 1,],
         [1, 1, 1, 1, 1,],
@@ -11,13 +11,15 @@ export default class SuperBingoTableData extends  BingoTableData {
         [1, 1, 1, 1, 1,],
     ]
     
-    type = BingoTableData.TABLE_TYPES.SUPER_BINGO
+    type = BingoTable.TABLE_TYPES.SUPER_BINGO
     
     init(data) {
-        this.costs = structuredClone(SuperBingoTableData.DEFAULT_COSTS)
+        this.costs = structuredClone(SuperBingoTable.DEFAULT_COSTS)
         this.lines = {}
-        for (const [id, {cells, position}] of Object.entries(SuperBingoTableData.LINES)) {
-            this.lines[id] = new SuperBingoTableLineData(`${this.id}${id}`, cells, position)
+        for (const [id, data] of Object.entries(SuperBingoTable.SLOTS)) {
+            if (!BingoTable.LINE_SLOT_TYPES.includes(data.type))
+                continue
+            this.lines[id] = new SuperBingoSlot(this.id, id)
         }
         
         this.parse(data)
@@ -45,7 +47,7 @@ export default class SuperBingoTableData extends  BingoTableData {
             .match(/\d+/g)
             .map(Number)
         
-        this.costs = SuperBingoTableData.DEFAULT_COSTS
+        this.costs = SuperBingoTable.DEFAULT_COSTS
             .map((x, i) => Object.assign([], x, costs.slice(i * 5, i * 5 + 5)))
         
         return this

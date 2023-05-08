@@ -1,11 +1,10 @@
 <script>
     import TABLES from "data/tables.js"
     import VALUES from "data/values.js"
-    import SLOT_STATES from "data/slot-states.js"
 
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
-    import Calculation from "game-classes/calculation.js"
+    import BingoTable from "game-classes/bingo-table.js"
 
     export let modifier = {}
     export let game = {}
@@ -19,7 +18,7 @@
     $: bingoLine = slot ? null : source?.match(/^SB..$/)
     $: gameRules = !source
     $: interactive = slot !== null || bingoLine
-    $: active = (slot && (tables[source] & SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)]) || gameRules
+    $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)]) || gameRules
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
     $: variables = [...new Set(modifier.involved.filter(x => x !== modifier.target))]

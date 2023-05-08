@@ -1,6 +1,7 @@
 <script>
-    import UIMaxiHellCell from "components/ui/maxis/elements/UIMaxiHellCell.svelte"
     import TABLES from "data/tables.js"
+    import UISuperCell from "components/ui/maxis/super-bingo/UISuperCell.svelte"
+    import UISuperLine from "components/ui/maxis/super-bingo/UISuperLine.svelte"
 
     export let game
     export let id
@@ -13,22 +14,19 @@
 </script>
 
 <div class="container">
-    <div class="title">
-        HELL BINGO
-    </div>
-    <div class="bingoins">
-        <span class="bingoin-icon"></span> {availableBingoins} / {bingoins}
-    </div>
     <div class="table">
+        <div class="title">S</div>
+        <div class="title">U</div>
+        <div class="title">P</div>
+        <div class="title">E</div>
+        <div class="title">R</div>
         {#each TABLES.SB.costs as line, y}
             {#each line as cost, x}
-                <UIMaxiHellCell {game} {x} {y} {availableBingoins} />
+                <UISuperCell {game} {x} {y} {availableBingoins} />
             {/each}
         {/each}
         {#each Object.entries(TABLES.SB.lines) as [id, data]}
-            <UIMaxiHellCell {game}
-                            x={data.position[0] - 1}
-                            y={data.position[1]} {availableBingoins} line/>
+            <UISuperLine {game} {id} />
         {/each}
     </div>
 
@@ -41,8 +39,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        background-color: #111111;
+        justify-content: start;
+        background-color: #777722;
     }
 
     div.title {
@@ -51,18 +49,31 @@
 
     div.bingoins {
         font-size: 2em;
-        margin-bottom: 1em;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     div.table {
+        position: absolute;
+        top : 1em;
+        left : 1em;
+        bottom : 1em;
+        right : 1em;
+        flex : 1;
         display: grid;
-        grid-auto-columns: 8em 8em 8em 8em 8em 8em 8em;
-        grid-auto-rows: 5em 5em 5em 5em 5em 5em;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-auto-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-row-gap: 1em;
         grid-column-gap: 1em;
+    }
+
+    div.title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 6em;
+        margin: -2em;
     }
 
 </style>

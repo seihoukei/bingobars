@@ -1,15 +1,14 @@
 <script>
-    import UISlotConditions from "components/ui/maxis/elements/UISlotConditions.svelte"
-    import UISlotModifiers from "components/ui/maxis/elements/UISlotModifiers.svelte"
-    import UISlotPrerequisites from "components/ui/maxis/elements/UISlotPrerequisites.svelte"
 
     import FG_COLORS from "data/fg-colors"
-    import SLOT_STATES from "data/slot-states"
-    import SLOT_TYPES from "data/slot-types"
 
     import interactive from "utility/interactive"
     import Trigger from "utility/trigger"
     import StringMaker from "utility/string-maker.js"
+    import BingoTable from "game-classes/bingo-table.js"
+    import UISlotPrerequisites from "components/ui/maxis/table/UISlotPrerequisites.svelte"
+    import UISlotConditions from "components/ui/maxis/table/UISlotConditions.svelte"
+    import UISlotModifiers from "components/ui/maxis/table/UISlotModifiers.svelte"
 
     export let id
     export let slot
@@ -25,16 +24,16 @@
 
     $: tables = game?.state?.tables
     $: value = tables?.[slot.address]
-    $: visible = value & SLOT_STATES.VISIBLE
-    $: seen = value & SLOT_STATES.PREREQUISITES_MET
-    $: available = (value & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE
-    $: unlocked = value & SLOT_STATES.UNLOCKED
+    $: visible = value & BingoTable.SLOT_STATES.VISIBLE
+    $: seen = value & BingoTable.SLOT_STATES.PREREQUISITES_MET
+    $: available = (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
+    $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
     $: involved = unlocked
               ? slot?.getInvolvedInModifiers() ?? []
               : slot?.getInvolvedInConditions() ?? []
-    $: enabled = value & SLOT_STATES.ENABLED
+    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
     $: cssVariables = `${getSlotPosition(id)}${getSlotBackground(involved, seen, available, enabled, unlocked)}`
-    $: cell = slot.type === SLOT_TYPES.CELL
+    $: cell = slot.type === BingoTable.SLOT_TYPES.CELL
 
     $: unlockTimes = game?.state?.stats?.unlocks
     $: unlockTime = unlockTimes[slot.address] ?? 0
@@ -45,17 +44,17 @@
     }
 
     function getSlotPosition(id) {
-        if (slot.type === SLOT_TYPES.CELL) {
+        if (slot.type === BingoTable.SLOT_TYPES.CELL) {
             const x = +id[3] + 1
             const y = +id[1] + 1
             return positionVariables(x, y)
         }
-        if (slot.type === SLOT_TYPES.ROW) {
+        if (slot.type === BingoTable.SLOT_TYPES.ROW) {
             const x = 7
             const y = +id[1] + 1
             return positionVariables(x, y)
         }
-        if (slot.type === SLOT_TYPES.COLUMN) {
+        if (slot.type === BingoTable.SLOT_TYPES.COLUMN) {
             const x = +id[1] + 1
             const y = 7
             return positionVariables(x, y)

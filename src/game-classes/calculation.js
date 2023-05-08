@@ -83,11 +83,9 @@ export default class Calculation {
                 "/" : Calculation.PRIORITIES.MUL,
                 "+" : Calculation.PRIORITIES.ADD,
                 "-" : Calculation.PRIORITIES.ADD,
-            }[operator]
+            }[operator] ?? Calculation.PRIORITIES.FIX
         }
         return Calculation.PRIORITIES.FIX
-        //console.log(this.parsed)
-//        if (math.isFunctionNode(this.parsed.value)
     }
 
     check(context) {
@@ -114,10 +112,3 @@ export default class Calculation {
         this.hidden = hidden
     }
 }
-
-Calculation.sortList([
-    new Calculation("A += 1"),
-    new Calculation("A *= C"),
-    new Calculation("B += 1"),
-    new Calculation("C *= B")
-])

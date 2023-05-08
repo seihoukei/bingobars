@@ -26,7 +26,12 @@
     $: blinkTargets = [...(data.cells ?? []), [x-1, y]]
     $: blinkCells = []
     $: active = bingo?.active?.[id]
+    $: modifier = data?.modifier ?? null
+    $: target = modifier?.target ?? null
     $: effect = data.effect ?? `SB${id}`
+    $: diplayEffect = target && game?.state?.values?.[`${target}_seen`]
+        ? effect
+        : "???"
 
     onMount(() => {
         lastValue = value
@@ -65,7 +70,7 @@
      on:click={toggle}
 >
     <div class="level">{value}</div>
-    <div class="name">{effect}</div>
+    <div class="name">{diplayEffect}</div>
 </div>
 
 {#each blinkTargets as [x, y], i}
@@ -95,7 +100,7 @@
     }
 
     div.level {
-        font-size: 3em;
+        font-size: 5em;
         flex: 1;
         display: flex;
         align-items: center;

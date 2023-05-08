@@ -1,13 +1,13 @@
-import UIMiniValue from "components/ui/minis/UIMiniValue.svelte"
-import UIMaxiValue from "components/ui/maxis/UIMaxiValue.svelte"
-import UIMiniTable from "components/ui/minis/UIMiniTable.svelte"
-import UIMaxiTable from "components/ui/maxis/UIMaxiTable.svelte"
-import UIMiniGeneric from "components/ui/minis/UIMiniGeneric.svelte"
-import UIMaxiCode from "components/ui/maxis/UIMaxiCode.svelte"
-import UIMaxiHelp from "components/ui/maxis/UIMaxiHelp.svelte"
-import UIMaxiMenu from "components/ui/maxis/UIMaxiMenu.svelte"
-import UIMaxiBingo from "components/ui/maxis/UIMaxiBingo.svelte"
-import UIMaxiHell from "components/ui/maxis/UIMaxiHell.svelte"
+import UIMaxiValue from "components/ui/maxis/value/UIMaxiValue.svelte"
+import UIMaxiTable from "components/ui/maxis/table/UIMaxiTable.svelte"
+import UIMaxiCode from "components/ui/maxis/codes/UIMaxiCode.svelte"
+import UIMaxiHelp from "components/ui/maxis/help/UIMaxiHelp.svelte"
+import UIMaxiMenu from "components/ui/maxis/menu/UIMaxiMenu.svelte"
+import UIMaxiBingo from "components/ui/maxis/super-bingo/UIMaxiSuper.svelte"
+import UIMaxiHell from "components/ui/maxis/hell-bingo/UIMaxiHell.svelte"
+import UIMiniValue from "components/ui/minis/value/UIMiniValue.svelte"
+import UIMiniGeneric from "components/ui/minis/generic/UIMiniGeneric.svelte"
+import UIMiniTable from "components/ui/minis/table/UIMiniTable.svelte"
 
 const UI_TABS = [{
     mini : UIMiniValue,

@@ -21,6 +21,7 @@ span.bingoin-icon {
   display: inline-block;
   width : 1em;
   height : 1em;
-  background-color: #22CC22;
   margin: 0 0.2em;
+  background: url("../resources/bingoin.png");
+  background-size: 1em 1em;
 }

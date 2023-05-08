@@ -1,11 +1,9 @@
 <script>
     import TABLES from "data/tables"
-    import SLOT_STATES from "data/slot-states.js"
-    import SLOT_TYPES from "data/slot-types.js"
 
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger"
-    import BingoTableData from "game-classes/bingo-table-data.js"
+    import BingoTable from "game-classes/bingo-table.js"
 
     export let tables = {}
     export let bingo = {}
@@ -15,10 +13,10 @@
     registerTrigger("bingo-updated", updateTableValues)
 
     const counterNames = {
-        [SLOT_TYPES.CELL]: "cN",
-        [SLOT_TYPES.ROW]: "RN",
-        [SLOT_TYPES.COLUMN]: "CN",
-        [SLOT_TYPES.DIAGONAL]: "DN",
+        [BingoTable.SLOT_TYPES.CELL]: "cN",
+        [BingoTable.SLOT_TYPES.ROW]: "RN",
+        [BingoTable.SLOT_TYPES.COLUMN]: "CN",
+        [BingoTable.SLOT_TYPES.DIAGONAL]: "DN",
     }
 
     updateTableValues()
@@ -35,7 +33,7 @@
         }
 
         for (const [tableName,table] of Object.entries(TABLES)) {
-            if (table.type !== BingoTableData.TABLE_TYPES.BINGO)
+            if (table.type !== BingoTable.TABLE_TYPES.BINGO)
                 continue
 
             tableValues[`${tableName}_SN`] = 0
@@ -48,10 +46,10 @@
                 const address = `${tableName}${slotName}`
                 const slotState = tables[address]
 
-                if (slotState & SLOT_STATES.UNLOCKED) {
+                if (slotState & BingoTable.SLOT_STATES.UNLOCKED) {
                     tableValues[`${tableName}_${counterNames[slot.type]}`]++
                     tableValues[`T_${counterNames[slot.type]}`]++
-                    if (slot.type !== SLOT_TYPES.CELL) {
+                    if (slot.type !== BingoTable.SLOT_TYPES.CELL) {
                         tableValues[`${tableName}_LN`]++
                         tableValues[`T_LN`]++
                     }

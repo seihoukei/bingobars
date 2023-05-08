@@ -1,9 +1,8 @@
 <script>
-    import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
-    import UIMaxiHeader from "components/ui/maxis/elements/UIMaxiHeader.svelte"
-
     import Trigger from "utility/trigger.js"
     import UI_TABS from "data/ui-tabs.js"
+    import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
+    import UIMaxiHeader from "components/ui/maxis/UIMaxiHeader.svelte"
 
     export let game
 
@@ -142,6 +141,7 @@
     }
 
     div.element {
+        position: relative;
         display : flex;
         align-items: center;
         justify-content: center;

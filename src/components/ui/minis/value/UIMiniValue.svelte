@@ -1,11 +1,11 @@
 <script>
-    import UIMiniBar from "components/ui/minis/elements/UIMiniBar.svelte"
 
     import FG_COLORS from "data/fg-colors.js"
 
     import interactive from "utility/interactive.js"
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import UIMiniValueBar from "components/ui/minis/value/UIMiniValueBar.svelte"
 
     export let game
     export let id
@@ -34,7 +34,7 @@
 >
     {#if visible}
         <div class="bar">
-            <UIMiniBar
+            <UIMiniValueBar
                     {max}
                     {current}
                     bgcolor="inherit"

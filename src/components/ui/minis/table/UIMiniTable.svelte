@@ -1,5 +1,5 @@
 <script>
-    import UIMiniSlotDisplay from "components/ui/minis/elements/UIMiniSlotDisplay.svelte"
+    import UIMiniTableSlot from "components/ui/minis/table/UIMiniTableSlot.svelte"
 
     import TABLES from "data/tables.js"
 
@@ -36,7 +36,7 @@
             <div class="spacer"></div>
             <div class="table">
                 {#each slots as [slotId, slot]}
-                    <UIMiniSlotDisplay
+                    <UIMiniTableSlot
                             value={game?.state?.tables?.[`${id}${slotId}`] ?? 0}
                             id={slotId}
                             {slot} />

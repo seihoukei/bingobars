@@ -1,34 +1,33 @@
 <script>
-    import SLOT_STATES from "data/slot-states"
-    import SLOT_TYPES from "data/slot-types"
+    import BingoTable from "game-classes/bingo-table.js"
 
     export let id
     export let value
     export let slot
 
     $: cssVariables = getSlotPosition(id)
-    $: visible = value & SLOT_STATES.VISIBLE
-    $: seen = value & SLOT_STATES.PREREQUISITES_MET
-    $: available = (value & SLOT_STATES.UNLOCKABLE) === SLOT_STATES.UNLOCKABLE
-    $: unlocked = value & SLOT_STATES.UNLOCKED
-    $: enabled = value & SLOT_STATES.ENABLED
-    $: cell = slot.type === SLOT_TYPES.CELL
+    $: visible = value & BingoTable.SLOT_STATES.VISIBLE
+    $: seen = value & BingoTable.SLOT_STATES.PREREQUISITES_MET
+    $: available = (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
+    $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
+    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
+    $: cell = slot.type === BingoTable.SLOT_TYPES.CELL
 
     function positionVariables(x, y) {
         return `--row:${y};--column:${x}`
     }
     function getSlotPosition(id) {
-        if (slot.type === SLOT_TYPES.CELL) {
+        if (slot.type === BingoTable.SLOT_TYPES.CELL) {
             const x = +id[3] + 1
             const y = +id[1]
             return positionVariables(x, y)
         }
-        if (slot.type === SLOT_TYPES.ROW) {
+        if (slot.type === BingoTable.SLOT_TYPES.ROW) {
             const x = 7
             const y = +id[1]
             return positionVariables(x, y)
         }
-        if (slot.type === SLOT_TYPES.COLUMN) {
+        if (slot.type === BingoTable.SLOT_TYPES.COLUMN) {
             const x = +id[1] + 1
             const y = 6
             return positionVariables(x, y)

@@ -2,9 +2,25 @@ import BASE_VALUES from "data/base-values.js"
 import VALUES_PER_BASE from "data/values-per-base.js"
 import VALUES_PER_TABLE from "data/values-per-table.js"
 import StringMaker from "utility/string-maker.js"
-import SuperBingoTableData from "game-classes/super-bingo-table-data.js"
+import BingoTable from "game-classes/bingo-table.js"
 
 const VALUES = {}
+
+for (const baseValue of Object.keys(BASE_VALUES)) {
+    for (const [name, data] of Object.entries(VALUES_PER_BASE)) {
+        const valueName = name.replace("~", baseValue)
+        const valueData = {
+            baseValue,
+        }
+        for (const [id, value] of Object.entries(data)) {
+            if (typeof value === 'string')
+                valueData[id] = value.replace("~", baseValue)
+            else
+                valueData[id] = data[id]
+        }
+        VALUES[valueName] = valueData
+    }
+}
 
 for (const tableName of ["T", "T1", "T2", "T3", "T4", "T5"]) {
     for (const [name, data] of Object.entries(VALUES_PER_TABLE)) {
@@ -24,23 +40,10 @@ for (const tableName of ["T", "T1", "T2", "T3", "T4", "T5"]) {
     }
 }
 
-for (const baseValue of Object.keys(BASE_VALUES)) {
-    for (const [name, data] of Object.entries(VALUES_PER_BASE)) {
-        const valueName = name.replace("~", baseValue)
-        const valueData = {
-            baseValue,
-        }
-        for (const [id, value] of Object.entries(data)) {
-            if (typeof value === 'string')
-                valueData[id] = value.replace("~", baseValue)
-            else
-                valueData[id] = data[id]
-        }
-        VALUES[valueName] = valueData
-    }
-}
-
-for (const id of Object.keys(SuperBingoTableData.LINES)) {
+for (const [id, data] of Object.entries(BingoTable.SLOTS)) {
+    if (!BingoTable.LINE_SLOT_TYPES.includes(data.type))
+        continue
+    
     const valueData = {
         isBingoLine : true
     }

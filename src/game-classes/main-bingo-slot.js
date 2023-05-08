@@ -1,24 +1,8 @@
-import SLOT_TYPES from "data/slot-types.js"
 import Calculation from "game-classes/calculation.js"
 import VALUES from "data/values.js"
+import BingoTable from "game-classes/bingo-table.js"
 
-export default class BasicBingoTableSlotData {
-    static SLOT_REGEXP = {
-        [SLOT_TYPES.CELL] : /^R\dC\d$/,
-        [SLOT_TYPES.ROW] : /^R\d$/,
-        [SLOT_TYPES.COLUMN] : /^C\d$/,
-        [SLOT_TYPES.DIAGONAL] : /^D[LR]$/,
-    }
-
-    static getTypeForName(name) {
-        for (const [type, regex] of Object.entries(BasicBingoTableSlotData.SLOT_REGEXP)) {
-            if (name.match(regex))
-                return +type
-        }
-        return SLOT_TYPES.UNKNOWN
-    }
-
-
+export default class MainBingoSlot {
     prerequisites = []
     conditions = []
     modifiers = []
@@ -26,10 +10,19 @@ export default class BasicBingoTableSlotData {
     modifierText = null
     oneWay = false
     bingoins = 1
+    
+    table = ""
+    id = ""
 
-    constructor(table, name) {
-        this.address = `${table}${name}`
-        this.type = BasicBingoTableSlotData.getTypeForName(name)
+    constructor(table, id, data = BingoTable.SLOTS[id]) {
+        this.table = table
+        this.id = id
+        this.address = `${table}${id}`
+        this.type = data.type ?? BingoTable.SLOT_TYPES.UNKNOWN
+        this.position = data.position ?? [0, 0]
+        this.cells = data.cells ?? []
+        const dependencies = data.dependencies ?? []
+        this.dependencies = dependencies.map(x => `${table}${x}`)
     }
 
     addPrerequisite(data) {

@@ -1,8 +1,5 @@
 <script>
-    import UIProgressBar from "components/ui/elements/UIProgressBar.svelte"
-    import UIMaxiValueDisplay from "components/ui/maxis/elements/UIMaxiValueDisplay.svelte"
-    import UIMaxiExplanation from "components/ui/maxis/elements/UIMaxiExplanation.svelte"
-    import UIMaxiAutoPrestige from "components/ui/maxis/elements/UIMaxiAutoPrestige.svelte"
+    import UIProgressBar from "components/ui/common-elements/UIProgressBar.svelte"
 
     import FG_COLORS from "data/fg-colors.js"
 
@@ -10,6 +7,9 @@
     import interactive from "utility/interactive.js"
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import UIValueDisplay from "components/ui/maxis/value/UIValueDisplay.svelte"
+    import UIValueExplanation from "components/ui/maxis/value/UIValueExplanation.svelte"
+    import UIValueAutoPrestige from "components/ui/maxis/value/UIValueAutoPrestige.svelte"
 
     export let game
     export let id
@@ -87,11 +87,11 @@
     <div class="data">
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.X} {game} />
-                <UIMaxiValueDisplay id={code.dX} {game} />
+                <UIValueDisplay id={code.X} {game} />
+                <UIValueDisplay id={code.dX} {game} />
             </div>
             <div class="explanation">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description={`Every second while ${code.X} < ${code.MX}`}
                         formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${values[`${code.dX}_base`]}`}
                         active={current < limit && !hover.prestige && !hover.reset}
@@ -100,11 +100,11 @@
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.XP} {game} />
-                <UIMaxiValueDisplay id={code.dXP} {game} />
+                <UIValueDisplay id={code.XP} {game} />
+                <UIValueDisplay id={code.dXP} {game} />
             </div>
             <div class="explanation">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every prestige"
                         formula={seen.dXP ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
                         active={hover.prestige}
@@ -113,10 +113,10 @@
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.XPc} {game} />
+                <UIValueDisplay id={code.XPc} {game} />
             </div>
             <div class="explanation prestige">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every prestige"
                         formula={seen.XPc ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
                         active={hover.prestige}
@@ -125,11 +125,11 @@
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.MX} {game} />
-                <UIMaxiValueDisplay id={code.MXm} {game} />
+                <UIValueDisplay id={code.MX} {game} />
+                <UIValueDisplay id={code.MXm} {game} />
             </div>
             <div class="explanation prestige">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every prestige"
                         formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${values[`${code.MXm}_base`]}`}
                         active={hover.prestige}
@@ -138,10 +138,10 @@
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.MX0} {game} />
+                <UIValueDisplay id={code.MX0} {game} />
             </div>
             <div class="explanation reset">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every reset"
                         formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${values[`${code.MX0}_base`]}`}
                         active={hover.reset}
@@ -149,14 +149,14 @@
             </div>
         </div>
         <div class="block">
-            <UIMaxiAutoPrestige {id} {canAuto} {auto}/>
+            <UIValueAutoPrestige {id} {canAuto} {auto}/>
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.XPt} {game} />
+                <UIValueDisplay id={code.XPt} {game} />
             </div>
             <div class="explanation prestige reset">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every reset or prestige"
                         formula={`${code.XPt} = 0`}
                         active={hover.prestige || hover.reset}
@@ -165,10 +165,10 @@
         </div>
         <div class="block">
             <div class="values">
-                <UIMaxiValueDisplay id={code.Xt} {game} />
+                <UIValueDisplay id={code.Xt} {game} />
             </div>
             <div class="explanation reset">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every reset"
                         formula={`${code.Xt} = 0`}
                         active={hover.reset}
@@ -177,14 +177,14 @@
         </div>
         <div class="block">
             <div class="explanation reset">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every reset"
                         formula={`${code.X} = 0`}
                         active={hover.reset}
                 />
             </div>
             <div class="explanation reset">
-                <UIMaxiExplanation
+                <UIValueExplanation
                         description="Every reset"
                         formula={`${code.XP} = 0`}
                         active={hover.reset}

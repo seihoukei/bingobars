@@ -33,41 +33,37 @@
     {#if x === 2 && y === 2}
         <div class="free">FREE</div>
     {:else}
-        <div class="change">
-            <div class="button" class:active={canDecrease} on:click={decrease}>-</div>
-            <div class="value">{value}</div>
-            <div class="button" class:active={canIncrease} on:click={increase}>+</div>
-        </div>
+        <div class="button left" class:active={canDecrease} on:click={decrease}>-</div>
+        <div class="value">{value}</div>
+        <div class="button right" class:active={canIncrease} on:click={increase}>+</div>
         <div class="cost"><span class="bingoin-icon"></span> {cost}</div>
     {/if}
 </div>
 
 <style>
     div.cell {
-        background: #444477;
+        position : relative;
         grid-row: var(--row);
         grid-column: var(--column);
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        border-radius: 0.5em;
-    }
 
-    div.change {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        width: 7em;
+        border-radius: 0.5em;
+        overflow: hidden;
+
+        background: #444477;
+
+        z-index: 2;
     }
 
     div.value {
-        font-size: 3em;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        font-size: 5em;
     }
 
 
@@ -75,32 +71,55 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        font-size : 2em;
+        width: 1em;
+        height: 2.5em;
+
         background-color: #6688AA;
-        color : #000000;
-        width: 1.5em;
-        height: 1.5em;
+        color : #CCCCCC;
         transition: background-color 0.2s;
+
+        z-index: 2;
+    }
+
+    div.button.left {
+        border-radius: 0 0.5em 0.5em 0;
+    }
+    div.button.right {
+        border-radius: 0.5em 0 0 0.5em;
     }
 
     div.button.active:hover {
-        cursor: pointer;
         background-color: #7799BB;
+        cursor: pointer;
     }
 
     div.button:not(.active) {
-        background-color: #444444;
+        background-color: #444477;
+        color: #222222;
     }
 
     div.cost {
+        position : absolute;
+        bottom : 0.1em;
+        left : 0;
+        right: 0;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
+        z-index: 1;
     }
 
     div.free {
+        flex : 1;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         font-size: 3em;
     }
 </style>

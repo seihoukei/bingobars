@@ -1,7 +1,6 @@
 <script>
-    import UIMaxiBingoCell from "components/ui/maxis/elements/UIMaxiBingoCell.svelte"
-    import UIMaxiBingoLine from "components/ui/maxis/elements/UIMaxiBingoLine.svelte"
     import TABLES from "data/tables.js"
+    import UIHellCell from "components/ui/maxis/hell-bingo/UIHellCell.svelte"
 
     export let game
     export let id
@@ -15,7 +14,7 @@
 
 <div class="container">
     <div class="title">
-        SUPER BINGO
+        HELL BINGO
     </div>
     <div class="bingoins">
         <span class="bingoin-icon"></span> {availableBingoins} / {bingoins}
@@ -23,11 +22,13 @@
     <div class="table">
         {#each TABLES.SB.costs as line, y}
             {#each line as cost, x}
-                <UIMaxiBingoCell {game} {x} {y} {availableBingoins} />
+                <UIHellCell {game} {x} {y} {availableBingoins} />
             {/each}
         {/each}
         {#each Object.entries(TABLES.SB.lines) as [id, data]}
-            <UIMaxiBingoLine {game} {id} />
+            <UIHellCell {game}
+                            x={data.position[0] - 1}
+                            y={data.position[1]} {availableBingoins} line/>
         {/each}
     </div>
 
@@ -41,7 +42,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: #777722;
+        background-color: #111111;
     }
 
     div.title {

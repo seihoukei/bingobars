@@ -1,5 +1,5 @@
 <script>
-    import UICodeValueList from "components/ui/maxis/elements/UICodeValueList.svelte"
+    import UICodeValueList from "components/ui/maxis/codes/UICodeValueList.svelte"
 
     export let game
     export let id

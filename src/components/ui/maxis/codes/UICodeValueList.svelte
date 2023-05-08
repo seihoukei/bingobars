@@ -1,9 +1,8 @@
 <script>
-    import UICodeValue from "components/ui/maxis/elements/UICodeValue.svelte"
-
     import VALUES_PER_BASE from "data/values-per-base.js"
     import VALUES_PER_TABLE from "data/values-per-table.js"
     import VALUES from "data/values.js"
+    import UICodeValue from "components/ui/maxis/codes/UICodeValue.svelte"
 
     export let game
     export let id
