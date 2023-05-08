@@ -124,6 +124,23 @@
         z-index : 10;
     }
 
+    div.dialog {
+        background-color: #555555;
+        font-size: 3vmin;
+        position: absolute;
+        top : 10vmin;
+        right : 10vmin;
+        left : 10vmin;
+        bottom : 10vmin;
+
+        border-radius: 1vmin;
+        padding : 5vmin;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: stretch;
+    }
+
     div.title {
         display: flex;
         align-items: center;
@@ -151,19 +168,6 @@
 
     div.close:hover {
         background-color: #333333;
-    }
-
-    div.dialog {
-        background-color: #555555;
-        font-size: 3vmin;
-        width : 75vmin;
-        height : 75vmin;
-        border-radius: 1vmin;
-        padding : 5vmin;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: stretch;
     }
 
     div.values {

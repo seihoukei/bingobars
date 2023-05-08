@@ -6,6 +6,8 @@
 
     let animationFrame = null
 
+    const RENDER_RESOLUTION = 200
+
     const VIEWS = [
         {
             name: "Short term",
@@ -27,8 +29,8 @@
         },
     ]
 
-    const RENDER_WIDTH = 300
-    const RENDER_HEIGHT = 180
+    let renderWidth = 300
+    let renderHeight = 180
 
     let currentView = 1
     let logarithmic = false
@@ -48,8 +50,8 @@
     function updatePosition(event) {
         const rect = canvas.getBoundingClientRect()
         mouse = {
-            x : (event.clientX - rect.x) / canvas.width * RENDER_WIDTH,
-            y : (event.clientY - rect.y) / canvas.height * RENDER_HEIGHT,
+            x : (event.clientX - rect.x) / canvas.width * renderWidth,
+            y : (event.clientY - rect.y) / canvas.height * renderHeight,
         }
         updateGraph()
     }
@@ -66,6 +68,11 @@
         const width = canvas.width = canvas.clientWidth
         const height = canvas.height = canvas.clientHeight
 
+        const ratio = width / height
+
+        renderHeight = Math.min(RENDER_RESOLUTION, width / ratio)
+        renderWidth = renderHeight * ratio
+
         if (mouse) {
             mouse.closestX = 0
             mouse.closestY = 0
@@ -73,11 +80,11 @@
 
         const start = data.at(0).time
         const end = data.at(-1).time
-        const timeScale = RENDER_WIDTH / (end - start)
+        const timeScale = renderWidth / (end - start)
 
         context.clearRect(0, 0, width, height)
         context.save()
-        context.scale(width / RENDER_WIDTH, height / RENDER_HEIGHT)
+        context.scale(width / renderWidth, height / renderHeight)
 
         if (enoughData) {
             context.font = "10px Rajdhani"
@@ -88,7 +95,7 @@
                  moment += viewData.weakGrid) {
                 const x = (moment - start) * timeScale
                 context.moveTo(x, 0)
-                context.lineTo(x, RENDER_HEIGHT)
+                context.lineTo(x, renderHeight)
             }
             context.strokeStyle = "#888888"
             context.lineWidth = 0.25
@@ -98,9 +105,9 @@
                  moment < end;
                  moment += viewData.strongGrid) {
                 const x = (moment - start) * timeScale
-                context.moveTo(x, RENDER_HEIGHT)
+                context.moveTo(x, renderHeight)
                 context.lineTo(x, 0)
-                context.fillText(StringMaker.formatValue(moment, {type: StringMaker.VALUE_FORMATS.TIME}), x, RENDER_HEIGHT - 2)
+                context.fillText(StringMaker.formatValue(moment, {type: StringMaker.VALUE_FORMATS.TIME}), x, renderHeight - 2)
             }
             context.strokeStyle = "#AAAAAA"
             context.stroke()
@@ -113,15 +120,15 @@
                 const pad = Math.max(0, 2 - (logMax - logMin))
                 const min = logMin - 0.1 * Math.abs(logMin) - pad
                 const max = logMax + 0.1 * Math.abs(logMax) + pad
-                const valueScale = RENDER_HEIGHT / (max - min)
+                const valueScale = renderHeight / (max - min)
 
                 //render bars
                 context.beginPath()
                 const step = 10 ** Math.floor(Math.log10(max - min))
                 for (let i = 0; i < 11; i++) {
-                    context.moveTo(0, RENDER_HEIGHT - (i * step - min) * valueScale)
-                    context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - (i * step - min) * valueScale)
-                    context.fillText(StringMaker.formatValue(10 ** (i * step)), 2, RENDER_HEIGHT - (i * step - min) * valueScale)
+                    context.moveTo(0, renderHeight - (i * step - min) * valueScale)
+                    context.lineTo(renderWidth, renderHeight - (i * step - min) * valueScale)
+                    context.fillText(StringMaker.formatValue(10 ** (i * step)), 2, renderHeight - (i * step - min) * valueScale)
                 }
                 context.lineWidth = 0.25
                 context.strokeStyle = "#888888"
@@ -129,14 +136,14 @@
 
                 context.beginPath()
                 context.lineWidth = 1
-                context.moveTo(0, RENDER_HEIGHT)
+                context.moveTo(0, renderHeight)
                 let value = 0
                 let time = 0
                 for (let item of data) {
                     value = item[id] ?? value
                     time = item.time ?? time
                     const x = (time - start) * timeScale
-                    const y = RENDER_HEIGHT - (Math.log10(value) - min) * valueScale
+                    const y = renderHeight - (Math.log10(value) - min) * valueScale
                     if (mouse && x < mouse.x) {
                         mouse.closestX = x
                         mouse.closestY = y
@@ -145,8 +152,8 @@
                     }
                     context.lineTo(x, y)
                 }
-                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-                context.lineTo(0, RENDER_HEIGHT)
+                context.lineTo(renderWidth, renderHeight)
+                context.lineTo(0, renderHeight)
                 context.fillStyle = "#CCCCCC88"
                 context.strokeStyle = "#CCCCCC"
                 context.fill()
@@ -154,13 +161,13 @@
 
             } else {
                 const max = realMax + 0.1 * Math.abs(realMax)
-                const valueScale = RENDER_HEIGHT / max
+                const valueScale = renderHeight / max
 
                 const step = 10 ** Math.floor(Math.log10(max))
                 for (let i = 1; i < 11; i++) {
-                    context.moveTo(0, RENDER_HEIGHT - i * step * valueScale)
-                    context.lineTo(RENDER_WIDTH, RENDER_HEIGHT - i * step * valueScale)
-                    context.fillText(StringMaker.formatValue(i * step), 2, RENDER_HEIGHT - i * step * valueScale)
+                    context.moveTo(0, renderHeight - i * step * valueScale)
+                    context.lineTo(renderWidth, renderHeight - i * step * valueScale)
+                    context.fillText(StringMaker.formatValue(i * step), 2, renderHeight - i * step * valueScale)
                 }
                 context.lineWidth = 0.25
                 context.strokeStyle = "#888888"
@@ -168,14 +175,14 @@
 
                 context.beginPath()
                 context.lineWidth = 1
-                context.moveTo(0, RENDER_HEIGHT)
+                context.moveTo(0, renderHeight)
                 let value = 0
                 let time = 0
                 for (let item of data) {
                     value = item[id] ?? value
                     time = item.time ?? time
                     const x = (time - start) * timeScale
-                    const y = RENDER_HEIGHT - value * valueScale
+                    const y = renderHeight - value * valueScale
                     if (mouse && x < mouse.x) {
                         mouse.closestX = x
                         mouse.closestY = y
@@ -184,8 +191,8 @@
                     }
                     context.lineTo(x, y)
                 }
-                context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-                context.lineTo(0, RENDER_HEIGHT)
+                context.lineTo(renderWidth, renderHeight)
+                context.lineTo(0, renderHeight)
                 context.fillStyle = "#CCCCCC88"
                 context.strokeStyle = "#CCCCCC"
                 context.fill()
@@ -196,9 +203,9 @@
             if (mouse) {
                 context.beginPath()
                 context.moveTo(mouse.closestX, 0)
-                context.lineTo(mouse.closestX, RENDER_HEIGHT)
+                context.lineTo(mouse.closestX, renderHeight)
                 context.moveTo(0, mouse.closestY)
-                context.lineTo(RENDER_WIDTH, mouse.closestY)
+                context.lineTo(renderWidth, mouse.closestY)
                 context.strokeStyle = "#444444"
                 context.stroke()
 
@@ -220,9 +227,9 @@
 
             context.beginPath()
             context.moveTo(0, 0)
-            context.lineTo(0, RENDER_HEIGHT)
-            context.lineTo(RENDER_WIDTH, RENDER_HEIGHT)
-            context.lineTo(RENDER_WIDTH, 0)
+            context.lineTo(0, renderHeight)
+            context.lineTo(renderWidth, renderHeight)
+            context.lineTo(renderWidth, 0)
             context.lineTo(0, 0)
             context.strokeStyle = "#222222"
             context.lineWidth = 2
@@ -232,7 +239,7 @@
             context.fillStyle = "#CCCCCC"
             context.textBaseline = "middle"
             context.textAlign = "center"
-            context.fillText("Not enough data", RENDER_WIDTH / 2, RENDER_HEIGHT / 2)
+            context.fillText("Not enough data", renderWidth / 2, renderHeight / 2)
         }
 
         context.restore()
@@ -270,8 +277,7 @@
 
 <style>
     canvas {
-        width : 25em;
-        height : 15em;
+        flex : 1;
     }
 
     div.buttons {

@@ -28,6 +28,7 @@
      style="--ui-slot:{uiSlot}"
 >
     {#if visible}
+        <div class="highlight"></div>
         <div class="data"
              use:interactive
              on:basicaction
@@ -43,7 +44,6 @@
             <div class="spacer"></div>
             <div class="progress"> {complete} </div>
         </div>
-        <div class="main-section"></div>
     {/if}
 </div>
 
@@ -58,31 +58,32 @@
     div.container.visible:not(.active):hover {
         cursor: pointer;
     }
-    div.container.ready {
-        background-color: #888866;
-    }
+
     div.container.visible {
         background-color: #666666;
     }
 
-    div.main-section {
-        z-index: 3;
-        pointer-events: none;
+    div.highlight {
         position: absolute;
         left : 0;
         top : 0;
         width : 100%;
         height : 100%;
+        border-radius: 1em;
+
         background-color: #FFFFFF;
         opacity : 0;
         transition: opacity 0.2s;
-        border-radius: 1em;
+
+        pointer-events: none;
+        z-index: 1;
     }
-    div.container.visible:not(.active):hover div.main-section {
+
+    div.container.visible:not(.active):hover div.highlight {
         opacity: 0.2;
     }
 
-    div.container.active div.main-section {
+    div.container.active div.highlight {
         opacity: 0.4;
     }
 

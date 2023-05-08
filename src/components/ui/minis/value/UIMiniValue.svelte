@@ -56,7 +56,7 @@
             <div class="spacer"></div>
             <div class="prestiges value">{StringMaker.formatValue(prestiges, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
         </div>
-        <div class="main-section"></div>
+        <div class="highlight"></div>
     {/if}
 </div>
 
@@ -78,7 +78,7 @@
         background-color: #666666;
     }
 
-    div.main-section {
+    div.highlight {
         z-index: 3;
         pointer-events: none;
         position: absolute;
@@ -91,11 +91,11 @@
         transition: opacity 0.2s;
         border-radius: 1em;
     }
-    div.container.visible:not(.active):hover div.main-section {
+    div.container.visible:not(.active):hover div.highlight {
         opacity: 0.2;
     }
 
-    div.container.active div.main-section {
+    div.container.active div.highlight {
         opacity: 0.4;
     }
 

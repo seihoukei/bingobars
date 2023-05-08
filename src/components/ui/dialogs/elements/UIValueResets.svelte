@@ -30,6 +30,7 @@
     div.resets {
         display: flex;
         flex-direction: column-reverse;
+        align-items: center;
         row-gap: 0.3em;
         overflow : auto;
     }
