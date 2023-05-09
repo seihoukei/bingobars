@@ -98,17 +98,17 @@
         <div class="content" class:debug>
             {#if debug}
                 {#if slot.prerequisites?.length}
-                    <UISlotPrerequisites {game} {debug} prerequisites={slot.prerequisites}/>
+                    <UISlotPrerequisites {debug} prerequisites={slot.prerequisites}/>
                 {/if}
                 {#if slot.conditions?.length}
                     <UISlotConditions {game} {debug} conditions={slot.conditions} custom={slot.conditionText}/>
                 {/if}
                 {#if slot.modifiers?.length}
-                    <UISlotModifiers {game} {debug} modifiers={slot.modifiers} custom={slot.modifierText}/>
+                    <UISlotModifiers {debug} modifiers={slot.modifiers} custom={slot.modifierText}/>
                 {/if}
             {:else if unlocked}
                 <div transition:slide|local>
-                    <UISlotModifiers {game} modifiers={slot.modifiers} custom={slot.modifierText}/>
+                    <UISlotModifiers modifiers={slot.modifiers} custom={slot.modifierText}/>
                 </div>
             {:else if seen}
                 <div transition:slide|local>
@@ -116,7 +116,7 @@
                 </div>
             {:else if visible}
                 <div transition:slide|local>
-                    <UISlotPrerequisites {game} prerequisites={slot.prerequisites}/>
+                    <UISlotPrerequisites prerequisites={slot.prerequisites}/>
                 </div>
             {/if}
         </div>

@@ -13,9 +13,9 @@
 </script>
 
 {#if baseValue}
-    <div class="resets">
+    <div class="table">
         {#each resets as reset, index}
-            <div class="bingo-section">
+            <div class="line">
                 <div class="item index">{index + 1}</div>
                 <div class="item time">{StringMaker.formatValue(reset.time, {type: StringMaker.VALUE_FORMATS.TIME})}</div>
                 <div class="item">{codes.X} = {StringMaker.formatValueById(reset[codes.X], codes.X)}</div>
@@ -27,45 +27,47 @@
 {/if}
 
 <style>
-    div.resets {
+
+    div.table {
+        flex : 1;
         display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        row-gap: 0.3em;
-        overflow : auto;
+        flex-direction: column;
+        row-gap: 1rem;
+        overflow : hidden auto;
+        align-items: stretch;
+        justify-content: stretch;
     }
 
-    div.bingo-section {
-        display: flex;
-        align-items: center;
-        justify-items: center;
-        column-gap: 0.3em;
+    div.line {
+        display: grid;
+        grid-template-columns: 1fr 2fr 3fr 3fr 3fr;
+        grid-auto-rows: 1em;
+        column-gap: 1rem;
     }
 
     div.item {
         display: flex;
         font-size: 0.8em;
-        width: 7.5em;
-        height: 1em;
         align-items: center;
         justify-content: center;
 
         background-color: #333333;
-        padding: 0.2em;
+        padding: 0.5rem;
         border-radius: 0.5em;
+
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     div.index {
-        width: 2em;
         background-color: #444444;
     }
 
     div.time {
-        width: 4.5em;
         background-color: #444444;
     }
 
-    div.bingo-section:hover div.item {
+    div.line:hover div.item {
         background-color: #777777;
     }
 </style>

@@ -3,6 +3,7 @@
     import VALUES from "data/values"
     import FG_COLORS from "data/fg-colors.js"
 
+    import interactive from "utility/interactive.js"
     import getValuesCodes from "data/get-values-codes.js"
     import registerTrigger from "utility/register-trigger.js"
     import UIValueModifiers from "components/ui/dialogs/value-explorer/elements/UIValueModifiers.svelte"
@@ -84,7 +85,9 @@
             <div class="title">
                 <div class="id">{id}</div>
                 <div class="description">{VALUES[id]?.description ?? "Unknown"}</div>
-                <div class="close" on:click={close}>X</div>
+                <div class="close"
+                     use:interactive
+                     on:basicaction={close}>X</div>
             </div>
             <div class="values">
                 <div class="value">
@@ -98,7 +101,8 @@
                 {#each pages as page}
                     <div class="page"
                          class:active={page === currentPage}
-                         on:click={() => setPage(page)}
+                         use:interactive
+                         on:basicaction={() => setPage(page)}
                     >
                         {page}
                     </div>

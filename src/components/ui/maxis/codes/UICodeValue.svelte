@@ -1,6 +1,7 @@
 <script>
     import FG_COLORS from "data/fg-colors.js"
     import Trigger from "utility/trigger.js"
+    import interactive from "utility/interactive.js"
 
     export let game
     export let id
@@ -36,7 +37,8 @@
 <div class="container"
      style={cssProperties}
      class:unlocked
-     on:click={explore}
+     use:interactive
+     on:basicaction={explore}
 >
     {#if unlocked}
         <div class="value">{id}</div>

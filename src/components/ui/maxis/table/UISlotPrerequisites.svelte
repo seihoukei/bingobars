@@ -1,6 +1,5 @@
 <script>
     export let prerequisites = []
-    export let game
     export let debug = false
 </script>
 

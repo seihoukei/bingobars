@@ -1,6 +1,7 @@
 <script>
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import interactive from "utility/interactive.js"
 
     export let game
     export let id
@@ -16,11 +17,11 @@
         Trigger("command-export-save")
     }
 
-    function importSave(event) {
+    function importSave(processOffline) {
         if (saveText === "")
             return
 
-        Trigger("command-import-save", saveText, !event.shiftKey)
+        Trigger("command-import-save", saveText, processOffline)
     }
 
     function resetState() {
@@ -34,18 +35,24 @@
 </script>
 
 <div class="content">
-    <img src="./resources/logo.svg">
+    <img src="./resources/logo.svg" alt="Bingo Bars Logo">
     <div class="dev">by seihoukei</div>
 
     <div>Processed time: {StringMaker.formatValue(now, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
     <div>Total time: {StringMaker.formatValue(target, {type:StringMaker.VALUE_FORMATS.TIME})}</div>
     <div class="row">
         <input class="savetext" placeholder="Paste save here" bind:value={saveText}/>
-        <div class="button" on:click={importSave}>Import</div>
+        <div class="button"
+             use:interactive
+             on:basicaction={() => importSave(true)}
+             on:specialaction={() => importSave(false)}
+        >Import</div>
     </div>
     <div class="row">
-        <div class="button" on:click={exportSave}>Export game</div>
-        <div class="button" on:click={resetState}>Reset game</div>
+        <div class="button" use:interactive
+             on:basicaction={exportSave}>Export game</div>
+        <div class="button" use:interactive
+             on:basicaction={resetState}>Reset game</div>
     </div>
 </div>
 <style>

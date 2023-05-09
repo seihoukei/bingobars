@@ -46,15 +46,18 @@
              on:basicaction
              on:specialaction={prestige}
         >
-            <div class="id">{id}</div>
-            <div class="spacer"></div>
-            <div class="current value">{StringMaker.formatValue(current, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
-            <div class="bingo-section"></div>
-            <div class="max value">{StringMaker.formatValue(max, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
-            <div class="bigspacer"></div>
-            <div class="id">{id}P</div>
-            <div class="spacer"></div>
-            <div class="prestiges value">{StringMaker.formatValue(prestiges, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
+            <div class="display">
+                <div class="id">{id}</div>
+                <div class="progress">
+                    <div class="current value">{StringMaker.formatValue(current, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
+                    <div class="line"></div>
+                    <div class="max value">{StringMaker.formatValue(max, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
+                </div>
+            </div>
+            <div class="display">
+                <div class="id">{id}P</div>
+                <div class="prestiges value">{StringMaker.formatValue(prestiges, {type:StringMaker.VALUE_FORMATS.SCIENTIFIC})}</div>
+            </div>
         </div>
         <div class="highlight"></div>
     {/if}
@@ -63,9 +66,11 @@
 <style>
     div.container {
         grid-area: var(--ui-slot);
-        border-radius: 1em;
-        background-color: #222222;
+
         position: relative;
+        border-radius: 1em;
+
+        background-color: #222222;
         transition: background-color 0.2s;
     }
     div.container.visible:not(.active):hover {
@@ -109,7 +114,7 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        justify-content: center;
+        justify-content: space-evenly;
     }
 
 
@@ -126,13 +131,7 @@
         justify-content: center;
         font-size: 1.4em;
     }
-    div.spacer {
-        height: 0.2em;
-    }
-    div.bigspacer {
-        height: 0.6em;
-    }
-    div.bingo-section {
+    div.line {
         height: 1px;
         background-color: #CCCCCC;
         margin : 0 1em;
@@ -146,5 +145,20 @@
         z-index : 0;
         border-radius: 1em;
         overflow: hidden;
+    }
+
+    div.display {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        row-gap: 1rem;
+    }
+
+    div.progress {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
     }
 </style>

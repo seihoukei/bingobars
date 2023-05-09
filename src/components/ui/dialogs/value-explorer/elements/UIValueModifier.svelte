@@ -5,6 +5,7 @@
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
     import BingoTable from "game-classes/bingo-table.js"
+    import interactive from "utility/interactive.js"
 
     export let modifier = {}
     export let game = {}
@@ -17,7 +18,7 @@
     $: slot = getSlot(source)
     $: bingoLine = slot ? null : source?.match(/^SB..$/)
     $: gameRules = !source
-    $: interactive = slot !== null || bingoLine
+    $: togglable = slot !== null || bingoLine
     $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)]) || gameRules
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
@@ -47,17 +48,19 @@
 <div class="modifier" class:active>
     <div class="main">
         <div class="source"
-             class:interactive
+             class:togglable
              class:super={bingoLine}
              class:rules={gameRules}
-             on:click={toggle}
+             use:interactive
+             on:basicaction={toggle}
         >
             {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}
         </div>
 
         <div class="expression"
-             class:interactive
-             on:click={toggle}
+             class:togglable
+             use:interactive
+             on:basicaction={toggle}
         >
             {modifier.expression}
         </div>
@@ -95,7 +98,7 @@
         justify-content: center;
         border-radius: 0.5em;
     }
-    div.source.interactive:hover {
+    div.source.togglable:hover {
         cursor: pointer;
         background-color: #333333;
     }
@@ -125,7 +128,7 @@
         justify-content: center;
         border-radius: 0.5em;
     }
-    div.expression.interactive:hover {
+    div.expression.togglable:hover {
         cursor: pointer;
         background-color: #777777;
     }

@@ -3,6 +3,7 @@
 
     import StringMaker from "utility/string-maker"
     import Trigger from "utility/trigger"
+    import interactive from "utility/interactive.js"
 
     export let id
     export let game
@@ -18,7 +19,10 @@
     }
 </script>
 
-<div class="container" class:seen on:click={explore}>
+<div class="container"
+     class:seen
+     use:interactive
+     on:basicaction={explore}>
     {#if seen}
         <div class="value">
             <span class="name">

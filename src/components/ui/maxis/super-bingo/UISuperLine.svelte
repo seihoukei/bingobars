@@ -2,6 +2,7 @@
     import {afterUpdate, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import TABLES from "data/tables.js"
+    import interactive from "utility/interactive.js"
 
     const BLINK_ANIMATION = [{
         opacity : 0,
@@ -67,7 +68,8 @@
 <div class="cell"
      class:active
      style={positionStyle(x, y)}
-     on:click={toggle}
+     use:interactive
+     on:basicaction={toggle}
 >
     <div class="level">{value}</div>
     <div class="name">{diplayEffect}</div>

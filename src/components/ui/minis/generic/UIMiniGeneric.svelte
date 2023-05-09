@@ -83,26 +83,4 @@
         font-size: 4em;
         white-space: pre;
     }
-    div.value {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.4em;
-    }
-    div.spacer {
-        height: 1em;
-    }
-    div.bingo-section {
-        height: 1px;
-        background-color: #CCCCCC;
-        margin : 0 1em;
-    }
-    div.bar {
-        position: absolute;
-        left : 1em;
-        top : 0;
-        bottom : 0;
-        right : 1em;
-        z-index : 0;
-    }
 </style>

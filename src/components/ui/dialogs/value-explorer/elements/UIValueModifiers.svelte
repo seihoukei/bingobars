@@ -1,5 +1,5 @@
 <script>
-
+    import interactive from "utility/interactive.js"
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
@@ -80,16 +80,24 @@
     {/each}
 </div>
 <div class="buttons">
-    <div class="button" on:click={disableAll}>
+    <div class="button"
+         use:interactive
+         on:basicaction={disableAll}>
         Disable all
     </div>
-    <div class="button" on:click={minimize}>
+    <div class="button"
+         use:interactive
+         on:basicaction={minimize}>
         Minimize
     </div>
-    <div class="button" on:click={maximize}>
+    <div class="button"
+         use:interactive
+         on:basicaction={maximize}>
         Maximize
     </div>
-    <div class="button" on:click={enableAll}>
+    <div class="button"
+         use:interactive
+         on:basicaction={enableAll}>
         Enable all
     </div>
 </div>

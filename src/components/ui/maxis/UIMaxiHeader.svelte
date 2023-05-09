@@ -1,6 +1,7 @@
 <script>
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import interactive from "utility/interactive.js"
 
     export let game
 
@@ -33,7 +34,8 @@
     </div>
     <div class="super-bingo button"
          class:active={bingoActive}
-         on:click={() => bingoActive || Trigger("command-set-tab", BINGO_TAB)}>
+         use:interactive
+         on:basicaction={() => bingoActive || Trigger("command-set-tab", BINGO_TAB)}>
         <span>Super</span> <span>Bingo</span>
     </div>
 </div>

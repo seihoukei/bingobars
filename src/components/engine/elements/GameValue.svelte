@@ -1,9 +1,7 @@
 <script>
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
-
-    export let state
-
+    
     export let name = "A"
     export let value = 0
     export let prestiges = 0

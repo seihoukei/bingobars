@@ -36,9 +36,7 @@
         <div class="free">FREE</div>
     {:else}
         <div class="change">
-            <div class="button" class:active={canDecrease} on:click={decrease}>-</div>
             <div class="value">{value}</div>
-            <div class="button" class:active={canIncrease} on:click={increase}>+</div>
         </div>
         <div class="cost"><span class="bingoin-icon"></span> {cost}</div>
     {/if}

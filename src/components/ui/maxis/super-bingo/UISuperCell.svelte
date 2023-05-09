@@ -2,6 +2,8 @@
     import Trigger from "utility/trigger.js"
     import TABLES from "data/tables.js"
 
+    import interactive from "utility/interactive.js"
+
     export let game
     export let x
     export let y
@@ -24,8 +26,16 @@
         changeValue(change)
     }
 
+    function minimize() {
+        changeValue(-Infinity)
+    }
+
     function decrease() {
         changeValue(-change)
+    }
+
+    function maximize() {
+        changeValue(Infinity)
     }
 </script>
 
@@ -33,9 +43,19 @@
     {#if x === 2 && y === 2}
         <div class="free">FREE</div>
     {:else}
-        <div class="button left" class:active={canDecrease} on:click={decrease}>-</div>
+        <div class="button left"
+             class:active={canDecrease}
+             use:interactive
+             on:basicaction={decrease}
+             on:specialaction={minimize}
+        >-</div>
         <div class="value">{value}</div>
-        <div class="button right" class:active={canIncrease} on:click={increase}>+</div>
+        <div class="button right"
+             class:active={canIncrease}
+             use:interactive
+             on:basicaction={increase}
+             on:specialaction={maximize}
+        >+</div>
         <div class="cost"><span class="bingoin-icon"></span> {cost}</div>
     {/if}
 </div>

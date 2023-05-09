@@ -47,13 +47,6 @@
         font-size: 6em;
     }
 
-    div.bingoins {
-        font-size: 2em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     div.table {
         position: absolute;
         top : 1em;

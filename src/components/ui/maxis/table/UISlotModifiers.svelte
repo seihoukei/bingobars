@@ -1,6 +1,5 @@
 <script>
     export let modifiers = []
-    export let game
     export let debug = 0
     export let custom = null
 

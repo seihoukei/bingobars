@@ -21,23 +21,10 @@ export default function interactive(node) {
             basicAction()
     }
 
-    let timeout = null
-    const touchStartHandler = (event) => {
+    const mouseRightHandler = (event) => {
         //TODO: filter extra touch
-        timeout = setTimeout(() => {
-            specialAction()
-            timeout = null
-        }, 500)
         cancelEvent(event)
-    }
-
-    const touchEndHandler = (event) => {
-        if (timeout) {
-            clearTimeout(timeout)
-            timeout = null
-            node.dispatchEvent(new CustomEvent("basicaction"))
-        }
-        cancelEvent(event)
+        specialAction()
     }
 
     const mouseInHandler = (event) => {
@@ -54,14 +41,15 @@ export default function interactive(node) {
         event.preventDefault()
         event.stopPropagation()
     }
+    
+    const dummy = () => {}
 
     const handlers = {
+        keyup: dummy,
         mouseup: mouseUpHandler,
         mouseenter: mouseInHandler,
         mouseleave: mouseOutHandler,
-        touchstart: touchStartHandler,
-        touchend: touchEndHandler,
-        contextmenu: cancelEvent,
+        contextmenu: mouseRightHandler,
     }
 
     for (let [event, handler] of Object.entries(handlers))

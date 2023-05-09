@@ -1,5 +1,6 @@
 <script>
     import StringMaker from "utility/string-maker.js"
+    import interactive from "utility/interactive.js"
 
     export let game
     export let id
@@ -267,14 +268,16 @@
     {#each VIEWS as viewData, index}
         <div class="button"
              class:active={index === currentView}
-             on:click={() =>setView(index)}
+             use:interactive
+             on:basicaction={() =>setView(index)}
         >
             {viewData.name}
         </div>
     {/each}
     <div class="toggle button"
          class:active={logarithmic}
-         on:click={toggleLogarithmic}
+         use:interactive
+         on:basicaction={toggleLogarithmic}
     >
         Logarithmic
     </div>
