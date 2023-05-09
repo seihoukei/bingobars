@@ -6,7 +6,7 @@
 
     let animationFrame = null
 
-    const RENDER_RESOLUTION = 200
+    const RENDER_RESOLUTION = 300
 
     const VIEWS = [
         {
@@ -72,6 +72,11 @@
 
         renderHeight = Math.min(RENDER_RESOLUTION, width / ratio)
         renderWidth = renderHeight * ratio
+
+        if (renderWidth > RENDER_RESOLUTION) {
+            renderWidth = RENDER_RESOLUTION
+            renderHeight = renderWidth / ratio
+        }
 
         if (mouse) {
             mouse.closestX = 0
