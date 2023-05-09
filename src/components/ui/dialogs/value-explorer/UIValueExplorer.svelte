@@ -1,14 +1,13 @@
 <script>
-    import UIValueModifiers from "components/ui/dialogs/elements/UIValueModifiers.svelte"
-    import UIValueHistory from "components/ui/dialogs/elements/UiValueHistory.svelte"
-    import UIValueResets from "components/ui/dialogs/elements/UIValueResets.svelte"
-
     import StringMaker from "utility/string-maker.js"
     import VALUES from "data/values"
     import FG_COLORS from "data/fg-colors.js"
 
     import getValuesCodes from "data/get-values-codes.js"
     import registerTrigger from "utility/register-trigger.js"
+    import UIValueModifiers from "components/ui/dialogs/value-explorer/elements/UIValueModifiers.svelte"
+    import UIValueResets from "components/ui/dialogs/value-explorer/elements/UIValueResets.svelte"
+    import UIValueHistory from "components/ui/dialogs/value-explorer/elements/UIValueHistory.svelte"
 
     const PAGES = {
         "Modifiers" : UIValueModifiers,

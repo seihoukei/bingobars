@@ -1,11 +1,11 @@
 <script>
-    import UIValueModifier from "components/ui/dialogs/elements/UIValueModifier.svelte"
 
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
     import VALUES from "data/values.js"
     import Calculation from "game-classes/calculation.js"
+    import UIValueModifier from "components/ui/dialogs/value-explorer/elements/UIValueModifier.svelte"
 
     export let game
     export let id

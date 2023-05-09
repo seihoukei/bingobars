@@ -40,9 +40,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        width : 10em;
-        height : 2.5em;
+        justify-content: space-evenly;
+        width : 100%;
+        height : 100%;
         background-color: #444444;
         border-radius: 0.5em;
         transition: background-color 0.2s;
@@ -54,11 +54,9 @@
         font-size : 0.8em;
     }
 
-    div.container.seen {
-        cursor: pointer;
-    }
     div.container.seen:hover {
         background-color: #555555;
+        cursor: pointer;
     }
 
 </style>

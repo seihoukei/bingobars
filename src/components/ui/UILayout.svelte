@@ -1,8 +1,9 @@
 <script>
     import Trigger from "utility/trigger.js"
     import UI_TABS from "data/ui-tabs.js"
-    import UIValueExplorer from "components/ui/dialogs/UIValueExplorer.svelte"
     import UIMaxiHeader from "components/ui/maxis/UIMaxiHeader.svelte"
+    import UIValueExplorer from "components/ui/dialogs/value-explorer/UIValueExplorer.svelte"
+    import UISlotExplorer from "components/ui/dialogs/slot-explorer/UISlotExplorer.svelte"
 
     export let game
 
@@ -55,6 +56,7 @@
             </div>
         </div>
         <UIValueExplorer {game} />
+        <UISlotExplorer {game} />
     {/key}
 {/if}
 
@@ -76,14 +78,14 @@
         width: 100%;
         display : grid;
         grid-template-areas:
-            "a b c ab ac bc t5 t4 t3 t2 t1"
-            "abc main main main main main main main main main main"
-            "code main main main main main main main main main main"
-            "help main main main main main main main main main main"
-            "menu main main main main main main main main main main";
+            "main main main main main main main main main main menu"
+            "main main main main main main main main main main code"
+            "main main main main main main main main main main help"
+            "main main main main main main main main main main t1"
+            "a b c ab ac bc abc t5 t4 t3 t2";
         font-size : min(0.98vw, 1.13vh);
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-        grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
         grid-column-gap: 1rem;
         grid-row-gap: 1rem;
     }
@@ -113,7 +115,7 @@
                 "menu help t5 main";
             font-size: min(0.72vw, 1.15vh);
             grid-template-columns: 10rem 10rem 10rem 1fr;
-            grid-auto-rows: 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
             grid-column-gap: 1rem;
             grid-row-gap: 1rem;
         }
@@ -123,7 +125,7 @@
         }
     }
 
-    @media (max-aspect-ratio: 7/8) {
+    @media (max-aspect-ratio: 5/8) {
         div.layout {
             grid-template-areas:
                 "main main main main main main main main"

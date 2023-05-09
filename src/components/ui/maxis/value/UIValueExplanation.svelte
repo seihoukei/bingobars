@@ -20,12 +20,13 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        min-width: 10em;
-        height : 2.5em;
+        justify-content: space-evenly;
+        width : 100%;
+        height : 100%;
 
         transition: background-color 0.2s;
     }
+
     .container.active {
         background-color: #777777;
     }

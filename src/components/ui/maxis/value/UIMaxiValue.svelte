@@ -84,112 +84,82 @@
             </UIProgressBar>
         </div>
     </div>
-    <div class="data">
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.X} {game} />
-                <UIValueDisplay id={code.dX} {game} />
-            </div>
-            <div class="explanation">
-                <UIValueExplanation
-                        description={`Every second while ${code.X} < ${code.MX}`}
-                        formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${values[`${code.dX}_base`]}`}
-                        active={current < limit && !hover.prestige && !hover.reset}
-                />
-            </div>
-        </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.XP} {game} />
-                <UIValueDisplay id={code.dXP} {game} />
-            </div>
-            <div class="explanation">
-                <UIValueExplanation
-                        description="Every prestige"
-                        formula={seen.dXP ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
-                        active={hover.prestige}
-                />
-            </div>
-        </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.XPc} {game} />
-            </div>
-            <div class="explanation prestige">
-                <UIValueExplanation
-                        description="Every prestige"
-                        formula={seen.XPc ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
-                        active={hover.prestige}
-                />
-            </div>
-        </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.MX} {game} />
-                <UIValueDisplay id={code.MXm} {game} />
-            </div>
-            <div class="explanation prestige">
-                <UIValueExplanation
-                        description="Every prestige"
-                        formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${values[`${code.MXm}_base`]}`}
-                        active={hover.prestige}
-                />
-            </div>
-        </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.MX0} {game} />
-            </div>
-            <div class="explanation reset">
-                <UIValueExplanation
-                        description="Every reset"
-                        formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${values[`${code.MX0}_base`]}`}
-                        active={hover.reset}
-                />
-            </div>
-        </div>
-        <div class="block">
+    <div class="table">
+        <div class="value slot x"><UIValueDisplay id={code.X} {game} /></div>
+        <div class="value slot dx"><UIValueDisplay id={code.dX} {game} /></div>
+        <div class="value slot xp"><UIValueDisplay id={code.XP} {game} /></div>
+        <div class="value slot dxp"><UIValueDisplay id={code.dXP} {game} /></div>
+        <div class="value slot xpc"><UIValueDisplay id={code.XPc} {game} /></div>
+        <div class="value slot mx"><UIValueDisplay id={code.MX} {game} /></div>
+        <div class="value slot mxm"><UIValueDisplay id={code.MXm} {game} /></div>
+        <div class="value slot mx0"><UIValueDisplay id={code.MX0} {game} /></div>
+        <div class="value slot xpt"><UIValueDisplay id={code.XPt} {game} /></div>
+        <div class="value slot xt"><UIValueDisplay id={code.Xt} {game} /></div>
+        <div class="slot auto-x">
             <UIValueAutoPrestige {id} {canAuto} {auto}/>
         </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.XPt} {game} />
-            </div>
-            <div class="explanation prestige reset">
-                <UIValueExplanation
-                        description="Every reset or prestige"
-                        formula={`${code.XPt} = 0`}
-                        active={hover.prestige || hover.reset}
-                />
-            </div>
+        <div class="explanation slot x-dx">
+            <UIValueExplanation
+                    description={`Every second while ${code.X} < ${code.MX}`}
+                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${values[`${code.dX}_base`]}`}
+                    active={current < limit && !hover.prestige && !hover.reset}
+            />
         </div>
-        <div class="block">
-            <div class="values">
-                <UIValueDisplay id={code.Xt} {game} />
-            </div>
-            <div class="explanation reset">
-                <UIValueExplanation
-                        description="Every reset"
-                        formula={`${code.Xt} = 0`}
-                        active={hover.reset}
-                />
-            </div>
+        <div class="explanation slot xp-dxp">
+            <UIValueExplanation
+                    description="Every prestige"
+                    formula={seen.dXP ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
+                    active={hover.prestige}
+            />
         </div>
-        <div class="block">
-            <div class="explanation reset">
-                <UIValueExplanation
-                        description="Every reset"
-                        formula={`${code.X} = 0`}
-                        active={hover.reset}
-                />
-            </div>
-            <div class="explanation reset">
-                <UIValueExplanation
-                        description="Every reset"
-                        formula={`${code.XP} = 0`}
-                        active={hover.reset}
-                />
-            </div>
+        <div class="explanation prestige slot x-mx">
+            <UIValueExplanation
+                    description="Every prestige"
+                    formula={seen.XPc ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
+                    active={hover.prestige}
+            />
+        </div>
+        <div class="explanation prestige slot mx-mxm">
+            <UIValueExplanation
+                    description="Every prestige"
+                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${values[`${code.MXm}_base`]}`}
+                    active={hover.prestige}
+            />
+        </div>
+        <div class="explanation reset slot mx-mx0">
+            <UIValueExplanation
+                    description="Every reset"
+                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${values[`${code.MX0}_base`]}`}
+                    active={hover.reset}
+            />
+        </div>
+        <div class="explanation prestige reset slot xpt-0">
+            <UIValueExplanation
+                    description="Every reset or prestige"
+                    formula={`${code.XPt} = 0`}
+                    active={hover.prestige || hover.reset}
+            />
+        </div>
+        <div class="explanation reset slot xt-0">
+            <UIValueExplanation
+                    description="Every reset"
+                    formula={`${code.Xt} = 0`}
+                    active={hover.reset}
+            />
+        </div>
+        <div class="explanation reset slot x-0">
+            <UIValueExplanation
+                    description="Every reset"
+                    formula={`${code.X} = 0`}
+                    active={hover.reset}
+            />
+        </div>
+        <div class="explanation reset slot xp-0">
+            <UIValueExplanation
+                    description="Every reset"
+                    formula={`${code.XP} = 0`}
+                    active={hover.reset}
+            />
         </div>
     </div>
     <div class="buttons">
@@ -230,40 +200,18 @@
 
 <style>
     div.container {
-        border-radius: 1em;
-        position: relative;
-        width : 70em;
-        height : 50em;
-    }
+        position: absolute;
+        left : 1rem;
+        top : 1rem;
+        right: 1rem;
+        bottom: 1rem;
 
-    div.data {
-        z-index : 1;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        column-gap: 0.5em;
-        row-gap: 0.5em;
-        align-items: start;
-        font-size: 1.5em;
-        justify-content: center;
-        padding: 0 2em 1em;
-    }
-
-    div.block {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        justify-content: stretch;
-        row-gap: 0.5em;
-    }
+        justify-content: center;
 
-    div.values {
-        display: flex;
-        flex-direction: row;
-        column-gap: 0.5em;
-    }
-
-    div.explanation {
+        row-gap: 1rem;
     }
 
     div.bar-line {
@@ -275,7 +223,7 @@
 
     div.bar-id {
         font-size: 2em;
-        margin-right: 0.2em;
+        margin: 0 0.2em 0 0.1em;
     }
 
     div.bar {
@@ -364,5 +312,61 @@
         display: flex;
         width: 8em;
     }
+
+    div.table {
+        flex: 1;
+        font-size: 1.5em;
+
+        display: grid;
+        grid-template:
+            "x dx xp dxp"
+            "x-dx x-dx xp-dxp xp-dxp"
+            "xpc mx mxm mx0"
+            "x-mx mx-mxm mx-mxm mx-mx0"
+            "auto-x xpt xt x-0"
+            "auto-x xpt-0 xt-0 xp-0";
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        row-gap : 1rem;
+        column-gap: 1rem;
+    }
+
+    @media (max-aspect-ratio: 5/8) {
+        div.table {
+            font-size: 2em;
+            grid-template:
+                "x dx xpc"
+                "x-dx x-dx x-mx"
+                "mx mxm mx0"
+                "mx-mxm mx-mxm mx-mx0"
+                "xp dxp x-0"
+                "xp-dxp xp-dxp xp-0"
+                "auto-x xpt xt"
+                "auto-x xpt-0 xt-0";
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    div.slot.x {grid-area: x}
+    div.slot.dx {grid-area: dx}
+    div.slot.xp {grid-area: xp}
+    div.slot.dxp {grid-area: dxp}
+    div.slot.x-dx {grid-area: x-dx}
+    div.slot.xp-dxp {grid-area: xp-dxp}
+    div.slot.xpc {grid-area: xpc}
+    div.slot.mx {grid-area: mx}
+    div.slot.mxm {grid-area: mxm}
+    div.slot.mx0 {grid-area: mx0}
+    div.slot.x-mx {grid-area: x-mx}
+    div.slot.mx-mxm {grid-area: mx-mxm}
+    div.slot.mx-mx0 {grid-area: mx-mx0}
+    div.slot.auto-x {grid-area: auto-x}
+    div.slot.xpt {grid-area: xpt}
+    div.slot.xt {grid-area: xt}
+    div.slot.x-0 {grid-area: x-0}
+    div.slot.xp-0 {grid-area: xp-0}
+    div.slot.xt-0 {grid-area: xt-0}
+    div.slot.xpt-0 {grid-area: xpt-0}
 
 </style>

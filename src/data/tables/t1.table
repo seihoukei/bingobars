@@ -81,7 +81,7 @@ m: Unlock B
 
 # R3C4
 R: T1R3C3
-C: B > AP
+C: A > BP
 C: B >= A * 100
 M: dA = 100
 

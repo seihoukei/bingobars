@@ -29,8 +29,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-width: 10em;
-        height : 5.5em;
+        width : 100%;
+        height : 100%;
         row-gap: 0.3em;
         overflow: hidden;
 
