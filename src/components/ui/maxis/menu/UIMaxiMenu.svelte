@@ -97,7 +97,6 @@
 
     div.button:hover {
         background-color: #772222;
-
     }
 
     div.dev {

@@ -65,7 +65,24 @@
 
     function toggle() {
         if (!enabled || !slot.oneWay)
-        Trigger("command-toggle-slot", slot.address)
+            Trigger("command-toggle-slot", slot.address)
+    }
+
+    function specialAction() {
+        if (!seen)
+            return
+        Trigger("command-explore-slot", slot.address)
+    }
+
+    function basicAction() {
+        if (!seen)
+            return
+
+        if (unlocked || available) {
+            toggle()
+        } else {
+            Trigger("command-explore-slot", slot.address)
+        }
     }
 
     $: decoration =
@@ -89,8 +106,8 @@
          class:oneway={slot.oneWay}
          style={cssVariables}
          use:interactive
-         on:basicaction={toggle}
-         on:specialaction
+         on:basicaction={basicAction}
+         on:specialaction={specialAction}
     >
     {#if seen || debug}
         <div class="top float">{decoration}{slot.address}{decoration}</div>

@@ -4,6 +4,8 @@
     import UIMaxiHeader from "components/ui/maxis/UIMaxiHeader.svelte"
     import UIValueExplorer from "components/ui/dialogs/value-explorer/UIValueExplorer.svelte"
     import UISlotExplorer from "components/ui/dialogs/slot-explorer/UISlotExplorer.svelte"
+    import registerTrigger from "utility/register-trigger.js"
+    import {onDestroy, onMount} from "svelte"
 
     export let game
 
@@ -19,6 +21,41 @@
     function setTab(target) {
         Trigger("command-set-tab", target)
     }
+
+    let explorations = []
+
+    registerTrigger("command-explore-value", exploreValue)
+    registerTrigger("command-explore-slot", exploreSlot)
+    registerTrigger("command-close-explorer", closeExplorer)
+
+    function exploreValue(value) {
+        history.pushState(value, `Explore value ${value}`)
+        explorations.push({
+            type : UIValueExplorer,
+            id : value,
+        })
+    }
+
+    function exploreSlot(slot) {
+        history.pushState(slot, `Explore slot ${slot}`)
+        explorations.push({
+            type : UISlotExplorer,
+            id : slot,
+        })
+    }
+
+
+    function closeExplorer() {
+        explorations.pop()
+    }
+
+    onMount(() => {
+        addEventListener("popstate", closeExplorer)
+    })
+
+    onDestroy(() => {
+        removeEventListener("popstate", closeExplorer)
+    })
 
 </script>
 
@@ -55,8 +92,12 @@
                 {/each}
             </div>
         </div>
-        <UIValueExplorer {game} />
-        <UISlotExplorer {game} />
+        {#each explorations as exploration}
+            <svelte:component {game}
+                              this={exploration.type}
+                              id={exploration.id}
+            />
+        {/each}
     {/key}
 {/if}
 

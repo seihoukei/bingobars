@@ -5,7 +5,6 @@
 
     import interactive from "utility/interactive.js"
     import getValuesCodes from "data/get-values-codes.js"
-    import registerTrigger from "utility/register-trigger.js"
     import UIValueModifiers from "components/ui/dialogs/value-explorer/elements/UIValueModifiers.svelte"
     import UIValueResets from "components/ui/dialogs/value-explorer/elements/UIValueResets.svelte"
     import UIValueHistory from "components/ui/dialogs/value-explorer/elements/UIValueHistory.svelte"
@@ -17,12 +16,9 @@
     }
 
     export let game
+    export let id = null
 
-    registerTrigger("command-explore-value", exploreValue)
-
-    let id = null
     let holder
-    let openHistory = false
 
     let pages = []
     let currentPage = "stats"
@@ -47,18 +43,18 @@
         return [codes.X, codes.XP, codes.MX, codes.Xt].includes(id)
     }
 
-    function exploreValue(value, forceHistory = false) {
-        openHistory = forceHistory
-        id = value
-    }
-
     function clickOutside(event) {
         if (event.target === holder)
             close()
     }
 
     function close() {
-        exploreValue(null)
+        Trigger("command-close-explorer", id)
+    }
+
+    function contextClose(event) {
+        event.preventDefault()
+        close()
     }
 
     function setPages(id) {
@@ -68,9 +64,7 @@
         pages.push("History")
         if (resettable)
             pages.push("Resets")
-        currentPage = openHistory
-            ? "History"
-            : pages[0]
+        currentPage = pages[0]
     }
 
     function setPage(page) {
@@ -80,7 +74,7 @@
 </script>
 
 {#if id}
-    <div class="holder" bind:this={holder} style={cssVariables} on:click={clickOutside}>
+    <div class="holder" bind:this={holder} style={cssVariables} on:click={clickOutside} on:contextmenu={contextClose}>
         <div class="dialog">
             <div class="title">
                 <div class="id">{id}</div>

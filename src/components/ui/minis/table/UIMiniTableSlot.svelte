@@ -6,13 +6,13 @@
     export let game
 
     $: tables = game?.state?.tables
-    $: value = tables?.[slot.address]
+    $: state = tables?.[slot.address]
 
-    $: visible = value & BingoTable.SLOT_STATES.VISIBLE
-    $: seen = visible &&  value & BingoTable.SLOT_STATES.PREREQUISITES_MET
-    $: available = seen && (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
-    $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
-    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
+    $: visible = state & BingoTable.SLOT_STATES.VISIBLE
+    $: seen = visible &&  state & BingoTable.SLOT_STATES.PREREQUISITES_MET
+    $: available = seen && (state & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
+    $: unlocked = state & BingoTable.SLOT_STATES.UNLOCKED
+    $: enabled = state & BingoTable.SLOT_STATES.ENABLED
 
     $: involved = unlocked
         ? slot?.getInvolvedInModifiers() ?? []

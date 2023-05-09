@@ -14,17 +14,19 @@ export default function interactive(node) {
     }
 
     const mouseUpHandler = (event) => {
-        cancelEvent(event)
-        if (event.shiftKey || event.button)
+        if (event.button)
+            return //contextmenu handler should do it
+        
+        if (event.shiftKey)
             specialAction()
         else
             basicAction()
+        cancelEvent(event)
     }
 
     const mouseRightHandler = (event) => {
-        //TODO: filter extra touch
-        cancelEvent(event)
         specialAction()
+        cancelEvent(event)
     }
 
     const mouseInHandler = (event) => {

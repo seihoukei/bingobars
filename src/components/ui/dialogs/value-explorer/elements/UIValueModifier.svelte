@@ -43,6 +43,13 @@
 
         Trigger("command-toggle-slot", slot.address)
     }
+
+    function explore() {
+        if (!slot)
+            return
+
+        Trigger("command-explore-slot", slot.address)
+    }
 </script>
 
 <div class="modifier" class:active>
@@ -53,6 +60,7 @@
              class:rules={gameRules}
              use:interactive
              on:basicaction={toggle}
+             on:specialaction={explore}
         >
             {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}
         </div>

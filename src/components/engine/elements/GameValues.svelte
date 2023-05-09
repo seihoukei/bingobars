@@ -162,8 +162,6 @@
 {#if values}
     {#each VALUE_NAMES as value}
         <GameValue
-                state={state}
-
                 name={value}
                 delta={values[`d${value}`]}
                 prestigeStep={values[`d${value}P`]}
