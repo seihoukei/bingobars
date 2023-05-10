@@ -1,15 +1,14 @@
 <script>
-    import VALUES from "data/values.js"
-
     import StringMaker from "utility/string-maker.js"
-    import getValuesCodes from "data/get-values-codes.js"
+    import Codes from "game-classes/codes.js"
 
     export let game
     export let id
 
-    $: baseValue = VALUES[id]?.baseValue ?? null
+    $: code = Codes.getCode(id) ?? {}
+    $: baseValue = code.baseValue.id ?? null
     $: resets = game?.state?.stats?.reset?.[baseValue] ?? []
-    $: codes = getValuesCodes(baseValue)
+    $: codes = code.baseValue.codes
 </script>
 
 {#if baseValue}

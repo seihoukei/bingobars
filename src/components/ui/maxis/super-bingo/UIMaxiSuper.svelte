@@ -25,7 +25,7 @@
                 <UISuperCell {game} {x} {y} {availableBingoins} />
             {/each}
         {/each}
-        {#each Object.entries(TABLES.SB.lines) as [id, data]}
+        {#each Object.entries(TABLES.SB.slots) as [id, data]}
             <UISuperLine {game} {id} />
         {/each}
     </div>

@@ -16,7 +16,7 @@
         <UICodeValueList {game} id="ABC" />
     </div>
     <div class="tables block">
-        <UICodeValueList {game} table id="T" />
+        <UICodeValueList {game} table id="TX" />
         <UICodeValueList {game} table id="T1" />
         <UICodeValueList {game} table id="T2" />
         <UICodeValueList {game} table id="T3" />

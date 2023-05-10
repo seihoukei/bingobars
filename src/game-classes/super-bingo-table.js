@@ -15,11 +15,11 @@ export default class SuperBingoTable extends  BingoTable {
     
     init(data) {
         this.costs = structuredClone(SuperBingoTable.DEFAULT_COSTS)
-        this.lines = {}
+        this.slots = {}
         for (const [id, data] of Object.entries(SuperBingoTable.SLOTS)) {
             if (!BingoTable.LINE_SLOT_TYPES.includes(data.type))
                 continue
-            this.lines[id] = new SuperBingoSlot(this.id, id)
+            this.slots[id] = new SuperBingoSlot(this.id, id)
         }
         
         this.parse(data)
@@ -32,7 +32,7 @@ export default class SuperBingoTable extends  BingoTable {
         TableParser.parse(
             data,
             this,
-            this.lines,
+            this.slots,
             {
                 "M" : "setModifier",
                 "COSTS" : "setCosts",

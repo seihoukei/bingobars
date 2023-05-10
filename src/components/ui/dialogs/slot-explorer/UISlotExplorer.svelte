@@ -1,17 +1,19 @@
 <script>
     import interactive from "utility/interactive.js"
     import BingoTable from "game-classes/bingo-table.js"
-    import TABLES from "data/tables.js"
     import Trigger from "utility/trigger.js"
     import UISlotCalculation from "components/ui/dialogs/slot-explorer/elements/UISlotCalculation.svelte"
+    import {fade, fly} from "svelte/transition"
+    import Codes from "game-classes/codes.js"
 
     export let game
     export let id = null
 
     let holder
 
-    $: tableId = id?.slice(0,2) ?? null
-    $: slot = TABLES[tableId]?.slots?.[id.slice(2)] ?? {}
+    $: code = Codes.getCode(id) ?? {}
+    $: tableId = code.table
+    $: slot = code.slot ?? {}
 
     $: conditions = slot?.conditions?.filter(x => !x.hidden) ?? []
     $: modifiers = slot?.modifiers?.filter(x => !x.hidden) ?? []
@@ -52,14 +54,20 @@
 
     function toggle() {
         if (!enabled || !slot.oneWay)
-            Trigger("command-toggle-slot", slot.address)
+            Trigger("command-toggle-slot", slot.code)
     }
 </script>
 
 
 {#if id}
-    <div class="holder" bind:this={holder} style={cssVariables} on:click={clickOutside} on:contextmenu={contextClose}>
-        <div class="dialog">
+    <div class="holder"
+         bind:this={holder}
+         style={cssVariables}
+         on:click={clickOutside}
+         on:contextmenu={contextClose}
+         transition:fade={{duration:200}}
+    >
+        <div class="dialog" transition:fly={{y:100,duration:200}}>
             <div class="title">
                 <div class="id">{id}</div>
                 <div class="description">Table cell</div>

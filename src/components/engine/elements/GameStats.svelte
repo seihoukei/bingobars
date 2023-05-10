@@ -1,6 +1,6 @@
 <script>
-    import getValuesCodes from "data/get-values-codes.js"
     import registerTrigger from "utility/register-trigger.js"
+    import BASE_VALUES from "data/base-values.js"
 
     export let state
     export let stats = {
@@ -82,7 +82,7 @@
     }
 
     function storeReset(id) {
-        const codes = getValuesCodes(id)
+        const codes = BASE_VALUES[id].codes
         const record = {
             [codes.X] : values[codes.X],
             [codes.MX] : values[codes.MX],

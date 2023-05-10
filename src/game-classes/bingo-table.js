@@ -1,3 +1,5 @@
+import StringMaker from "utility/string-maker.js"
+
 export default class BingoTable {
     static TABLE_TYPES = Object.freeze({
         BINGO : 1,

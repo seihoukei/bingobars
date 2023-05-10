@@ -1,15 +1,14 @@
 <script>
     import UIProgressBar from "components/ui/common-elements/UIProgressBar.svelte"
 
-    import FG_COLORS from "data/fg-colors.js"
-
-    import getValuesCodes from "data/get-values-codes.js"
     import interactive from "utility/interactive.js"
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
     import UIValueDisplay from "components/ui/maxis/value/UIValueDisplay.svelte"
     import UIValueExplanation from "components/ui/maxis/value/UIValueExplanation.svelte"
     import UIValueAutoPrestige from "components/ui/maxis/value/UIValueAutoPrestige.svelte"
+    import Codes from "game-classes/codes.js"
+    import BASE_VALUES from "data/base-values.js"
 
     export let game
     export let id
@@ -29,7 +28,7 @@
 
     $: prestigeReady = current >= limit
 
-    $: code = getValuesCodes(id)
+    $: code = BASE_VALUES[id].codes
 
     $: values, updateSeen()
 
@@ -59,11 +58,12 @@
     $: canAuto = values[code.X_auto_seen]
     $: auto = values[code.X_auto]
 
+    $: color = BASE_VALUES[id].colors.dark
 
 </script>
 
 <div class="container"
-     style="--value-color:{FG_COLORS[id]};"
+     style="--value-color:{color};"
 >
     {#if values}
     <div class="bar-line">
@@ -71,7 +71,7 @@
         <div class="bar">
             <UIProgressBar
                     bgcolor="#888888"
-                    fgcolor={FG_COLORS[id]}
+                    fgcolor={color}
                     {current}
                     max={limit}>
                 <span slot="caption" class="caption">
@@ -101,7 +101,7 @@
         <div class="explanation slot x-dx">
             <UIValueExplanation
                     description={`Every second while ${code.X} < ${code.MX}`}
-                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${values[`${code.dX}_base`]}`}
+                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${Codes.getCode(code.dX).initialValue}`}
                     active={current < limit && !hover.prestige && !hover.reset}
             />
         </div>
@@ -122,14 +122,14 @@
         <div class="explanation prestige slot mx-mxm">
             <UIValueExplanation
                     description="Every prestige"
-                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${values[`${code.MXm}_base`]}`}
+                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${Codes.getCode(code.MXm).initialValue}`}
                     active={hover.prestige}
             />
         </div>
         <div class="explanation reset slot mx-mx0">
             <UIValueExplanation
                     description="Every reset"
-                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${values[`${code.MX0}_base`]}`}
+                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${Codes.getCode(code.MX0).initialValue}`}
                     active={hover.reset}
             />
         </div>

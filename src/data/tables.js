@@ -1,11 +1,12 @@
 import MainBingoTable from "game-classes/main-bingo-table.js"
+import SuperBingoTable from "game-classes/super-bingo-table.js"
+
 import T1 from './tables/t1.table?raw'
 import T2 from './tables/t2.table?raw'
 import T3 from './tables/t3.table?raw'
 import T4 from './tables/t4.table?raw'
 import T5 from './tables/t5.table?raw'
 import SB from "./tables/super-bingo.table?raw"
-import SuperBingoTable from "game-classes/super-bingo-table.js"
 
 const TABLES = {
     T1 : new MainBingoTable("T1").init(T1),

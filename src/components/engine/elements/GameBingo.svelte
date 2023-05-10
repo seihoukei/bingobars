@@ -24,8 +24,8 @@
                 [0, 0, 0, 0, 0,],
             ],
             cost : 0,
-            levels : Object.fromEntries(Object.keys(TABLES.SB.lines).map(x => [x, 0])),
-            active : Object.fromEntries(Object.keys(TABLES.SB.lines).map(x => [x, true])),
+            levels : Object.fromEntries(Object.keys(TABLES.SB.slots).map(x => [x, 0])),
+            active : Object.fromEntries(Object.keys(TABLES.SB.slots).map(x => [x, true])),
         }
         return bingo
     }
@@ -40,7 +40,7 @@
     }
 
     function updateLevels() {
-        for (let [id, data] of Object.entries(TABLES.SB.lines)) {
+        for (let [id, data] of Object.entries(TABLES.SB.slots)) {
             bingo.levels[id] = Math.min(...data.cells.map(([x,y]) => bingo.field[y][x]))
         }
     }

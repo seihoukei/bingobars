@@ -32,8 +32,8 @@
                 continue
 
             for (const [slotName,slot] of Object.entries(table.slots)) {
-                const address = `${tableName}${slotName}`
-                const slotState = tables[address]
+                const code = `${tableName}${slotName}`
+                const slotState = tables[code]
 
                 if (slot.modifiers) {
                     if (slotState & BingoTable.SLOT_STATES.UNLOCKED)
@@ -45,7 +45,7 @@
             }
         }
 
-        for (const [id, data] of Object.entries(TABLES.SB.lines)) {
+        for (const [id, data] of Object.entries(TABLES.SB.slots)) {
             const level = bingo?.levels?.[id]
             const modifier = data?.modifier
             if (!level || !modifier)

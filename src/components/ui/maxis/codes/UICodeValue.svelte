@@ -1,7 +1,7 @@
 <script>
-    import FG_COLORS from "data/fg-colors.js"
     import Trigger from "utility/trigger.js"
     import interactive from "utility/interactive.js"
+    import BASE_VALUES from "data/base-values.js"
 
     export let game
     export let id
@@ -10,7 +10,7 @@
 
     $: values = game?.state?.values ?? {}
 
-    $: background = FG_COLORS[base] ?? "#333333"
+    $: background = BASE_VALUES[base]?.colors?.dark ?? "#333333"
     $: cssProperties = `--background:${background};`
 
     $: value = values[id] ?? 0

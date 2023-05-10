@@ -1,13 +1,12 @@
 <script>
     import StringMaker from "utility/string-maker.js"
-    import VALUES from "data/values"
-    import FG_COLORS from "data/fg-colors.js"
 
+    import {fade, fly} from "svelte/transition"
     import interactive from "utility/interactive.js"
-    import getValuesCodes from "data/get-values-codes.js"
     import UIValueModifiers from "components/ui/dialogs/value-explorer/elements/UIValueModifiers.svelte"
     import UIValueResets from "components/ui/dialogs/value-explorer/elements/UIValueResets.svelte"
     import UIValueHistory from "components/ui/dialogs/value-explorer/elements/UIValueHistory.svelte"
+    import Codes from "game-classes/codes.js"
 
     const PAGES = {
         "Modifiers" : UIValueModifiers,
@@ -24,24 +23,19 @@
     let currentPage = "stats"
 
     $: values = game?.state?.values ?? {}
-    $: initialValue = values[`${id}_base`]
+    $: code = Codes.getCode(id) ?? {}
+
+    $: initialValue = code.initialValue
+    $: derived = code.derived
+
     $: finalValue = values[id]
 
-    $: color = FG_COLORS[VALUES[id]?.baseValue] ?? "inherit"
+    $: color = code.baseValue?.colors?.["dark"] ?? "inherit"
     $: cssVariables = `--background: ${color};`
 
-    $: baseValue = VALUES[id]?.baseValue
-    $: derived = initialValue !== undefined
-    $: resettable = getResettable(id)
+    $: resettable = code.type === Codes.TYPES.VALUE && !derived
 
     $: setPages(id)
-
-    function getResettable(id) {
-        if (!baseValue)
-            return false
-        const codes = getValuesCodes(baseValue)
-        return [codes.X, codes.XP, codes.MX, codes.Xt].includes(id)
-    }
 
     function clickOutside(event) {
         if (event.target === holder)
@@ -74,22 +68,34 @@
 </script>
 
 {#if id}
-    <div class="holder" bind:this={holder} style={cssVariables} on:click={clickOutside} on:contextmenu={contextClose}>
-        <div class="dialog">
+    <div class="holder"
+         bind:this={holder}
+         style={cssVariables}
+         on:click={clickOutside}
+         on:contextmenu={contextClose}
+         transition:fade={{duration:200}}
+    >
+        <div class="dialog" transition:fly={{y:100,duration:200}}>
             <div class="title">
                 <div class="id">{id}</div>
-                <div class="description">{VALUES[id]?.description ?? "Unknown"}</div>
+                <div class="description">{code.description ?? "Unknown"}</div>
                 <div class="close"
                      use:interactive
                      on:basicaction={close}>X</div>
             </div>
             <div class="values">
-                <div class="value">
-                    <span class="name">Base value</span> = <span class="value">{StringMaker.formatValueById(initialValue, id)}</span>
-                </div>
-                <div class="value">
-                    <span class="name">Final value</span> = <span class="value">{StringMaker.formatValueById(finalValue, id)}</span>
-                </div>
+                {#if derived}
+                    <div class="value">
+                        <span class="name">Initial value</span> = <span class="value">{StringMaker.formatValueById(initialValue, id)}</span>
+                    </div>
+                    <div class="value">
+                        <span class="name">Effective value</span> = <span class="value">{StringMaker.formatValueById(finalValue, id)}</span>
+                    </div>
+                {:else}
+                    <div class="value">
+                        <span class="name">Current value</span> = <span class="value">{StringMaker.formatValueById(finalValue, id)}</span>
+                    </div>
+                {/if}
             </div>
             <div class="pages">
                 {#each pages as page}

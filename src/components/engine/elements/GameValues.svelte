@@ -3,15 +3,16 @@
     import GameModifierList from "components/engine/elements/GameModifierList.svelte"
     import GameTableValues from "components/engine/elements/GameTableValues.svelte"
 
-    import BASE_VALUES from "data/base-values.js"
-
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
+    import BASE_VALUES from "data/base-values.js"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_PER_TICK = 600
     const MAX_TIME_PER_STEP = 10
     const MAX_TIME_PER_STATS = 10
+
+    const initialValues = Object.assign({}, ...Object.values(BASE_VALUES).map(x => x.derivedDefaults))
 
     registerTrigger("command-tick", advance)
     registerTrigger("command-tick-step", updateValues)
@@ -29,25 +30,18 @@
         window.activeModifierList = activeModifierList
     }
 
-    function resetDerivedValues(values = values) {
-        for (const name of VALUE_NAMES) {
-            values[`d${name}`]  = values[`d${name}_base`]  = BASE_VALUES[name].baseSpeed ?? 1
-            values[`M${name}0`] = values[`M${name}0_base`] = BASE_VALUES[name].baseLimit ?? 5
-            values[`M${name}m`] = values[`M${name}m_base`] = BASE_VALUES[name].baseLimitMultiplier ?? 2
-            values[`d${name}P`] = values[`d${name}P_base`] = 1
-            values[`${name}Pc`] = values[`${name}Pc_base`] = 1
 
+    function resetDerivedValues(values = values) {
+        Object.assign(values, initialValues)
+
+        for (const name of VALUE_NAMES) {
             values[`d${name}_seen`] = false
             values[`M${name}0_seen`] = false
             values[`M${name}m_seen`] = false
             values[`d${name}P_seen`] = false
             values[`${name}Pc_seen`] = false
-            values[`${name}_auto_seen`] = false
-            values[`${name}_seen`] = BASE_VALUES[name].initialSeen ?? false
-
-
-            Object.assign(values, tableValues)
         }
+        Object.assign(values, tableValues)
     }
 
     function getInitialValues() {

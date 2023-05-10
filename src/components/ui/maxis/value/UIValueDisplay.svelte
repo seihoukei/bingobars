@@ -1,17 +1,17 @@
 <script>
-    import VALUES from "data/values"
-
     import StringMaker from "utility/string-maker"
     import Trigger from "utility/trigger"
     import interactive from "utility/interactive.js"
+    import Codes from "game-classes/codes.js"
 
     export let id
     export let game
 
     $: values = game?.state?.values ?? {}
+    $: code = Codes.getCode(id)
     $: value = values[id]
-    $: seen = values[`${id}_seen`] || (values[`${id}_base`] === undefined)
-    $: description = VALUES[id].description
+    $: seen = values[`${id}_seen`] || !code.derived
+    $: description = code.description ?? ""
 
     function explore() {
         if (seen)
@@ -34,7 +34,7 @@
             </span>
         </div>
         <div class="description">
-            {VALUES[id].description}
+            {description}
         </div>
     {/if}
 </div>

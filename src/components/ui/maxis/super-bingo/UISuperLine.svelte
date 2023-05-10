@@ -22,7 +22,7 @@
 
     $: bingo = game?.state?.bingo ?? {}
     $: value = bingo.levels?.[id] ?? {}
-    $: data = TABLES.SB.lines[id] ?? {}
+    $: data = TABLES.SB.slots[id] ?? {}
     $: [x,y] = data.position
     $: blinkTargets = [...(data.cells ?? []), [x-1, y]]
     $: blinkCells = []

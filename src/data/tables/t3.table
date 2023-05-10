@@ -7,7 +7,7 @@ C: false
 
 //--- Slots
 //# Slot name
-//R: prerequisite (address like T1R2C3)
+//R: prerequisite (code like T1R2C3)
 //C: condition (formula)
 //C!: hidden condition (formula)
 //M: modifier (formula)

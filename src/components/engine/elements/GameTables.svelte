@@ -41,11 +41,11 @@
                 continue
 
             for (const [slotName,slot] of Object.entries(table.slots)) {
-                const address = `${tableName}${slotName}`
-                const state = tables[address]
+                const code = `${tableName}${slotName}`
+                const state = tables[code]
                 if (state & BingoTable.SLOT_STATES.UNLOCKED)
                     continue
-                tables[address] = getSlotDiscoveryState(slot)
+                tables[code] = getSlotDiscoveryState(slot)
             }
             tables[`${tableName}_seen`] = checkConditions(table?.conditions)
         }

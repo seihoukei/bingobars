@@ -6,7 +6,7 @@ N: 1
 
 //--- Slots
 //# Slot name
-//R: prerequisite (address like T1R2C3)
+//R: prerequisite (code like T1R2C3)
 //C: condition (formula)
 //C!: hidden condition (formula)
 //M: modifier (formula)
@@ -120,7 +120,7 @@ M: APc *= 0.99 ^ BP
 # R5C1
 R: T1R3C3
 C: A >= 100000
-M: dA += T1_cN / 5
+M: dA += T1c / 5
 
 # R5C2
 R: T1R3C3

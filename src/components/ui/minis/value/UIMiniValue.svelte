@@ -1,11 +1,9 @@
 <script>
-
-    import FG_COLORS from "data/fg-colors.js"
-
     import interactive from "utility/interactive.js"
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
     import UIMiniValueBar from "components/ui/minis/value/UIMiniValueBar.svelte"
+    import BASE_VALUES from "data/base-values.js"
 
     export let game
     export let id
@@ -13,6 +11,7 @@
 
     $: uiSlot = id?.toLowerCase?.() ?? "none"
     $: visible = game?.state?.values?.[`${id}_seen`]
+    $: color = BASE_VALUES[id].colors.dark
 
     $: current = game?.state?.values?.[id]
     $: max = game?.state?.values?.[`M${id}`]
@@ -38,7 +37,7 @@
                     {max}
                     {current}
                     bgcolor="inherit"
-                    fgcolor={FG_COLORS[id]}
+                    fgcolor={color}
             />
         </div>
         <div class="data"

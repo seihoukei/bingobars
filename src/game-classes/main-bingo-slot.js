@@ -1,6 +1,7 @@
 import Calculation from "game-classes/calculation.js"
-import VALUES from "data/values.js"
 import BingoTable from "game-classes/bingo-table.js"
+import Codes from "game-classes/codes.js"
+import BASE_VALUES from "data/base-values.js"
 
 export default class MainBingoSlot {
     prerequisites = []
@@ -17,12 +18,18 @@ export default class MainBingoSlot {
     constructor(table, id, data = BingoTable.SLOTS[id]) {
         this.table = table
         this.id = id
-        this.address = `${table}${id}`
+        this.code = `${table}${id}`
         this.type = data.type ?? BingoTable.SLOT_TYPES.UNKNOWN
         this.position = data.position ?? [0, 0]
         this.cells = data.cells ?? []
         const dependencies = data.dependencies ?? []
         this.dependencies = dependencies.map(x => `${table}${x}`)
+        
+        Codes.registerCode(this.code, {
+            table, id, data,
+            type: Codes.TYPES.SLOT,
+            slot: this,
+        })
     }
 
     addPrerequisite(data) {
@@ -35,9 +42,11 @@ export default class MainBingoSlot {
         const modifier = new Calculation(data)
         if (!modifier.assignment)
             throw new Error (`"${data}" is not a valid modifier`)
-        modifier.setSource(this.address)
+        modifier.setSource(this.code)
         modifier.setHidden(hidden)
         this.modifiers.push(modifier)
+        
+        this.modifierBackground = this.#getBackground(this.modifiers)
 
         return this
     }
@@ -52,10 +61,12 @@ export default class MainBingoSlot {
         const condition = new Calculation(data)
         if (condition.assignment)
             throw new Error (`"${data}" is not a valid condition`)
-        condition.setSource(this.address)
+        condition.setSource(this.code)
         condition.setHidden(hidden)
         this.conditions.push(condition)
     
+        this.conditionBackground = this.#getBackground(this.conditions)
+
         return this
     }
     
@@ -90,13 +101,17 @@ export default class MainBingoSlot {
         return this
     }
 
-    getInvolvedInModifiers() {
-        const involved = this.modifiers.map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
-        return ["A","AB","B","BC","C","AC","ABC"].filter(x => involved.includes(x))
-    }
-
-    getInvolvedInConditions() {
-        const involved = this.conditions.map(x => x.involved).flat().map(x => VALUES[x]?.baseValue)
-        return ["A","AB","B","BC","C","AC","ABC"].filter(x => involved.includes(x))
+    #getBackground(calculations) {
+        const involved = calculations
+            .map(x => x.involved)
+            .flat()
+            .map(x => Codes.getCode(x)?.baseValue?.id)
+        const colors = Object.keys(BASE_VALUES)
+            .filter(x => involved.includes(x))
+            .map(x => BASE_VALUES[x].colors.dark)
+        
+        return colors.length === 0 ? "linear-gradient(#000000, #000000)" :
+            colors.length === 1 ? `linear-gradient(to right, ${colors[0]}, ${colors[0]})` :
+                `linear-gradient(to right, ${colors.join(",")})`
     }
 }

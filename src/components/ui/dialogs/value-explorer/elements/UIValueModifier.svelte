@@ -1,11 +1,9 @@
 <script>
-    import TABLES from "data/tables.js"
-    import VALUES from "data/values.js"
-
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
     import BingoTable from "game-classes/bingo-table.js"
     import interactive from "utility/interactive.js"
+    import Codes from "game-classes/codes.js"
 
     export let modifier = {}
     export let game = {}
@@ -15,40 +13,32 @@
     $: tables = game?.state?.tables ?? {}
     $: bingo = game?.state?.bingo ?? {}
     $: source = modifier.source
-    $: slot = getSlot(source)
-    $: bingoLine = slot ? null : source?.match(/^SB..$/)
+    $: code = Codes.getCode(source)
+    $: slot = code.slot ?? null
     $: gameRules = !source
-    $: togglable = slot !== null || bingoLine
-    $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (bingoLine && bingo?.active?.[source.slice(2)]) || gameRules
+    $: togglable = slot !== null || slot.isBingoSlot
+    $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (slot.isBingoSlot && bingo?.active?.[source.slice(2)]) || gameRules
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
     $: variables = [...new Set(modifier.involved.filter(x => x !== modifier.target))]
 
-    function getSlot(address) {
-        if (!tables[address])
-            return null
-        const table = address.slice(0,2)
-        const slot = address.slice(2,6)
-        return TABLES[table]?.slots[slot] ?? null
-    }
-
     function toggle() {
-        if (VALUES[modifier.source]?.isBingoLine) {
-            Trigger("command-toggle-bingo-line", modifier.source.slice(2))
+        if (slot?.isBingoSlot) {
+            Trigger("command-toggle-bingo-line", slot.id)
             return
         }
 
         if (!slot)
             return
 
-        Trigger("command-toggle-slot", slot.address)
+        Trigger("command-toggle-slot", slot.code)
     }
 
     function explore() {
-        if (!slot)
+        if (!slot || slot.isBingoSlot)
             return
 
-        Trigger("command-explore-slot", slot.address)
+        Trigger("command-explore-slot", slot.code)
     }
 </script>
 
@@ -56,7 +46,7 @@
     <div class="main">
         <div class="source"
              class:togglable
-             class:super={bingoLine}
+             class:super={slot.isBingoSlot}
              class:rules={gameRules}
              use:interactive
              on:basicaction={toggle}

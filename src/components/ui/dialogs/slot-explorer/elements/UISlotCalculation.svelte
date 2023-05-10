@@ -1,6 +1,7 @@
 <script>
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
+    import interactive from "utility/interactive.js"
 
     export let game
     export let evaluate = false
@@ -23,7 +24,7 @@
 {#if variables.length}
     <div class="variables">
         {#each variables as variable}
-            <div class="variable" on:click={() => explore(variable)}>
+            <div class="variable" use:interactive on:basicaction={() => explore(variable)}>
                     <span class="name">
                         {variable}
                     </span> = <span class="value">

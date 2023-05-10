@@ -2,8 +2,69 @@ import MainBingoSlot from "game-classes/main-bingo-slot.js"
 import Calculation from "game-classes/calculation.js"
 import TableParser from "utility/table-parser.js"
 import BingoTable from "game-classes/bingo-table.js"
+import StringMaker from "utility/string-maker.js"
+import Codes from "game-classes/codes.js"
 
 export default class MainBingoTable extends BingoTable{
+    static COUNTERS = {
+        "~S" : {
+            description : "Unlocked ~ slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+        "~c" : {
+            description : "Unlocked ~ cell (~R#C#) slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+        "~R" : {
+            description : "Unlocked ~ row (~R#) slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+        "~C" : {
+            description : "Unlocked ~ column (~C#) slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+        "~D" : {
+            description : "Unlocked ~ diagonal (~DX) slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+        "~L" : {
+            description : "Unlocked ~ line (~R#/~C#/~DX) slots",
+            format : {
+                type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
+            },
+        },
+    }
+    
+    static COUNTER_LIST = ["S","c","R","C","D","L"]
+    
+    static registerTableCounters(table, real = true) {
+        for (const [code, data] of Object.entries(MainBingoTable.COUNTERS)) {
+            const codeData = {
+                type : Codes.TYPES.COUNTER,
+                table,
+            }
+            for (const [id, value] of Object.entries(data)) {
+                if (typeof value === 'string')
+                    codeData[id] = real
+                            ? value.replace(/~/g, table)
+                            : value.replace(/~ ?/g, "")
+                else
+                    codeData[id] = value
+            }
+            Codes.registerCode(code.replace(/~/g, table), codeData)
+        }
+    }
+    
     type = BingoTable.TABLE_TYPES.BINGO
 
     conditions = []
@@ -14,6 +75,8 @@ export default class MainBingoTable extends BingoTable{
             this.slots[id] = new MainBingoSlot(this.id, id)
         
         this.parse(data)
+        
+        MainBingoTable.registerTableCounters(this.id, true)
         
         return this
     }

@@ -3,9 +3,9 @@
     import {onMount} from "svelte"
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
-    import VALUES from "data/values.js"
     import Calculation from "game-classes/calculation.js"
     import UIValueModifier from "components/ui/dialogs/value-explorer/elements/UIValueModifier.svelte"
+    import Codes from "game-classes/codes.js"
 
     export let game
     export let id
@@ -40,13 +40,14 @@
             }
         }
         const toggleSlots = toggles
-            .filter(([id, value]) => !VALUES[id]?.isBingoLine)
+            .filter(([id, value]) => !Codes.getCode(id)?.isBingoSlot)
         if (toggleSlots.length)
             Trigger("command-toggle-slots", toggleSlots)
 
+
         const toggleBingo = toggles
-            .filter(([id, value]) => VALUES[id]?.isBingoLine)
-            .map(([id, value]) => [id.slice(2), value])
+            .filter(([id, value]) => Codes.getCode(id)?.isBingoSlot)
+            .map(([id, value]) => [Codes.getCode(id).id, value])
         if (toggleBingo.length)
             Trigger("command-toggle-bingo-lines", toggleBingo)
     }
@@ -83,22 +84,22 @@
     <div class="button"
          use:interactive
          on:basicaction={disableAll}>
-        Disable all
+        None
     </div>
     <div class="button"
          use:interactive
          on:basicaction={minimize}>
-        Minimize
+        Min
     </div>
     <div class="button"
          use:interactive
          on:basicaction={maximize}>
-        Maximize
+        Max
     </div>
     <div class="button"
          use:interactive
          on:basicaction={enableAll}>
-        Enable all
+        All
     </div>
 </div>
 
@@ -116,7 +117,6 @@
         align-items: center;
         justify-content: center;
         column-gap: 1em;
-        font-size: 0.7em;
     }
 
     div.button {

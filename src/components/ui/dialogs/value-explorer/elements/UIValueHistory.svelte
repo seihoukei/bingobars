@@ -11,19 +11,19 @@
 
     const VIEWS = [
         {
-            name: "Short term",
+            name: "5m",
             stats : "secondly",
             weakGrid : 60,
             strongGrid : 300,
         },
         {
-            name: "Medium term",
+            name: "6h",
             stats : "minutely",
             weakGrid : 600,
             strongGrid: 3600,
         },
         {
-            name: "Long term",
+            name: "Days",
             stats : "hourly",
             weakGrid : 3600 * 6,
             strongGrid: 3600 * 24,
@@ -294,7 +294,7 @@
         align-items: center;
         justify-content: center;
         column-gap: 1em;
-        font-size: 0.7em;
+        font-size: 1em;
     }
 
     div.button {
