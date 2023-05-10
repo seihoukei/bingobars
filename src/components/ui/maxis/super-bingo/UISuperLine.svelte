@@ -30,7 +30,7 @@
     $: modifier = data?.modifier ?? null
     $: target = modifier?.target ?? null
     $: effect = data.effect ?? `SB${id}`
-    $: diplayEffect = target && game?.state?.values?.[`${target}_seen`]
+    $: diplayEffect = target && game?.state?.seen?.[target]
         ? effect
         : "???"
 

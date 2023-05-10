@@ -17,8 +17,8 @@
     let debug = 0
 
     if (import.meta.env.MODE === "development") {
-        // 1 : see descriptions
-        // 2 : raw formulas
+        // 2 : see descriptions
+        // 1 : raw formulas
         //debug = 1
     }
 

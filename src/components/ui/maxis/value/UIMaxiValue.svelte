@@ -13,15 +13,16 @@
     export let game
     export let id
 
-    const seen = {}
 
     const hover = {
         prestige : false,
         reset : false,
     }
 
+
     $: uiSlot = id?.toLowerCase?.() ?? "none"
     $: values = game?.state?.values ?? {}
+    $: seen = game?.state?.seen ?? {}
     $: current = values[id]
     $: limit = values[`M${id}`]
     $: prestiges = values[`${id}P`]
@@ -29,13 +30,6 @@
     $: prestigeReady = current >= limit
 
     $: code = BASE_VALUES[id].codes
-
-    $: values, updateSeen()
-
-    function updateSeen() {
-        for (let [id, value] of Object.entries(code))
-            seen[id] = values[`${value}_seen`]
-    }
 
     function prestige() {
         Trigger("command-prestige-value", id)
@@ -101,35 +95,35 @@
         <div class="explanation slot x-dx">
             <UIValueExplanation
                     description={`Every second while ${code.X} < ${code.MX}`}
-                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${Codes.get(code.dX).initialValue}`}
+                    formula={seen[code.dX] ? `${code.X} += ${code.dX}` : `${code.X} += ${Codes.get(code.dX).initialValue}`}
                     active={current < limit && !hover.prestige && !hover.reset}
             />
         </div>
         <div class="explanation slot xp-dxp">
             <UIValueExplanation
                     description="Every prestige"
-                    formula={seen.dXP ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
+                    formula={seen[code.dXP] ?`${code.XP} += ${code.dXP}` : `${code.XP} += 1`}
                     active={hover.prestige}
             />
         </div>
         <div class="explanation prestige slot x-mx">
             <UIValueExplanation
                     description="Every prestige"
-                    formula={seen.XPc ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
+                    formula={seen[code.XPc] ? `${code.X} -= ${code.MX} * ${code.XPc}` : `${code.X} = 0`}
                     active={hover.prestige}
             />
         </div>
         <div class="explanation prestige slot mx-mxm">
             <UIValueExplanation
                     description="Every prestige"
-                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${Codes.get(code.MXm).initialValue}`}
+                    formula={seen[code.MXm] ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${Codes.get(code.MXm).initialValue}`}
                     active={hover.prestige}
             />
         </div>
         <div class="explanation reset slot mx-mx0">
             <UIValueExplanation
                     description="Every reset"
-                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${Codes.get(code.MX0).initialValue}`}
+                    formula={seen[code.MX0] ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${Codes.get(code.MX0).initialValue}`}
                     active={hover.reset}
             />
         </div>

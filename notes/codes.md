@@ -25,12 +25,12 @@
 
 | Code | Meaning                      |
 |------|------------------------------|
-| SN   | Unlocked slot count          |
-| cN   | Unlocked cell slot count     |
-| RN   | Unlocked row slot count      |
-| CN   | Unlocked column slot count   |
-| DN   | Unlocked diagonal slot count |
-| LN   | Unlocked line slot count     |
+| T#S  | Unlocked slot count          |
+| T#c  | Unlocked cell slot count     |
+| T#N  | Unlocked row slot count      |
+| T#N  | Unlocked column slot count   |
+| T#N  | Unlocked diagonal slot count |
+| T#N  | Unlocked line slot count     |
 
 # Tables
 
@@ -44,4 +44,3 @@ Table, row and column numbers start from 1
 | T#R#C# | Table # cell at row #, column # |
 | T#DR   | Table # down-right diagonal     |
 | T#DL   | Table # down-left diagonal      |                                 
-

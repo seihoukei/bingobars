@@ -10,7 +10,7 @@
     $: values = game?.state?.values ?? {}
     $: code = Codes.get(id)
     $: value = values[id]
-    $: seen = values[`${id}_seen`] || !code.derived
+    $: seen = game?.state?.seen?.[id] || !code.derived
     $: description = code.description ?? ""
 
     function explore() {
