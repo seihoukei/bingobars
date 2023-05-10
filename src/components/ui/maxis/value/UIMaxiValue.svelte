@@ -101,7 +101,7 @@
         <div class="explanation slot x-dx">
             <UIValueExplanation
                     description={`Every second while ${code.X} < ${code.MX}`}
-                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${Codes.getCode(code.dX).initialValue}`}
+                    formula={seen.dX ? `${code.X} += ${code.dX}` : `${code.X} += ${Codes.get(code.dX).initialValue}`}
                     active={current < limit && !hover.prestige && !hover.reset}
             />
         </div>
@@ -122,14 +122,14 @@
         <div class="explanation prestige slot mx-mxm">
             <UIValueExplanation
                     description="Every prestige"
-                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${Codes.getCode(code.MXm).initialValue}`}
+                    formula={seen.MXm ? `${code.MX} *= ${code.MXm}` : `${code.MX} *= ${Codes.get(code.MXm).initialValue}`}
                     active={hover.prestige}
             />
         </div>
         <div class="explanation reset slot mx-mx0">
             <UIValueExplanation
                     description="Every reset"
-                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${Codes.getCode(code.MX0).initialValue}`}
+                    formula={seen.MX0 ? `${code.MX} = ${code.MX0}` : `${code.MX} = ${Codes.get(code.MX0).initialValue}`}
                     active={hover.reset}
             />
         </div>

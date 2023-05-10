@@ -15,7 +15,7 @@
 
 <div class="group">
     {#each valueList as value}
-        {#if !Codes.getCode(value)?.hidden}
+        {#if !Codes.get(value)?.hidden}
             <UICodeValue {game} id={value} base={id} {table} />
         {/if}
     {/each}

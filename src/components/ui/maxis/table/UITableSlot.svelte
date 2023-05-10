@@ -31,7 +31,7 @@
     $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
     $: enabled = value & BingoTable.SLOT_STATES.ENABLED
 
-    $: mainBackground = unlocked ? slot.modifierBackground : slot.conditionBackground
+    $: mainBackground = unlocked ? slot.modifierBackground : slot.conditionBackground ?? "linear-gradient(#444444, #444444)"
     $: stateBackground =
         unlocked ? "linear-gradient(#00000000, #00000000)" :
         available ? "linear-gradient(#227722FF, #22772288, #22772288, #227722FF)" :

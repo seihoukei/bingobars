@@ -10,14 +10,20 @@
     export let active = false
 
     $: uiSlot = id?.toLowerCase?.() ?? "none"
-    $: visible = game?.state?.values?.[`${id}_seen`]
-    $: color = BASE_VALUES[id].colors.dark
 
-    $: current = game?.state?.values?.[id]
-    $: max = game?.state?.values?.[`M${id}`]
-    $: prestiges = game?.state?.values?.[`${id}P`]
+    $: values = game?.state?.values ?? {}
+    $: codes = BASE_VALUES[id]?.codes ?? {}
+
+    $: visible = values[codes.X_seen]
+    $: current = values[codes.X]
+    $: max = values[codes.MX]
+    $: prestiges = values[codes.XP]
 
     $: ready = current >= max
+
+    $: colors = BASE_VALUES[id].colors
+
+    $: cssVariables = `--bar-color:${colors.dark};--bar-hover-color:${colors.normal}`
 
     function prestige() {
         if (ready)
@@ -33,12 +39,7 @@
 >
     {#if visible}
         <div class="bar">
-            <UIMiniValueBar
-                    {max}
-                    {current}
-                    bgcolor="inherit"
-                    fgcolor={color}
-            />
+            <UIMiniValueBar {id} {game}/>
         </div>
         <div class="data"
              use:interactive
@@ -95,6 +96,7 @@
         transition: opacity 0.2s;
         border-radius: 1em;
     }
+
     div.container.visible:not(.active):hover div.highlight {
         opacity: 0.2;
     }
@@ -134,16 +136,6 @@
         height: 1px;
         background-color: #CCCCCC;
         margin : 0 1em;
-    }
-    div.bar {
-        position: absolute;
-        left : 0;
-        top : 0;
-        bottom : 0;
-        right : 0;
-        z-index : 0;
-        border-radius: 1em;
-        overflow: hidden;
     }
 
     div.display {

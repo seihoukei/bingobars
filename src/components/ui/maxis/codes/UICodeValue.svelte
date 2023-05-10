@@ -2,6 +2,7 @@
     import Trigger from "utility/trigger.js"
     import interactive from "utility/interactive.js"
     import BASE_VALUES from "data/base-values.js"
+    import Codes from "game-classes/codes.js"
 
     export let game
     export let id
@@ -9,6 +10,9 @@
     export let table = false
 
     $: values = game?.state?.values ?? {}
+    $: seen = game?.state?.seen ?? {}
+    $: code = Codes.get(id)
+    $: baseCodes = BASE_VALUES[base]?.codes ?? {}
 
     $: background = BASE_VALUES[base]?.colors?.dark ?? "#333333"
     $: cssProperties = `--background:${background};`
@@ -21,11 +25,10 @@
         if (table) {
             return !!value
         }
-        if (!values[`${base}_seen`])
+        if (!values[baseCodes.X_seen])
             return false
-        if (!values[`${id}_base`])
-            return true
-        return values[`${id}_seen`]
+
+        return (!code.derived || seen[id])
     }
 
     function explore() {

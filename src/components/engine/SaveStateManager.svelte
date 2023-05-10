@@ -12,6 +12,9 @@
     export let defaultState = {}
     export let autosaveInterval = 60000
     export let actionsaveInterval = 5000
+    export let userMetaFunction = null
+
+    let saveInfo = {}
 
     let lastSaved = performance.now()
     let saveTimeout = null
@@ -21,6 +24,7 @@
     registerTrigger("command-import-save", loadData)
     registerTrigger("command-export-save", exportSave)
     registerTrigger("command-reset-game", resetGame)
+    registerTrigger("command-update-save-info", updateInfo)
 
     registerTrigger("value-reset", planSave)
     registerTrigger("value-prestiged", planSave)
@@ -29,7 +33,9 @@
 
     $: updateInterval(autosaveInterval)
 
-    function slotName(slot = AUTOSAVE_SLOT) {
+    function getSlotName(slot = AUTOSAVE_SLOT) {
+        if (slot === "")
+            slot = AUTOSAVE_SLOT
         return `${prefix}_Save_${slot}`
     }
 
@@ -40,7 +46,9 @@
 
         const saveData = await prepareSave()
         lastSaved = performance.now()
-        localStorage[slotName(slot)] = saveData
+        localStorage[getSlotName(slot)] = saveData
+        updateInfo([slot])
+
         Trigger("game-saved", slot)
 //        console.log(`Saved ${saveData.length} bytes`)
     }
@@ -56,8 +64,8 @@
         saveTimeout = setTimeout(saveGame, actionsaveInterval - sinceLastSave)
     }
 
-    function loadGame(slot = AUTOSAVE_SLOT, offlineTime = true) {
-        const saveData = localStorage[slotName(slot)]
+    function loadGame(slot, offlineTime = true) {
+        const saveData = localStorage[getSlotName(slot)]
         loadData(saveData, offlineTime)
         Trigger("game-loaded", slot)
     }
@@ -77,8 +85,9 @@
     }
 
     function loadData(data, offlineTime = true) {
+        const saveData = data.split(".").at(-1)
         resetGame()
-        const save = SaveProcessor.decode(data)
+        const save = SaveProcessor.decode(saveData)
         if (save?._meta) {
             const loadedState = save.state
             if (loadedState.values) {
@@ -93,21 +102,42 @@
     }
 
     async function prepareSave() {
-        const data = await SaveProcessor.encodeAsync({
+        const saveData = await SaveProcessor.encodeAsync({
             _meta: {
-                version : 1,
-                date : Date.now()
+                date : Date.now(),
             },
             state
         })
 
-        return data
+        const userMeta = userMetaFunction?.() ?? {}
+        const meta = btoa(JSON.stringify({
+            _version : 1,
+            _date : Date.now(),
+            ...userMeta
+        }))
+
+        return `${meta}.${saveData}`
+    }
+
+    function getMetaData(slot = AUTOSAVE_SLOT) {
+        const data = localStorage[getSlotName(slot)]
+        const meta = data.split(".")[0]
+        if (meta === data)
+            return {}
+        return JSON.parse(atob(meta))
     }
 
     async function exportSave() {
         navigator.clipboard?.writeText?.(await prepareSave())
             .then(() => alert("Copied to clipboard"))
             .catch(() => alert("Export failed"))
+    }
+
+    function updateInfo(slots) {
+        for (const slot of slots) {
+            saveInfo[slot] = getMetaData(slot)
+        }
+        Trigger("save-info-updated", saveInfo)
     }
 
     onMount(() => {

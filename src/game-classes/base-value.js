@@ -95,6 +95,13 @@ export default class BaseValue {
             },
             hidden : true,
         },
+        'X_auto' : {
+            description : "~ auto prestige",
+            format : {
+                type: StringMaker.VALUE_FORMATS.ONOFF,
+            },
+            hidden : true,
+        },
         'X_auto_seen' : {
             description : "~ auto prestige unlocked",
             format : {

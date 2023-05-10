@@ -44,13 +44,23 @@
         Trigger("command-save-game")
     }
 
+    function userMetaFunction() {
+        return {
+            SN : game?.state?.values?.TXS ?? 0,
+            time : game?.state?.values?.targetTime ?? 0,
+        }
+    }
 </script>
 
-<SaveStateManager bind:state bind:id={gameId} defaultState={DEFAULT_GAME_STATE}/>
+<SaveStateManager bind:state
+                  bind:id={gameId}
+                  defaultState={DEFAULT_GAME_STATE}
+                  {userMetaFunction}
+/>
 
 {#key gameId}
     {#if state}
-        <GameValues {state} bind:values={state.values}/>
+        <GameValues {state} bind:values={state.values} bind:seen={state.seen}/>
         <GameTables {state} bind:tables={state.tables}/>
         <GameBingo {state} bind:bingo={state.bingo}/>
         <GameStats {state} bind:stats={state.stats}/>

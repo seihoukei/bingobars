@@ -19,20 +19,21 @@
     function getSlotDiscoveryState(slot) {
         let slotState = BingoTable.SLOT_STATES.UNKNOWN
 
-        if (slot?.dependencies.every(dependency => tables[dependency] & BingoTable.SLOT_STATES.UNLOCKED)) {
+        if (slot?.dependencies.every(dependency => tables[dependency] & BingoTable.SLOT_STATES.UNLOCKED) ?? true) {
             slotState |= BingoTable.SLOT_STATES.VISIBLE
-        }
 
-        if (slot?.prerequisites.every(prerequisite => tables[prerequisite] & BingoTable.SLOT_STATES.UNLOCKED) ?? true) {
-            slotState |= BingoTable.SLOT_STATES.PREREQUISITES_MET
-        }
+            if (slot?.prerequisites.every(prerequisite => tables[prerequisite] & BingoTable.SLOT_STATES.UNLOCKED) ?? true) {
+                slotState |= BingoTable.SLOT_STATES.PREREQUISITES_MET
 
-        if (checkConditions(slot?.conditions)) {
-            slotState |= BingoTable.SLOT_STATES.CONDITIONS_MET
+                if (checkConditions(slot?.conditions)) {
+                    slotState |= BingoTable.SLOT_STATES.CONDITIONS_MET
+                }
+            }
         }
 
         return slotState
     }
+
     function updateTables() {
         if (!tables || !state?.values) return
 
@@ -40,13 +41,16 @@
             if (table.type !== BingoTable.TABLE_TYPES.BINGO)
                 continue
 
-            for (const [slotName,slot] of Object.entries(table.slots)) {
-                const code = `${tableName}${slotName}`
+            for (const slot of Object.values(table.slots)) {
+                const code = slot.code
                 const state = tables[code]
+
                 if (state & BingoTable.SLOT_STATES.UNLOCKED)
                     continue
+
                 tables[code] = getSlotDiscoveryState(slot)
             }
+
             tables[`${tableName}_seen`] = checkConditions(table?.conditions)
         }
 

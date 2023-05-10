@@ -1,50 +1,48 @@
 <script>
-    export let max = 100
-    export let current = 0
-    export let caption = ""
-    export let bgcolor = "#333333"
-    export let fgcolor = "#666666"
+    import BASE_VALUES from "data/base-values.js"
+
+    export let id
+    export let game
+
+    $: values = game?.state?.values ?? {}
+    $: codes = BASE_VALUES[id]?.codes ?? {}
+
+    $: current = values[codes.X]
+    $: max = values[codes.MX]
+
+    $: colors = BASE_VALUES[id].colors
 
     $: progress = (100 * current / max).toFixed(2)
+    $: cssVariables = `--progress:${progress}%;--bar-color:${colors.dark}`
+
 </script>
 
-<div class="bar" style="
-        --progress:{progress}%;
-        --fgcolor:{fgcolor};
-        --bgcolor:{bgcolor};
-    ">
-    <div class="bg"></div>
+<div class="bar" style={cssVariables}>
     <div class="fg"></div>
-    <div class="caption">{caption}</div>
 </div>
 
 <style>
     div.bar {
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-
-    div.fg, div.bg, div.caption {
         position: absolute;
         left : 0;
+        top : 0;
         bottom : 0;
-        height : 100%;
-        width: 100%;
-    }
+        right : 0;
 
-    div.bg {
-        background-color: var(--bgcolor);
+        z-index : 0;
+
+        border-radius: 1em;
+        overflow: hidden;
     }
 
     div.fg {
-        background-color: var(--fgcolor);
+        position: absolute;
+        left : 0;
+        bottom : 0;
+        right : 0;
+
+        background-color: var(--bar-color);
         height: var(--progress);
     }
 
-    div.caption {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 </style>

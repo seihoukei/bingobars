@@ -17,7 +17,7 @@
     $: table = TABLES[id]
     $: slots = Object.entries(table?.slots ?? {})
 
-    $: completeSlots = game?.state?.values?.[`${id}_SN`]
+    $: completeSlots = game?.state?.values?.[`${id}S`]
     $: complete = `${Math.floor(completeSlots / BingoTable.SLOT_LIST.length * 100)}%`
 
 </script>

@@ -13,7 +13,7 @@
     $: tables = game?.state?.tables ?? {}
     $: bingo = game?.state?.bingo ?? {}
     $: source = modifier.source
-    $: code = Codes.getCode(source)
+    $: code = Codes.get(source)
     $: slot = code.slot ?? null
     $: gameRules = !source
     $: togglable = slot !== null || slot.isBingoSlot

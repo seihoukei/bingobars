@@ -23,7 +23,7 @@
     let currentPage = "stats"
 
     $: values = game?.state?.values ?? {}
-    $: code = Codes.getCode(id) ?? {}
+    $: code = Codes.get(id) ?? {}
 
     $: initialValue = code.initialValue
     $: derived = code.derived

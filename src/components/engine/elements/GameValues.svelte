@@ -6,13 +6,14 @@
     import registerTrigger from "utility/register-trigger.js"
     import Trigger from "utility/trigger.js"
     import BASE_VALUES from "data/base-values.js"
+    import Codes from "game-classes/codes.js"
 
     const VALUE_NAMES = Object.keys(BASE_VALUES)
     const MAX_TIME_PER_TICK = 600
     const MAX_TIME_PER_STEP = 10
     const MAX_TIME_PER_STATS = 10
 
-    const initialValues = Object.assign({}, ...Object.values(BASE_VALUES).map(x => x.derivedDefaults))
+    const INITIAL_VALUES = Object.assign({}, ...Object.values(BASE_VALUES).map(x => x.derivedDefaults))
 
     registerTrigger("command-tick", advance)
     registerTrigger("command-tick-step", updateValues)
@@ -22,6 +23,8 @@
     let availableModifierList = []
 
     export let values = getInitialValues()
+    export let seen = {}
+
     export let state
 
     $: activeModifierList, tableValues, updateValues()
@@ -32,34 +35,17 @@
 
 
     function resetDerivedValues(values = values) {
-        Object.assign(values, initialValues)
-
-        for (const name of VALUE_NAMES) {
-            values[`d${name}_seen`] = false
-            values[`M${name}0_seen`] = false
-            values[`M${name}m_seen`] = false
-            values[`d${name}P_seen`] = false
-            values[`${name}Pc_seen`] = false
-        }
+        Object.assign(values, INITIAL_VALUES)
         Object.assign(values, tableValues)
     }
 
     function getInitialValues() {
-        const values = {
+        const values = Object.assign({
             time : 0,
             targetTime : 0,
-        }
+        }, ...Object.values(BASE_VALUES).map(x => x.defaults))
 
         resetDerivedValues(values)
-
-        for (const name of VALUE_NAMES) {
-            values[name] = 0
-            values[`M${name}`] = values[`M${name}0`]
-            values[`${name}P`] = 0
-            values[`${name}Pt`] = 0
-            values[`${name}t`] = 0
-            values[`${name}_auto`] = true
-        }
 
         return values
     }
@@ -75,13 +61,13 @@
         if (availableModifierList)
             for (const modifier of availableModifierList) {
                 if (modifier.source) {
-                    for (let value of modifier.involved)
-                        if (values[`${value}_seen`] === false)
-                            values[`${value}_seen`] = true
+                    for (let value of modifier.involved) {
+                        const code = Codes.get(value)
+                        if (code.derived && !code.hidden)
+                            seen[value] = 1
+                    }
                 } else if (modifier.target) {
-                    if (values[`${modifier.target}_seen`] === false)
-                        values[`${modifier.target}_seen`] = true
-
+                    seen[modifier.target] = 1
                 }
             }
 
@@ -98,19 +84,19 @@
     }
 
     function getValueCapTime(name) {
-        const seen = values[`${name}_seen`] ?? false
-        if (!seen)
+        const codes = BASE_VALUES[name].codes
+        if (!values[codes.X_seen])
             return Infinity
 
-        const max = values[`M${name}`] ?? 0
+        const max = values[codes.MX] ?? 0
         if (max === 0)
             return Infinity
 
-        const delta = values[`d${name}`] ?? 0
+        const delta = values[codes.dX] ?? 0
         if (delta === 0)
             return Infinity
 
-        const value = values[`${name}`] ?? 0
+        const value = values[codes.X] ?? 0
         if (value >= max)
             return Infinity
 
@@ -155,22 +141,23 @@
 
 {#if values}
     {#each VALUE_NAMES as value}
+        {@const codes = BASE_VALUES[value].codes}
         <GameValue
                 name={value}
-                delta={values[`d${value}`]}
-                prestigeStep={values[`d${value}P`]}
-                prestigeCost={values[`${value}Pc`]}
-                baseLimit={values[`M${value}0`]}
-                limitMultiplier={values[`M${value}m`]}
-                seen={values[`${value}_seen`]}
-                canAutoPrestige={values[`${value}_auto_seen`]}
+                delta={values[codes.dX]}
+                prestigeStep={values[codes.dXP]}
+                prestigeCost={values[codes.XPc]}
+                baseLimit={values[codes.MX0]}
+                limitMultiplier={values[codes.MXm]}
+                seen={values[codes.X_seen]}
+                canAutoPrestige={values[codes.X_auto_seen]}
 
-                bind:value={values[value]}
-                bind:prestiges={values[`${value}P`]}
-                bind:limit={values[`M${value}`]}
-                bind:timeSinceReset={values[`${value}t`]}
-                bind:timeSincePrestige={values[`${value}Pt`]}
-                bind:autoPrestige={values[`${value}_auto`]}
+                bind:value={values[codes.X]}
+                bind:prestiges={values[codes.XP]}
+                bind:limit={values[codes.MX]}
+                bind:timeSinceReset={values[codes.Xt]}
+                bind:timeSincePrestige={values[codes.XPt]}
+                bind:autoPrestige={values[codes.X_auto]}
         />
     {/each}
 

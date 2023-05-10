@@ -70,7 +70,7 @@ export default class StringMaker {
     }
 
     static formatValueById(value, id) {
-        return this.formatValue(value, Codes.getCode(id)?.format ?? {})
+        return this.formatValue(value, Codes.get(id)?.format ?? {})
     }
 
     static template(strings, ...values) {
@@ -84,7 +84,7 @@ export default class StringMaker {
 
     staticString = ""
 
-    constructor(strings, values, base = Codes.getCode([values[0]]) ?? {}) {
+    constructor(strings, values, base = Codes.get([values[0]]) ?? {}) {
         this.#strings = strings
         this.#values = values
         this.#base = base

@@ -11,7 +11,7 @@
 
     let holder
 
-    $: code = Codes.getCode(id) ?? {}
+    $: code = Codes.get(id) ?? {}
     $: tableId = code.table
     $: slot = code.slot ?? {}
 

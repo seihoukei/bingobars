@@ -12,7 +12,7 @@ export default class Codes {
         this.#codes[code] = data
     }
     
-    static getCode(code, type = Codes.TYPES.ANY) {
+    static get(code, type = Codes.TYPES.ANY) {
         const data = this.#codes[code]
         
         if (type === Codes.TYPES.ANY || data.type === type)
@@ -24,10 +24,10 @@ export default class Codes {
     static getCodes() {return this.#codes}
     
     static getSlot(code) {
-        return this.getCode(code, Codes.TYPES.SLOT)
+        return this.get(code, Codes.TYPES.SLOT)
     }
     
     static getValue(code) {
-        return this.getCode(code, Codes.TYPES.VALUE)
+        return this.get(code, Codes.TYPES.VALUE)
     }
 }

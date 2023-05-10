@@ -105,7 +105,7 @@ export default class MainBingoSlot {
         const involved = calculations
             .map(x => x.involved)
             .flat()
-            .map(x => Codes.getCode(x)?.baseValue?.id)
+            .map(x => Codes.get(x)?.baseValue?.id)
         const colors = Object.keys(BASE_VALUES)
             .filter(x => involved.includes(x))
             .map(x => BASE_VALUES[x].colors.dark)

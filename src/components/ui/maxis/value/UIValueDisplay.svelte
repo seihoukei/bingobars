@@ -8,7 +8,7 @@
     export let game
 
     $: values = game?.state?.values ?? {}
-    $: code = Codes.getCode(id)
+    $: code = Codes.get(id)
     $: value = values[id]
     $: seen = values[`${id}_seen`] || !code.derived
     $: description = code.description ?? ""

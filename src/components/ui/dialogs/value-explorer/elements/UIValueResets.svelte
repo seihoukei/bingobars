@@ -5,7 +5,7 @@
     export let game
     export let id
 
-    $: code = Codes.getCode(id) ?? {}
+    $: code = Codes.get(id) ?? {}
     $: baseValue = code.baseValue.id ?? null
     $: resets = game?.state?.stats?.reset?.[baseValue] ?? []
     $: codes = code.baseValue.codes

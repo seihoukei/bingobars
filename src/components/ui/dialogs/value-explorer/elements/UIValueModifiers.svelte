@@ -40,14 +40,14 @@
             }
         }
         const toggleSlots = toggles
-            .filter(([id, value]) => !Codes.getCode(id)?.isBingoSlot)
+            .filter(([id, value]) => !Codes.get(id)?.isBingoSlot)
         if (toggleSlots.length)
             Trigger("command-toggle-slots", toggleSlots)
 
 
         const toggleBingo = toggles
-            .filter(([id, value]) => Codes.getCode(id)?.isBingoSlot)
-            .map(([id, value]) => [Codes.getCode(id).id, value])
+            .filter(([id, value]) => Codes.get(id)?.isBingoSlot)
+            .map(([id, value]) => [Codes.get(id).id, value])
         if (toggleBingo.length)
             Trigger("command-toggle-bingo-lines", toggleBingo)
     }
