@@ -29,67 +29,77 @@ export default class BaseValue {
     static VALUE_DESCRIPTIONS = {
         'X' : {
             description : "Current ~ value",
+            shortDescription: "~ value",
             format : {
                 type : StringMaker.VALUE_FORMATS.SCIENTIFIC
             },
         },
         'dX' : {
             description: "Growth speed for ~",
+            shortDescription: "~ growth",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
-                postfix: "/s",
             }
         },
         'MX' : {
             description: "Current ~ limit",
+            shortDescription: "~ limit",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         'MXm' : {
             description: "~ limit multiplier",
+            shortDescription: "~ limit multi",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "MX0" : {
             description: "~ limit after reset",
+            shortDescription: "Initial ~ limit",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         'XP' : {
             description : "Current ~ points",
+            shortDescription: "~ points",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         'dXP' : {
             description : "~ points per prestige",
+            shortDescription: "~ point prestige",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         'XPc' : {
             description : "~ prestige cost",
+            shortDescription: "~ prestige cost",
             format : {
                 type: StringMaker.VALUE_FORMATS.PERCENTAGE,
             },
         },
         'Xt' : {
             description : "Time since ~ reset",
+            shortDescription: "~ reset time",
             format : {
                 type: StringMaker.VALUE_FORMATS.TIME,
             },
         },
         'XPt' : {
             description : "Time since ~ prestige",
+            shortDescription: "~ prestige time",
             format : {
                 type: StringMaker.VALUE_FORMATS.TIME,
             },
         },
         'X_seen' : {
             description : "~ unlocked",
+            shortDescription: "~ unlocked",
             format : {
                 type: StringMaker.VALUE_FORMATS.ONOFF,
             },
@@ -97,6 +107,7 @@ export default class BaseValue {
         },
         'X_auto' : {
             description : "~ auto prestige",
+            shortDescription: "~ auto prestige",
             format : {
                 type: StringMaker.VALUE_FORMATS.ONOFF,
             },
@@ -104,6 +115,7 @@ export default class BaseValue {
         },
         'X_auto_seen' : {
             description : "~ auto prestige unlocked",
+            shortDescription: "~ auto prestige unlocked",
             format : {
                 type: StringMaker.VALUE_FORMATS.ONOFF,
             },

@@ -34,12 +34,18 @@
         Trigger("command-toggle-slot", slot.code)
     }
 
-    function explore() {
+    function exploreSlot() {
         if (!slot || slot.isBingoSlot)
             return
 
         Trigger("command-explore-slot", slot.code)
     }
+
+    function exploreValue(value) {
+        Trigger("command-explore-value", value)
+    }
+
+
 </script>
 
 <div class="modifier" class:active>
@@ -50,7 +56,7 @@
              class:rules={gameRules}
              use:interactive
              on:basicaction={toggle}
-             on:specialaction={explore}
+             on:specialaction={exploreSlot}
         >
             {complex ? "!!" : ""} {source ?? "Game rules"} {complex ? "!!" : ""}
         </div>
@@ -70,7 +76,10 @@
     {#if variables.length}
         <div class="variables">
             {#each variables as variable}
-                <div class="variable">
+                <div class="variable"
+                     use:interactive
+                     on:basicaction={() => exploreValue(variable)}
+                >
                     <span class="name">
                         {variable}
                     </span> = <span class="value">
@@ -163,6 +172,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
 </style>

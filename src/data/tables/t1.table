@@ -60,7 +60,7 @@ C: A < AP * 100 < MA
 M: dA += 1
 
 # R3C2
-C: AP > APt
+C: AP > APt + 3
 M: dA += AP / 10
 
 # R3C3
@@ -98,7 +98,7 @@ M: dA += At / 600
 
 # R5C1
 R: T1R3C3
-C: dA >= 64
+C: 64 < dA < 66
 M: dA = 100
 
 # R5C2
@@ -136,7 +136,7 @@ C: A < dA
 M: dA = 50
 
 # R5
-C: T1L > 5
+C: T1L >= 5
 M: dA += T1c
 
 # C1

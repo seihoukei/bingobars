@@ -103,6 +103,9 @@
                  on:specialaction={() => importSave(false)}
             >>> Import</div>
         </div>
+        <div class="savehint">
+            Right-click/long-tap to load without adding offline time.
+        </div>
     </div>
     <div class="row">
         <div class="button" use:interactive
@@ -119,8 +122,8 @@
     }
 
     img {
-        width: 20em;
-        height: 4em;
+        width: 15em;
+        height: 3em;
     }
 
     input.savetext {
@@ -138,13 +141,13 @@
         display: flex;
         flex-direction: row;
         column-gap: 0.5em;
-        padding: 0.5em;
+        padding: 0.2em;
         align-items: center;
         justify-content: center;
     }
 
     div.button {
-        padding : 0.2em 0.5em;
+        padding : 0.1em 0.5em;
         border-radius: 0.5em;
         background-color: #440000;
         cursor : pointer;
@@ -194,5 +197,12 @@
 
     div.time {
         padding: 0.2em 0 0.5em;
+    }
+
+    div.savehint {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8em;
     }
 </style>

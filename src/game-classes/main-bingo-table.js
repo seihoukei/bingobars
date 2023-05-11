@@ -9,36 +9,42 @@ export default class MainBingoTable extends BingoTable{
     static COUNTERS = {
         "~S" : {
             description : "Unlocked ~ slots",
+            shortDescription: "Unlocked ~ slots",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~c" : {
             description : "Unlocked ~ cell (~R#C#) slots",
+            shortDescription: "Unlocked ~ main cells",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~R" : {
             description : "Unlocked ~ row (~R#) slots",
+            shortDescription: "Unlocked ~ rows",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~C" : {
             description : "Unlocked ~ column (~C#) slots",
+            shortDescription: "Unlocked ~ columns",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~D" : {
             description : "Unlocked ~ diagonal (~DX) slots",
+            shortDescription: "Unlocked ~ diagonals",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~L" : {
             description : "Unlocked ~ line (~R#/~C#/~DX) slots",
+            shortDescription: "Unlocked ~ lines",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },

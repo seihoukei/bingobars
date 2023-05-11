@@ -1,4 +1,5 @@
 import Codes from "game-classes/codes.js"
+import Calculation from "game-classes/calculation.js"
 
 export default class StringMaker {
     static VALUE_FORMATS = {
@@ -71,6 +72,17 @@ export default class StringMaker {
 
     static formatValueById(value, id) {
         return this.formatValue(value, Codes.get(id)?.format ?? {})
+    }
+    
+    static #smartReplace(value, calculation) {
+        if (!isNaN(+value)) {
+            return StringMaker.formatValueById(+value, calculation.target ?? calculation.involved[0] ?? "A")
+        }
+        return Codes.get(value)?.shortDescription ?? value
+    }
+    
+    static formatCalculation(calculation) {
+        return calculation.shortText.replace(/[A-Za-z0-9.]+/g, (x) => this.#smartReplace(x, calculation))
     }
 
     static template(strings, ...values) {

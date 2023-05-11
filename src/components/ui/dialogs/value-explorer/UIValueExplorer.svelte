@@ -7,6 +7,7 @@
     import UIValueResets from "components/ui/dialogs/value-explorer/elements/UIValueResets.svelte"
     import UIValueHistory from "components/ui/dialogs/value-explorer/elements/UIValueHistory.svelte"
     import Codes from "game-classes/codes.js"
+    import Trigger from "utility/trigger.js"
 
     const PAGES = {
         "Modifiers" : UIValueModifiers,

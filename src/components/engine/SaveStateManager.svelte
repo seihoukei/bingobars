@@ -85,7 +85,9 @@
     }
 
     function loadData(data, offlineTime = true) {
-        const saveData = data.split(".").at(-1)
+        const saveData = data?.split(".")?.at(-1) ?? null
+        if (!saveData)
+            return
         resetGame()
         const save = SaveProcessor.decode(saveData)
         if (save?._meta) {
@@ -121,8 +123,8 @@
 
     function getMetaData(slot = AUTOSAVE_SLOT) {
         const data = localStorage[getSlotName(slot)]
-        const meta = data.split(".")[0]
-        if (meta === data)
+        const meta = data?.split(".")?.[0] ?? null
+        if (!meta || meta === data)
             return {}
         return JSON.parse(atob(meta))
     }

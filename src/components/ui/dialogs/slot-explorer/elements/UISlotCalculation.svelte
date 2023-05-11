@@ -19,7 +19,7 @@
 </script>
 
 <div class="calculation" class:evaluate class:met>
-    {calculation.shortText}
+    {StringMaker.formatCalculation(calculation)}
 </div>
 {#if variables.length}
     <div class="variables">
