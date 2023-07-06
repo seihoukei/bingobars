@@ -9,6 +9,7 @@
     export let state
 
     registerTrigger("stored-values-updated", updateTables)
+    registerTrigger("debug-unlock-slot", debugUnlockSlot)
     registerTrigger("command-toggle-slot", toggleSlot)
     registerTrigger("command-toggle-slots", toggleSlots)
 
@@ -84,6 +85,11 @@
             toggleSlot(name, forceState, true)
 
         Trigger("slots-toggled", name, tables[name] & BingoTable.SLOT_STATES.ENABLED)
+    }
+
+    function debugUnlockSlot(name) {
+        tables[name] |= BingoTable.SLOT_STATES.UNLOCKED
+        Trigger("slot-unlocked", name)
     }
 
 </script>

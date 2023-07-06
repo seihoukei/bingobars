@@ -1,4 +1,6 @@
 <script>
+    import StringMaker from "utility/string-maker.js"
+
     export let modifiers = []
     export let debug = 0
     export let custom = null
@@ -13,7 +15,7 @@
 {:else if debug === 1}
     {#each visibleModifiers as modifier}
         <div class="item nowrap">
-            M: {modifier.shortText}
+            M: {StringMaker.formatCalculation(modifier, true)}
         </div>
     {/each}
 {:else if custom}
@@ -23,7 +25,7 @@
 {:else}
     {#each visibleModifiers as modifier}
         <div class="item nowrap">
-            {modifier.shortText}
+            {StringMaker.formatCalculation(modifier, true)}
         </div>
     {:else}
         <div class="item">

@@ -3,6 +3,7 @@
     import Trigger from "utility/trigger.js"
     import BingoTable from "game-classes/bingo-table.js"
     import interactive from "utility/interactive.js"
+    import hoverable from "utility/hoverable.js"
     import Codes from "game-classes/codes.js"
 
     export let modifier = {}
@@ -11,13 +12,14 @@
 
     $: values = game?.state?.values ?? {}
     $: tables = game?.state?.tables ?? {}
+    $: settings = game?.state?.settings ?? {}
     $: bingo = game?.state?.bingo ?? {}
     $: source = modifier.source
     $: code = Codes.get(source)
-    $: slot = code.slot ?? null
+    $: slot = code?.slot ?? null
     $: gameRules = !source
-    $: togglable = slot !== null || slot.isBingoSlot
-    $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (slot.isBingoSlot && bingo?.active?.[source.slice(2)]) || gameRules
+    $: togglable = slot?.isBingoSlot
+    $: active = (slot && (tables[source] & BingoTable.SLOT_STATES.ENABLED)) || (slot?.isBingoSlot && bingo?.active?.[slot.id]) || gameRules
     $: complex = (slot?.modifiers?.length ?? 0) > 1
 
     $: variables = [...new Set(modifier.involved.filter(x => x !== modifier.target))]
@@ -51,8 +53,9 @@
 <div class="modifier" class:active>
     <div class="main">
         <div class="source"
+             use:hoverable={{code:source ?? null}}
              class:togglable
-             class:super={slot.isBingoSlot}
+             class:super={slot?.isBingoSlot}
              class:rules={gameRules}
              use:interactive
              on:basicaction={toggle}
@@ -62,11 +65,12 @@
         </div>
 
         <div class="expression"
+             use:hoverable={{calculation:modifier}}
              class:togglable
              use:interactive
              on:basicaction={toggle}
         >
-            {modifier.expression}
+            {StringMaker.formatCalculation(modifier, settings.shortModifiers)}
         </div>
 
         {#if overridden}
@@ -77,6 +81,7 @@
         <div class="variables">
             {#each variables as variable}
                 <div class="variable"
+                     use:hoverable={{code:variable}}
                      use:interactive
                      on:basicaction={() => exploreValue(variable)}
                 >

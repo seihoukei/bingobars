@@ -8,28 +8,32 @@
 
     import {slide} from "svelte/transition"
     import interactive from "utility/interactive"
+    import hoverable from "utility/hoverable.js"
     import Trigger from "utility/trigger"
+    import {onDestroy, onMount} from "svelte"
 
     export let id
     export let slot
     export let game
 
     let debug = 0
+    let noise = ""
 
     if (import.meta.env.MODE === "development") {
         // 2 : see descriptions
         // 1 : raw formulas
-        //debug = 1
+//        debug = 1
     }
 
     $: tables = game?.state?.tables
-    $: value = tables?.[slot.code]
+    $: state = tables?.[slot.code]
+    $: settings = game?.state?.settings ?? {}
 
-    $: visible = value & BingoTable.SLOT_STATES.VISIBLE
-    $: seen = visible &&  value & BingoTable.SLOT_STATES.PREREQUISITES_MET
-    $: available = seen && (value & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
-    $: unlocked = value & BingoTable.SLOT_STATES.UNLOCKED
-    $: enabled = value & BingoTable.SLOT_STATES.ENABLED
+    $: visible = state & BingoTable.SLOT_STATES.VISIBLE
+    $: seen = visible &&  state & BingoTable.SLOT_STATES.PREREQUISITES_MET
+    $: available = seen && (state & BingoTable.SLOT_STATES.UNLOCKABLE) === BingoTable.SLOT_STATES.UNLOCKABLE
+    $: unlocked = state & BingoTable.SLOT_STATES.UNLOCKED
+    $: enabled = state & BingoTable.SLOT_STATES.ENABLED
 
     $: mainBackground = unlocked ? slot.modifierBackground : slot.conditionBackground ?? "linear-gradient(#444444, #444444)"
     $: stateBackground =
@@ -39,7 +43,7 @@
         "linear-gradient(#444444, #444444)"
 
     $: background = `--background: ${stateBackground}, ${mainBackground};`
-    $: cssVariables = `${getSlotPosition(id)}${background}`
+    $: cssVariables = `${getSlotPosition(id)}${background}${noise}`
 
     $: cell = slot.type === BingoTable.SLOT_TYPES.CELL
 
@@ -55,6 +59,10 @@
             Trigger("command-toggle-slot", slot.code)
     }
 
+    function debugAction() {
+        Trigger("debug-unlock-slot", slot.code)
+    }
+
     function specialAction() {
         if (!seen)
             return
@@ -67,10 +75,23 @@
 
         if (unlocked || available) {
             toggle()
-        } else {
-            Trigger("command-explore-slot", slot.code)
+//        } else {
+//            Trigger("command-explore-slot", slot.code)
         }
     }
+
+    let noiseInterval = null
+    onMount(() => {
+        if (game?.state?.settings?.animateNoise) {
+            noiseInterval = setInterval(() => {
+                noise = `--noise-x:${(100 * Math.random()).toFixed(2)}em;--noise-y:${(100 * Math.random()).toFixed(2)}em;`
+            }, 100)
+        } else {
+            noise = `--noise-x:${(100 * Math.random()).toFixed(2)}em;--noise-y:${(100 * Math.random()).toFixed(2)}em;`
+        }
+    })
+
+    onDestroy(() => clearInterval(noiseInterval))
 
     $: decoration =
         enabled
@@ -84,7 +105,8 @@
                     : "🔒"
 
 </script>
-    <div class="slot"
+    <div class="slot {id?.toLowerCase()}"
+         class:visible
          class:seen
          class:available
          class:unlocked
@@ -92,9 +114,11 @@
          class:cell
          class:oneway={slot.oneWay}
          style={cssVariables}
+         use:hoverable={{code: slot.code}}
          use:interactive
          on:basicaction={basicAction}
          on:specialaction={specialAction}
+         on:debugaction={debugAction}
     >
     {#if seen || debug}
         <div class="top float">{decoration}{slot.code}{decoration}</div>
@@ -110,6 +134,13 @@
                 {#if slot.modifiers?.length}
                     <UISlotModifiers {debug} modifiers={slot.modifiers} custom={slot.modifierText}/>
                 {/if}
+            {:else if (seen && !unlocked && settings.alwaysShowModifiers || unlocked && settings.alwaysShowConditions)}
+                <div transition:slide|local>
+                    <UISlotConditions {game} conditions={slot.conditions} custom={slot.conditionText}/>
+                </div>
+                <div transition:slide|local>
+                    <UISlotModifiers modifiers={slot.modifiers} custom={slot.modifierText}/>
+                </div>
             {:else if unlocked}
                 <div transition:slide|local>
                     <UISlotModifiers modifiers={slot.modifiers} custom={slot.modifierText}/>
@@ -156,13 +187,40 @@
         overflow: hidden;
 
         background: var(--background);
-        transition: background 0.2s;
+        transition: background 0.2s, transform 0.2s, border 0.2s, background-position 0;
     }
 
-    div.slot:not(.seen) {
+    div.slot.visible {
+        border : 1px solid #444444;
+        background: url("../resources/noise/basic.png");
+        background-position: var(--noise-x) var(--noise-y);
     }
 
     div.slot.seen {
+        background: var(--background);
+    }
+
+    div.slot.seen:hover {
+        transform: scale(1.4, 1.4);
+        border-width : 5px;
+        z-index: 3;
+    }
+
+    div.slot.dr.seen:hover {
+        transform: scale(1.4, 1.4) translate(-10%, -10%);
+    }
+    div.slot.dl.seen:hover {
+        transform: scale(1.4, 1.4) translate(10%, -10%);
+    }
+    div.slot.c1.seen:hover, div.slot.c2.seen:hover, div.slot.c3.seen:hover, div.slot.c4.seen:hover, div.slot.c5.seen:hover {
+        transform: scale(1.4, 1.4) translate(0, -10%);
+    }
+    div.slot.r1.seen:hover, div.slot.r2.seen:hover, div.slot.r3.seen:hover, div.slot.r4.seen:hover, div.slot.r5.seen:hover {
+        transform: scale(1.4, 1.4) translate(-10%, 0);
+    }
+
+    div.slot.seen:not(.enabled):hover, div.slot.seen.oneway:hover {
+        border: 1px solid #CCCCCC;
     }
 
     div.slot.available {
@@ -192,6 +250,7 @@
         justify-content: center;
         flex: 1;
         flex-direction: column;
+        row-gap: 1rem;
     }
 
     div.content.debug {

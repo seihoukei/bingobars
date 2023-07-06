@@ -8,6 +8,8 @@ import UIMaxiHell from "components/ui/maxis/hell-bingo/UIMaxiHell.svelte"
 import UIMiniValue from "components/ui/minis/value/UIMiniValue.svelte"
 import UIMiniGeneric from "components/ui/minis/generic/UIMiniGeneric.svelte"
 import UIMiniTable from "components/ui/minis/table/UIMiniTable.svelte"
+import UIMaxiSettings from "components/ui/maxis/settings/UIMaxiSettings.svelte"
+import UIMaxiCalculator from "components/ui/maxis/calculator/UIMaxiCalculator.svelte"
 
 const UI_TABS = [{
     mini : UIMiniValue,
@@ -77,6 +79,14 @@ const UI_TABS = [{
     mini : null,
     maxi : UIMaxiHell,
     id : "HELL",
+},{
+    mini : null,
+    maxi : UIMaxiSettings,
+    id : "SETTINGS",
+},{
+    mini : null,
+    maxi : UIMaxiCalculator,
+    id : "CALC",
 },]
 
 export default UI_TABS

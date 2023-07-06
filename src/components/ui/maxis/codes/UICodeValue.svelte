@@ -1,21 +1,23 @@
 <script>
     import Trigger from "utility/trigger.js"
     import interactive from "utility/interactive.js"
+    import hoverable from "utility/hoverable.js"
     import BASE_VALUES from "data/base-values.js"
     import Codes from "game-classes/codes.js"
 
     export let game
     export let id
-    export let base = ""
     export let table = false
+
 
     $: values = game?.state?.values ?? {}
     $: seen = game?.state?.seen ?? {}
     $: code = Codes.get(id)
+    $: base = code?.baseValue?.id
     $: baseCodes = BASE_VALUES[base]?.codes ?? {}
 
     $: background = BASE_VALUES[base]?.colors?.dark ?? "#333333"
-    $: cssProperties = `--background:${background};`
+    $: cssVariables = `--background:${background};--grid-area: ${id}`
 
     $: value = values[id] ?? 0
 
@@ -35,13 +37,16 @@
         if (unlocked)
             Trigger("command-explore-value", id, true)
     }
+
 </script>
 
 <div class="container"
-     style={cssProperties}
+     style={cssVariables}
      class:unlocked
      use:interactive
      on:basicaction={explore}
+
+     use:hoverable={{code:id, hidden:!unlocked}}
 >
     {#if unlocked}
         <div class="value">{id}</div>
@@ -54,12 +59,15 @@
         position: relative;
         overflow: hidden;
         display: flex;
-        background : var(--background);
+        background-color: #555555;
+        grid-area: var(--grid-area);
         align-items: center;
         justify-content: center;
-        width: 4em;
-        height: 1.2em;
         border-radius: 0.5em;
+    }
+
+    .container.unlocked {
+        background : var(--background);
     }
 
     .container.unlocked:hover {

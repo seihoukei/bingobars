@@ -1,4 +1,6 @@
 <script>
+    import StringMaker from "utility/string-maker.js"
+
     export let conditions = []
     export let game
     export let debug = 0
@@ -15,7 +17,7 @@
 {:else if debug === 1}
     {#each visibleConditions as condition}
         <div class="item nowrap" class:complete={condition.check(values)}>
-            C: {condition.shortText}
+            C: {StringMaker.formatCalculation(condition, true)}
         </div>
     {/each}
 {:else}
@@ -26,7 +28,7 @@
     {:else}
         {#each visibleConditions as condition}
             <div class="item nowrap" class:complete={condition.check(values)}>
-                {condition.shortText}
+                {StringMaker.formatCalculation(condition, true)}
             </div>
         {:else}
             <div class="item">

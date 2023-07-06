@@ -31,6 +31,8 @@
     registerTrigger("slots-toggled", planSave)
     registerTrigger("bingo-updated", planSave)
 
+    registerTrigger("stats-value-reset", backupSave)
+
     $: updateInterval(autosaveInterval)
 
     function getSlotName(slot = AUTOSAVE_SLOT) {
@@ -62,6 +64,10 @@
             return
         }
         saveTimeout = setTimeout(saveGame, actionsaveInterval - sinceLastSave)
+    }
+
+    function backupSave() {
+        saveGame("RESET")
     }
 
     function loadGame(slot, offlineTime = true) {

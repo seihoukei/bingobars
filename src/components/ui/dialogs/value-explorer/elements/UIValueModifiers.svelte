@@ -24,53 +24,29 @@
         availableModifiers = available
     }
 
-    function toggleModifiers(rule = () => true) {
-        let currentSandbox = Object.assign({}, game?.state?.values)
-        currentSandbox[id] = currentSandbox[`${id}_base`] ?? 0
-        const togglableModifiers = valueModifiers.filter(x => x.source)
-        const toggles = []
-        for (const modifier of togglableModifiers) {
-            let lastSandbox = Object.assign({},currentSandbox)
-            modifier.apply(currentSandbox)
-            if (rule(lastSandbox[id], currentSandbox[id])) {
-                toggles.push([modifier.source, true])
-            } else {
-                toggles.push([modifier.source, false])
-                currentSandbox = lastSandbox
-            }
-        }
-        const toggleSlots = toggles
-            .filter(([id, value]) => !Codes.get(id)?.isBingoSlot)
-        if (toggleSlots.length)
-            Trigger("command-toggle-slots", toggleSlots)
-
-        const toggleBingo = toggles
-            .filter(([id, value]) => Codes.get(id)?.isBingoSlot)
-            .map(([id, value]) => [Codes.get(id).id, value])
-        if (toggleBingo.length)
-            Trigger("command-toggle-bingo-lines", toggleBingo)
+    function optimizeModifiers(rule = () => true) {
+        Trigger("command-optimize-modifiers", id, rule)
     }
 
     function minimize() {
-        toggleModifiers((before, after) => before > after)
+        optimizeModifiers((before, after) => before >= after)
     }
 
     function maximize() {
-        toggleModifiers((before, after) => after > before)
+        optimizeModifiers((before, after) => after >= before)
     }
 
     function disableAll() {
-        toggleModifiers(() => false)
+        optimizeModifiers(() => false)
     }
 
     function enableAll() {
-        toggleModifiers(() => true)
+        optimizeModifiers(() => true)
     }
 
     onMount(() => {
         Trigger("command-update-modifiers")
     })
-
 
 </script>
 

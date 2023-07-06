@@ -7,6 +7,3 @@
 {#if game?.state}
     <UILayout {game} />
 {/if}
-
-<style>
-</style>

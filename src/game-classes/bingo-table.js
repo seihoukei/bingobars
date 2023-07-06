@@ -213,6 +213,8 @@ export default class BingoTable {
         },
     })
     
+    slots = {}
+    
     constructor(id, data) {
         this.id = id
         this.name = this.id

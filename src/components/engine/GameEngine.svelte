@@ -8,6 +8,7 @@
     import Trigger from "utility/trigger.js"
     import GameBingo from "components/engine/elements/GameBingo.svelte"
     import UI_TABS from "data/ui-tabs.js"
+    import GameSettings from "components/engine/GameSettings.svelte"
 
     const DEFAULT_GAME_STATE = Object.freeze({
     })
@@ -18,6 +19,7 @@
     export let game = {}
 
     registerTrigger("command-set-tab", setTab)
+    registerTrigger("command-update-expression", updateExpression)
 
     let state, gameId
 
@@ -44,6 +46,10 @@
         Trigger("command-save-game")
     }
 
+    function updateExpression(expression) {
+        state.lastExpression = expression
+    }
+
     function userMetaFunction() {
         return {
             SN : game?.state?.values?.TXS ?? 0,
@@ -64,5 +70,7 @@
         <GameTables {state} bind:tables={state.tables}/>
         <GameBingo {state} bind:bingo={state.bingo}/>
         <GameStats {state} bind:stats={state.stats}/>
+
+        <GameSettings bind:settings={state.settings} />
     {/if}
 {/key}

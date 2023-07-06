@@ -2,6 +2,7 @@
     import StringMaker from "utility/string-maker.js"
     import Trigger from "utility/trigger.js"
     import interactive from "utility/interactive.js"
+    import hoverable from "utility/hoverable.js"
 
     export let game
     export let evaluate = false
@@ -18,13 +19,21 @@
 
 </script>
 
-<div class="calculation" class:evaluate class:met>
+<div class="calculation"
+     class:evaluate
+     class:met
+     use:hoverable={{calculation}}
+>
     {StringMaker.formatCalculation(calculation)}
 </div>
 {#if variables.length}
     <div class="variables">
         {#each variables as variable}
-            <div class="variable" use:interactive on:basicaction={() => explore(variable)}>
+            <div class="variable"
+                 use:interactive
+                 on:basicaction={() => explore(variable)}
+                 use:hoverable={{code:variable}}
+            >
                     <span class="name">
                         {variable}
                     </span> = <span class="value">

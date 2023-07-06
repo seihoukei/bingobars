@@ -3,7 +3,7 @@
 //C: Table unlock condition
 
 N: 3
-C: false
+C: AB_seen
 
 //--- Slots
 //# Slot name
@@ -52,7 +52,8 @@ R: ???
 R: ???
 
 # R3C3
-R: ???
+C: ABP >= 3
+M: dA *= ABP
 
 # R3C4
 R: ???

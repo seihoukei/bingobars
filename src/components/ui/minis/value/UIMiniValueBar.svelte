@@ -30,9 +30,6 @@
         right : 0;
 
         z-index : 0;
-
-        border-radius: 1em;
-        overflow: hidden;
     }
 
     div.fg {

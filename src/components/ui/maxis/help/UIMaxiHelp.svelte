@@ -21,6 +21,7 @@
     COMFY!
 
     Resetting value allows to fulfil some conditions, and has no other benefits!
+    You can restore game state before last value reset if you made a mistake!
     Try to achieve several simple conditions in one reset to progress faster!
     TRICKY!
 

@@ -11,11 +11,11 @@
     Wakelock.enable()
 
     let game = {}
-/*    if (import.meta.env.MODE === "development") {
-        window.Trigger = Trigger
-        window.TABLES = TABLES
-        window.game = game
-    }*/
+    if (import.meta.env.MODE === "development") {
+//        window.Trigger = Trigger
+//        window.TABLES = TABLES
+        //window.game = game
+    }
 </script>
 
 <GameEngine bind:game />

@@ -6,6 +6,7 @@
     import UISlotExplorer from "components/ui/dialogs/slot-explorer/UISlotExplorer.svelte"
     import registerTrigger from "utility/register-trigger.js"
     import {onDestroy, onMount} from "svelte"
+    import UIHover from "components/ui/UIHover.svelte"
 
     export let game
 
@@ -98,6 +99,7 @@
                               id={exploration.id}
             />
         {/each}
+        <UIHover {game} />
     {/key}
 {/if}
 
@@ -157,8 +159,6 @@
             font-size: min(0.72vw, 1.15vh);
             grid-template-columns: 10rem 10rem 10rem 1fr;
             grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-            grid-column-gap: 1rem;
-            grid-row-gap: 1rem;
         }
 
         div.main {
@@ -174,17 +174,12 @@
                 "t1 t2 t3 t4 t5 code help menu";
             font-size: min(1.38vw, 0.98vh);
             grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-            grid-template-rows: 1fr 20rem 20rem;
-            grid-column-gap: 1rem;
-            grid-row-gap: 1rem;
+            grid-template-rows: 1fr 25rem 25rem;
         }
 
         div.main {
             font-size: 1em;
         }
-    }
-
-    div.main {
     }
 
     div.element {

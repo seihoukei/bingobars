@@ -1,5 +1,5 @@
 <script>
-    import {afterUpdate, onMount} from "svelte"
+    import {afterUpdate, onDestroy, onMount} from "svelte"
     import Trigger from "utility/trigger.js"
     import TABLES from "data/tables.js"
     import interactive from "utility/interactive.js"
@@ -19,6 +19,7 @@
     export let id
 
     let lastValue = 0
+    let noise = ""
 
     $: bingo = game?.state?.bingo ?? {}
     $: value = bingo.levels?.[id] ?? {}
@@ -30,9 +31,12 @@
     $: modifier = data?.modifier ?? null
     $: target = modifier?.target ?? null
     $: effect = data.effect ?? `SB${id}`
-    $: diplayEffect = target && game?.state?.seen?.[target]
+    $: available = target && game?.state?.seen?.[target]
+    $: diplayEffect = available
         ? effect
         : "???"
+
+    $: cssVariables = `${positionStyle(x, y)}${noise}`
 
     onMount(() => {
         lastValue = value
@@ -59,20 +63,41 @@
     }
 
     function toggle() {
-        Trigger("command-toggle-bingo-line", id)
         blink()
+        if (!available)
+            return
+        Trigger("command-toggle-bingo-line", id)
     }
+
+
+    let noiseInterval = null
+    onMount(() => {
+        if (game?.state?.settings?.animateNoise) {
+            noiseInterval = setInterval(() => {
+                noise = `--noise-x:${(100 * Math.random()).toFixed(2)}em;--noise-y:${(100 * Math.random()).toFixed(2)}em;`
+            }, 100)
+        } else {
+            noise = `--noise-x:${(100 * Math.random()).toFixed(2)}em;--noise-y:${(100 * Math.random()).toFixed(2)}em;`
+        }
+    })
+
+    onDestroy(() => clearInterval(noiseInterval))
 
 </script>
 
-<div class="cell"
+
+<div class="slot"
      class:active
-     style={positionStyle(x, y)}
+     class:available
+     style={cssVariables}
      use:interactive
      on:basicaction={toggle}
+     on:specialaction={blink}
 >
-    <div class="level">{value}</div>
-    <div class="name">{diplayEffect}</div>
+    {#if available}
+        <div class="level">{value}</div>
+        <div class="name">{diplayEffect}</div>
+    {/if}
 </div>
 
 {#each blinkTargets as [x, y], i}
@@ -80,8 +105,9 @@
 {/each}
 
 <style>
-    div.cell {
-        background: #444400;
+    div.slot {
+        background: url("../resources/noise/super.png") #444444;
+        background-position: var(--noise-x) var(--noise-y);
         grid-row: var(--row);
         grid-column: var(--column);
         z-index: 2;
@@ -92,11 +118,16 @@
         border-radius: 0.5em;
     }
 
-    div.cell.active {
+    div.slot.available {
+        background: #444400;
+
+    }
+
+    div.slot.available.active {
         background: #999944;
     }
 
-    div.cell:hover {
+    div.slot.available:hover {
         cursor: pointer;
         background: #777744;
     }

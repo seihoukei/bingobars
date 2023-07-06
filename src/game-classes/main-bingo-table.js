@@ -9,42 +9,42 @@ export default class MainBingoTable extends BingoTable{
     static COUNTERS = {
         "~S" : {
             description : "Unlocked ~ slots",
-            shortDescription: "Unlocked ~ slots",
+            shortDescription: "~ slots",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~c" : {
             description : "Unlocked ~ cell (~R#C#) slots",
-            shortDescription: "Unlocked ~ main cells",
+            shortDescription: "~ main cells",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~R" : {
             description : "Unlocked ~ row (~R#) slots",
-            shortDescription: "Unlocked ~ rows",
+            shortDescription: "~ rows",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~C" : {
             description : "Unlocked ~ column (~C#) slots",
-            shortDescription: "Unlocked ~ columns",
+            shortDescription: "~ columns",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~D" : {
             description : "Unlocked ~ diagonal (~DX) slots",
-            shortDescription: "Unlocked ~ diagonals",
+            shortDescription: "~ diagonals",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
         },
         "~L" : {
             description : "Unlocked ~ line (~R#/~C#/~DX) slots",
-            shortDescription: "Unlocked ~ lines",
+            shortDescription: "~ lines",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },
@@ -74,7 +74,6 @@ export default class MainBingoTable extends BingoTable{
     type = BingoTable.TABLE_TYPES.BINGO
 
     conditions = []
-    slots = {}
     
     init(data) {
         for (let id of MainBingoTable.SLOT_LIST)

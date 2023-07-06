@@ -36,9 +36,9 @@ const BASE_VALUES = {
     }),
 
     "AB" : new BaseValue("AB", {
-        dX : 1e-9,
+        dX : 1e-12,
         MX0 : 25,
-        MXm : 2,
+        MXm : 1,
     }, {
         dark : "#772277",
         normal : "#AA55AA",

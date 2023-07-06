@@ -1,0 +1,176 @@
+//--- Table header(before slots)
+//N: Table name
+//C: Table unlock condition
+
+N: 1
+
+//--- Slots
+//# Slot name
+//R: prerequisite (code like T1R2C3)
+//C: condition (formula)
+//C!: hidden condition (formula)
+//M: modifier (formula)
+//M!: hidden modifier (formula)
+//c: custom condition text to display
+//m: custom modifier text to display
+
+# R1C1
+C: A > AP * 1000
+C: AP > 0
+M: dA += 5
+
+# R1C2
+C: 610 < MA < 630
+M: APc -= 0.1
+
+# R1C3
+C: AP >= A + 2
+M: dA /= 5
+
+# R1C4
+C: AP > 7
+M: MAm += 0.8
+
+# R1C5
+C: A < AP * 1000 < MA
+M: MAm -= 0.1
+
+# R2C1
+C: A > 16
+M: dA += 1
+
+# R2C2
+C: AP >= 4
+M: dA += 2
+
+# R2C3
+C: APt > 30
+M: dA += 1
+
+# R2C4
+C: dA >= 5
+M: MAm += 0.2
+
+# R2C5
+C: A > 32
+M: MAm += 1
+
+# R3C1
+C: A < AP * 100 < MA
+M: dA += 1
+
+# R3C2
+C: AP - 3 > APt
+M: dA += AP / 10
+
+# R3C3
+C: AP >= 1
+M: dA += 1
+
+# R3C4
+C: AP >= 10
+C: APt <= 10
+M: dA *= 1.2
+
+# R3C5
+C: 11111 < A < 12345
+M: MAm -= 0.1
+
+# R4C1
+C: A > 96
+M: MAm -= 0.2
+
+# R4C2
+C: dA == 10
+M: dA += 3
+
+# R4C3
+C: A >= 256
+M: dA = 16
+
+# R4C4
+C: MA > 5000
+M: dA += MAm
+
+# R4C5
+C: At > 600
+M: dA += At / 600
+
+# R5C1
+C: 64 < dA < 66
+M: dA = 100
+
+# R5C2
+C: AP * A > 1e6
+M: dA += 5
+
+# R5C3
+C: At > 120
+M: MAm += 1
+
+# R5C4
+C: A > 2500
+M: dA -= 0.2
+
+# R5C5
+C: AP > At
+M: dA *= 1.4
+
+# R1
+C: A == 600
+M: dA *= 1 + AP / 10
+
+# R2
+C: AP >= 3
+C: MA < 30
+M: dA += AP
+
+# R3
+C: MAm == AP / 10
+M: MAm = 1.2 + AP / 10
+
+# R4
+C: APt > 30
+C: A < dA
+M: dA = 50
+
+# R5
+C: T1L >= 5
+M: dA += T1c
+
+# C1
+C: dA == MAm * 30
+M: MAm = 7
+
+# C2
+C: APt > 300
+C: A < MA
+M: dA += APt / 60
+
+# C3
+C: MA > 400
+C: 100 < A < 200
+M!: A_auto_seen = true
+LOCK
+m: Unlock auto prestige A
+
+# C4
+C: At < 60
+C: A > 1000
+M: APc -= 0.2
+
+# C5
+C: dA == MA
+C: AP >= 3
+M: dAP += 1
+
+# DL
+C: AP >= 6
+C: MA <= 50
+M: dAP += 1
+
+# DR
+C: AP >= 15
+M!: B_seen = true
+LOCK
+m: Unlock B

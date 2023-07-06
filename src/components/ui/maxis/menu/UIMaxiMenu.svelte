@@ -9,6 +9,7 @@
     export let id
 
     const SLOTS = ["","SAVE1","SAVE2","SAVE3"]
+    const SETTINGS_TAB = 17
 
     let saveText = ""
     let slotInfo = {}
@@ -47,6 +48,10 @@
 
     function updateSaveInfo(info) {
         slotInfo = info
+    }
+
+    function settings() {
+        Trigger("command-set-tab", SETTINGS_TAB)
     }
 
     onMount(() => {
@@ -108,6 +113,15 @@
         </div>
     </div>
     <div class="row">
+        <div class="button"
+             use:interactive
+             on:basicaction={() => load("RESET")}
+             on:specialaction={() => load("RESET", false)}
+        > Undo reset </div>
+
+        <div class="button" use:interactive
+             on:basicaction={settings}>Settings</div>
+
         <div class="button" use:interactive
              on:basicaction={resetState}>Reset game</div>
     </div>
@@ -140,7 +154,7 @@
     div.row {
         display: flex;
         flex-direction: row;
-        column-gap: 0.5em;
+        column-gap: 2em;
         padding: 0.2em;
         align-items: center;
         justify-content: center;

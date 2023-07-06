@@ -15,7 +15,6 @@ export default class SuperBingoTable extends  BingoTable {
     
     init(data) {
         this.costs = structuredClone(SuperBingoTable.DEFAULT_COSTS)
-        this.slots = {}
         for (const [id, data] of Object.entries(SuperBingoTable.SLOTS)) {
             if (!BingoTable.LINE_SLOT_TYPES.includes(data.type))
                 continue

@@ -39,7 +39,7 @@
     }
 </script>
 
-<div class="cell" style={cssVariables}>
+<div class="slot" style={cssVariables}>
     {#if x === 2 && y === 2}
         <div class="free">FREE</div>
     {:else}
@@ -61,7 +61,7 @@
 </div>
 
 <style>
-    div.cell {
+    div.slot {
         position : relative;
         grid-row: var(--row);
         grid-column: var(--column);

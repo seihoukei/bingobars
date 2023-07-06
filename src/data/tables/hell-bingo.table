@@ -24,23 +24,40 @@ E: APt = 3600
 $: 1
 
 # R2C1
-C: A = MA
+C: T1S == 37
+//Unlock harder T1
+ONCE
+
+# R2C2
+C: T2S == 37
+//Unlock harder T2
+ONCE
+
+# R2C3
+C: T3S == 37
+//Unlock harder T3
+ONCE
+
+# R2C4
+C: T4S == 37
+//Unlock harder T4
+ONCE
+
+# R2C5
+C: T5S == 37
+//Unlock harder T5
+ONCE
+
+# R3C1
+C: A == MA
 E: MA *= 10
 $: 1
 
-# R2C2
-
-# R2C3
-
-# R2C4
-
-# R2C5
-
-# R3C1
-
 # R3C2
+C: B > 10
 
 # R3C3
+C: dB > 10
 
 # R3C4
 

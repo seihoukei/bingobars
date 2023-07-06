@@ -17,6 +17,9 @@
 
     registerTrigger("command-tick", advance)
     registerTrigger("command-tick-step", updateValues)
+    registerTrigger("command-optimize-modifiers", optimizeModifiers)
+
+    registerTrigger("debug-time", debugTime)
 
     let tableValues = {}
     let activeModifierList = []
@@ -33,6 +36,33 @@
         window.activeModifierList = activeModifierList
     }
 
+    function optimizeModifiers(id, rule) {
+        const valueModifiers = availableModifierList.filter(x => x.target === id)
+        let currentSandbox = Object.assign({}, values)
+        currentSandbox[id] = INITIAL_VALUES[id] ?? 0
+        const togglableModifiers = valueModifiers.filter(x => x.source)
+        const toggles = []
+        for (const modifier of togglableModifiers) {
+            let lastSandbox = Object.assign({},currentSandbox)
+            modifier.apply(currentSandbox)
+            if (rule(lastSandbox[id], currentSandbox[id])) {
+                toggles.push([modifier.source, true])
+            } else {
+                toggles.push([modifier.source, false])
+                currentSandbox = lastSandbox
+            }
+        }
+        const toggleSlots = toggles
+            .filter(([id, value]) => !Codes.get(id)?.isBingoSlot)
+        if (toggleSlots.length)
+            Trigger("command-toggle-slots", toggleSlots)
+
+        const toggleBingo = toggles
+            .filter(([id, value]) => Codes.get(id)?.isBingoSlot)
+            .map(([id, value]) => [Codes.get(id).id, value])
+        if (toggleBingo.length)
+            Trigger("command-toggle-bingo-lines", toggleBingo)
+    }
 
     function resetDerivedValues(values = values) {
         Object.assign(values, INITIAL_VALUES)
@@ -97,7 +127,7 @@
             return Infinity
 
         const value = values[codes.X] ?? 0
-        if (value >= max)
+        if (value >= max - 1e-6)
             return Infinity
 
         const time = (max - value) / delta
@@ -135,6 +165,10 @@
 
         Trigger("stored-values-updated", values)
         Trigger("values-updated", values)
+    }
+
+    function debugTime(time) {
+        values.targetTime += time
     }
 
 </script>

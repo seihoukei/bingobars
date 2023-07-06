@@ -1,5 +1,4 @@
 import Codes from "game-classes/codes.js"
-import Calculation from "game-classes/calculation.js"
 
 export default class StringMaker {
     static VALUE_FORMATS = {
@@ -19,33 +18,40 @@ export default class StringMaker {
     static formatValue(value = 0, format) {
         const usedFormat = Object.assign({}, this.DEFAULT_FORMAT, format)
         let displayValue = ""
+        let absoluteValue = Math.abs(value)
 
         switch (usedFormat.type) {
             case this.VALUE_FORMATS.SCIENTIFIC:
-                displayValue = value < 1e-2 && value !== 0 ? value.toExponential(2) :
-                               value < 10000 ? value.toFixed(2) :
-                               value < 100000 ? value.toFixed(1) :
-                               value < 1000000 ? value.toFixed(0) :
+                displayValue = absoluteValue < 1e-2 && value !== 0 ? value.toExponential(2) :
+                               absoluteValue < 10000 ? value.toFixed(2) :
+                               absoluteValue < 100000 ? value.toFixed(1) :
+                               absoluteValue < 1000000 ? value.toFixed(0) :
                                value.toExponential(2)
                 break
             case this.VALUE_FORMATS.SHORT_SCIENTIFIC:
-                displayValue = value < 1e-2 && value !== 0 ? value.toExponential(2) :
-                               value < 10000 ? value.toFixed(2) :
-                               value < 100000 ? value.toFixed(1) :
-                               value < 1000000 ? value.toFixed(0) :
+                displayValue = absoluteValue < 1e-2 && value !== 0 ? value.toExponential(2) :
+                               absoluteValue < 10000 ? value.toFixed(2) :
+                               absoluteValue < 100000 ? value.toFixed(1) :
+                               absoluteValue < 1000000 ? value.toFixed(0) :
                                value.toExponential(2)
-                displayValue = displayValue.replace(/\.?0*$/,"")
+                displayValue = displayValue
+                    .replace(/(?<!e.*)(?<=\..*)0*$/,"")
+                    .replace(/\.$/,"")
                 break
             case this.VALUE_FORMATS.PERCENTAGE:
                 const percent = value * 100
-                displayValue = percent < 10000
+                displayValue = percent < 10000 && percent > -10000
                                    ? percent.toFixed(2)
                                    : percent.toExponential(2)
-                displayValue = displayValue.replace(/\.?0*$/,"")
+                displayValue = displayValue
+                    .replace(/(?<!e.*)(?<=\..*)0*$/,"")
+                    .replace(/\.$/,"")
                 displayValue += `%`
                 break
             case this.VALUE_FORMATS.TIME:
-                if (value < 60) {
+                if (value > (usedFormat.limit ?? Infinity)) {
+                    displayValue = usedFormat.limitMessage ?? "months"
+                } else if (value < 60) {
                     displayValue = value.toFixed(1) + "s"
                 } else {
                     const seconds = value % 60 | 0
@@ -74,15 +80,25 @@ export default class StringMaker {
         return this.formatValue(value, Codes.get(id)?.format ?? {})
     }
     
-    static #smartReplace(value, calculation) {
-        if (!isNaN(+value)) {
-            return StringMaker.formatValueById(+value, calculation.target ?? calculation.involved[0] ?? "A")
+    static #lastValue = null
+    static #smartReplace(value, calculation, short) {
+        if (value.slice(-1) === "%") {
+            return value
         }
-        return Codes.get(value)?.shortDescription ?? value
+        
+        if (!isNaN(+value)) {
+            return StringMaker.formatValueById(+value, this.#lastValue ?? calculation.target ?? calculation.involved[0] ?? "A")
+        }
+        
+        this.#lastValue = value
+        return short
+            ? value
+            : Codes.get(value)?.shortDescription ?? value
     }
     
-    static formatCalculation(calculation) {
-        return calculation.shortText.replace(/[A-Za-z0-9.]+/g, (x) => this.#smartReplace(x, calculation))
+    static formatCalculation(calculation, short = false) {
+        this.#lastValue = null
+        return calculation.shortText.replace(/[A-Za-z0-9.%]+/g, (x) => this.#smartReplace(x, calculation, short))
     }
 
     static template(strings, ...values) {

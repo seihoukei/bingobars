@@ -49,7 +49,7 @@ export default class BaseValue {
             },
         },
         'MXm' : {
-            description: "~ limit multiplier",
+            description: "~ prestige limit multiplier",
             shortDescription: "~ limit multi",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
@@ -71,7 +71,7 @@ export default class BaseValue {
         },
         'dXP' : {
             description : "~ points per prestige",
-            shortDescription: "~ point prestige",
+            shortDescription: "~ points per prestige",
             format : {
                 type: StringMaker.VALUE_FORMATS.SHORT_SCIENTIFIC,
             },

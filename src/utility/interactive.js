@@ -6,6 +6,9 @@ export default function interactive(node) {
     const specialAction = () => {
         node.dispatchEvent(new CustomEvent("specialaction"))
     }
+    const debugAction = () => {
+        node.dispatchEvent(new CustomEvent("debugaction"))
+    }
     const enter = () => {
         node.dispatchEvent(new CustomEvent("enter"))
     }
@@ -25,7 +28,10 @@ export default function interactive(node) {
     }
 
     const mouseRightHandler = (event) => {
-        specialAction()
+        if (event.shiftKey && import.meta.env.MODE === "development")
+            debugAction()
+        else
+            specialAction()
         cancelEvent(event)
     }
 

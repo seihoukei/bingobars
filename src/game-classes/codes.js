@@ -9,6 +9,7 @@ export default class Codes {
     static #codes = {}
     
     static registerCode(code, data) {
+        data.code = code
         this.#codes[code] = data
     }
     

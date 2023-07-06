@@ -3,6 +3,7 @@
     import Trigger from "utility/trigger"
     import interactive from "utility/interactive.js"
     import Codes from "game-classes/codes.js"
+    import hoverable from "utility/hoverable.js"
 
     export let id
     export let game
@@ -22,7 +23,9 @@
 <div class="container"
      class:seen
      use:interactive
-     on:basicaction={explore}>
+     on:basicaction={explore}
+     use:hoverable={{code:seen ? id : null}}
+>
     {#if seen}
         <div class="value">
             <span class="name">
